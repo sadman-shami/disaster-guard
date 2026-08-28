@@ -1,212 +1,169 @@
-Welcome to your new TanStack Start app!
+# Disaster Guard — Emergency Management & Resource Allocation Platform
 
-# Getting Started
+> > Disaster Guard platform engineered for rapid situational awareness, emergency logistics coordination, volunteer taskforce deployment, and multi-agency crisis command.
 
-To run this application:
+> > Configured with high-fidelity emergency response data for **Bangladesh**, including monsoon flash flood mitigation, cyclonic storm surge evacuation, riverbank erosion response, urban waterlogging management, and multi-purpose shelter operations.
+
+> > For the project `Tanstack Start framework` has been used. It uses vite as a bundler. `Nitro` server has been used for routing, nitro can run on edge. This project mainly run on client side. So there is no use for `next.js` extensive caching which may improve performance but for the project `next.js` is not needed.
+
+> > This app is featured with tab based routing. No external route has been used for routing.
+
+---
+
+## 🌟 Core Modules & Features
+
+### 1. 🗺️ Interactive Tactical GIS Map (`/map`)
+
+- **Real-Time Geospatial Visualizations**: Built with Leaflet to map critical incidents, emergency shelters, staging bases, and field hospitals.
+- **Evacuation Zones & Danger Corridors**: Displays mandatory evacuation radiuses, prepare-to-evacuate perimeters, and safe passage corridors with interactive layer toggles.
+- **Live SOS Distress Beacon**: One-click civilian emergency signal broadcaster that drops a high-priority distress marker on the command map.
+- **Tactical Layer Controls**: Toggle active incident markers, shelter/depot capacities, hazard buffers, and environmental overlays.
+- **Incident Inspector**: Click any marker to view casualties, urgent resource requests, assigned units, and launch rapid resource dispatches.
+
+### 2. 📡 Real-Time Incident Feed (`/feed`)
+
+- **Crowdsourced & Verified Reporting**: Submit ground reports with GPS coordinates, casualty numbers, urgent supply checklists, and landmark descriptions.
+- **Trust & Corroboration Engine**: Community verification system calculating confidence scores based on peer confirmations and official responder badges.
+- **Tactical Filtering & Search**: Filter by disaster hazard (Flood, Cyclone, Landslide/Erosion, Power Outage, Hazmat, Fire, Earthquake), severity tier (Critical, High, Moderate, Low), and verification status.
+- **Field Updates Log**: Chronological thread of situational updates from local citizens and verified command officers.
+
+### 3. 📦 Emergency Resource & Shelter Management (`/resources`)
+
+- **National Depot & Shelter Roster**: Monitor occupancy rates, available beds, power generation backup, and amenities across relief hubs and cyclone shelters.
+- **Critical Inventory Tracking**: Real-time stock level monitoring for water purification tablets (_Aquatabs_), oral rehydration saline (_ORS_), inflatable rescue speedboats (_Zodiac 40HP_), heavy diesel de-watering pumps, geotextile sandbags, and emergency VHF radios.
+- **Automated Threshold Warnings**: Instant alerts for depots experiencing critical shortages or approaching full occupancy.
+- **Resource Allocation & Dispatch Engine**: Transfer emergency assets from depots to active incidents with automated ETA calculations and live dispatch logs.
+- **Commission New Depots**: Field commanders can commission new emergency shelters, logistics staging areas, or mobile field hospitals on the fly.
+
+### 4. 🤝 Volunteer Corps & Taskforce Portal (`/volunteers`)
+
+- **Specialized Team Rosters**: Coordinate rapid-response taskforces such as the _Cyclone Preparedness Programme (CPP)_, _BDRCS Haor Water Rescue Squad_, _Sylhet Emergency Medical Triage Corps_, and _FSCD Urban Search & Rescue (USAR)_.
+- **Task Dispatch Board**: Create, assign, and track tactical missions (Search & Rescue, Medical Aid, Flood Sandbagging, Shelter Management, Relief Distribution).
+- **Volunteer Onboarding & Skill Matching**: Register volunteers with specific skill tags, emergency contact details, certifications, and experience hours.
+- **Field Check-In Logging**: Ground personnel can log milestone check-ins, survivor counts, and hazard notes directly on their assigned tasks.
+
+### 5. 🛡️ Administrative Command Dashboard (`/admin`)
+
+- **National OPCON Status Controller**: Switch operational readiness levels between _OPCON 4 (Normal Monitoring)_, _OPCON 3 (Elevated Watch)_, _OPCON 2 (High Alert)_, and _OPCON 1 (Maximum Red Alert)_.
+- **Executive KPIs**: Real-time summary of active incidents, reported casualties, displaced individuals, critical inventory bottlenecks, and deployed personnel.
+- **Visual Analytics**:
+  - **Incident Influx & Resolution Curve**: Hourly trend area chart tracking incoming reports vs. resolved situations.
+  - **Hazard Breakdown**: Distribution chart of active disaster types.
+  - **Sector Fulfillment Rates**: Composed chart showing requested vs. dispatched supplies across regional command divisions.
+- **Emergency Broadcast System**: Author and push emergency alerts with danger warnings, evacuation instructions, and geographic polygons.
+
+---
+
+## 👥 Multi-Role User Simulation
+
+The header includes a **Role Switcher** allowing you to experience the application from 4 operational perspectives:
+
+| Role                 | Profile                                  | Permissions & Capabilities                                                                                        |
+| :------------------- | :--------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| **Admin**            | Brig. Gen. Tanvir Ahmed (FSCD Command)   | Full access to OPCON level controls, global resource creation, emergency broadcasts, and executive analytics.     |
+| **Responder**        | Capt. Mahmudur Rahman (BDRCS Lead)       | Dispatch resources, create and manage volunteer teams, launch rescue missions, and post verified updates.         |
+| **Verified Citizen** | Dr. Nusrat Jahan (MBBS - Triage Lead)    | High trust rating (94%), auto-verified incident reports, submit field medical updates, and coordinate relief.     |
+| **Citizen**          | Kazi Ashraful Islam (Community Reporter) | Report local incidents, activate SOS distress beacon, corroborate neighborhood reports, and join volunteer corps. |
+
+---
+
+## 🚀 How to Use the Application
+
+### 1. Reporting an Emergency Incident
+
+1. Click the **"Report Incident"** button in the header (or the floating action button on mobile).
+2. Select the **Disaster Hazard Category** (e.g., _Flash Flood_, _Severe Cyclone_, _Riverbank Erosion_).
+3. Set the **Severity Level** (_Critical_, _High_, _Moderate_, _Low_).
+4. Provide a descriptive title, details of the situation, and specify casualties/affected counts.
+5. Enter the location or click **"Use Device Location"** to fill GPS coordinates automatically.
+6. Select required supplies from the **Urgent Supplies Checklist** (e.g., _Aquatabs_, _Rescue Boats_, _ORS_).
+7. Click **"Broadcast Report to Command"**. The incident will instantly appear on both the **Interactive Map** and the **Live Feed**.
+
+### 2. Dispatching Supplies to an Incident
+
+1. Navigate to the **"Resources"** tab.
+2. Under **Emergency Inventory**, locate the needed asset (e.g., _Water Purification Tablets_ or _Inflatable Speedboats_).
+3. Click **"Allocate / Dispatch"** on the resource row.
+4. Select the target **Incident** from the dropdown.
+5. Enter the quantity to transfer and add dispatch notes.
+6. Click **"Confirm Tactical Dispatch"**. Inventory levels will update immediately and a new entry will appear in the **Dispatch Logs**.
+
+### 3. Creating & Assigning Volunteer Tasks
+
+1. Navigate to the **"Volunteers"** tab.
+2. Click **"Create Task"**.
+3. Link the task to an active incident and select a specialized category (_Search & Rescue_, _Medical Aid_, _Sandbagging_, etc.).
+4. Assign a **Volunteer Team** or specific individuals based on required skill tags.
+5. Set the priority, deadline, and required volunteer headcount, then click **"Publish Task"**.
+
+### 4. Issuing a National Emergency Broadcast (Admin Mode)
+
+1. Switch your active role to **Admin (Brig. Gen. Tanvir Ahmed)** in the top header.
+2. Navigate to the **"Command Operations"** tab (`/admin`).
+3. Under the **Emergency Broadcast Center**, enter the warning title, danger level (_Extreme_, _Severe_, _Moderate_), headline, instructions, and affected districts.
+4. Click **"Broadcast Alert"**. The alert banner will display globally across the tactical map and notification system.
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+- **Framework**: [Tanstack Start](https://tanstack.com/start) (Tanstack React Router, React 19)
+- **Language**: TypeScript 5.8+
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) with semantic color tokens and responsive grid design
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand) with client-side localStorage persistence
+- **Geospatial Mapping**: [Leaflet](https://leafletjs.com/) & [React-Leaflet v5](https://react-leaflet.js.org/)
+- **Data Visualizations**: [Recharts](https://recharts.org/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+
+---
+
+## 💻 Local Development & Build
+
+### Prerequisites
+
+- Node.js 20+
+- pnpm
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/sadman-shami/disaster-guard.git
+cd disaster-guard
+
+# Install dependencies
 pnpm install
+```
+
+### Running the Development Server
+
+```bash
 pnpm dev
 ```
 
-# Building For Production
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-To build this application for production:
-
-```bash
-pnpm build
-```
-
-## Styling
-
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-### Removing Tailwind CSS
-
-If you prefer not to use Tailwind CSS:
-
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Remove `@tailwindcss/vite` and `tailwindcss` from `package.json`
-
-## Linting & Formatting
-
-This project uses [Biome](https://biomejs.dev/) for linting and formatting. The following scripts are available:
-
+### Building for Production
 
 ```bash
+# Run TypeScript compilation check
 pnpm lint
-pnpm format
-pnpm check
+
+# Build production bundle
+pnpm build
+
+# Start production server
+pnpm preview
 ```
 
+---
 
-## Deploy with Nitro
+## 🗺️ Seeded Bangladesh Disaster Scenarios
 
-This project uses Nitro as a generic server adapter, so it can run on any Node-compatible host.
+The platform comes pre-populated with realistic humanitarian relief data across key Bangladesh divisions:
 
-```bash
-npm run build
-node dist/server/index.mjs
-```
-
-The build output is a self-contained Node server. To deploy, push the `dist/` directory to your host (Render, Fly.io, your own VPS, etc.) and run the server command above.
-
-For host-specific presets (Vercel, Netlify, Cloudflare, AWS Lambda, etc.) and tuning, see https://v3.nitro.build/deploy.
-
-
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+1. **Surma-Kushiyara Basin (Sunamganj & Sylhet)**: Flash flooding and embankment breach submerging rural villages, requiring boat extraction and Aquatabs distribution.
+2. **Coastal Surge & Cyclone Corridor (Chattogram, Sandwip & Cox's Bazar)**: Category 4 storm surge threat triggering Signal 10 evacuation protocols into multi-purpose cyclone shelters.
+3. **Muhuri & Gumti River Basin (Feni & Fulgazi)**: Sluice gate dyke overflow prompting community sandbagging and family tent setups.
+4. **Jamuna River Bank Erosion (Kurigram & Chilmari)**: Massive bank collapse displacing char homesteads, supported by geotextile sandbag dumping operations.
+5. **Urban Waterlogging & Grid Isolation (Mirpur, Dhaka)**: Monsoon stormwater inundation near electrical substations requiring heavy diesel de-watering pumps.

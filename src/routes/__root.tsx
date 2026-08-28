@@ -43,7 +43,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="min-h-screen bg-background text-foreground antialiased">
         <DisasterProvider>{children}</DisasterProvider>
         <Scripts />
       </body>

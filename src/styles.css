@@ -152,4 +152,39 @@
   ::-webkit-scrollbar-thumb:hover {
     background: var(--muted-foreground);
   }
+
+  /* Leaflet container adjustments for tactical map */
+  .leaflet-container {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius);
+    z-index: 1;
+    font-family: var(--font-sans) !important;
+    background: var(--background) !important;
+  }
+
+  .leaflet-popup-content-wrapper {
+    @apply bg-background/80! backdrop-blur-sm! border! border-border! p-2! font-sans! text-foreground! overflow-hidden!;
+  }
+
+  .leaflet-popup-tip {
+    @apply bg-background/50! backdrop-blur-sm! border! border-border!;
+  }
+
+  .leaflet-popup-content {
+    margin: 0 !important;
+    line-height: 1 !important;
+    color: var(--card-foreground) !important;
+  }
+
+  .leaflet-bar a {
+    background-color: var(--card) !important;
+    color: var(--card-foreground) !important;
+    border-color: var(--border) !important;
+  }
+
+  .leaflet-bar a:hover {
+    background-color: var(--accent) !important;
+    color: var(--accent-foreground) !important;
+  }
 }

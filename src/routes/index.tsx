@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Header } from "#/components/apps/header";
 import { IncidentFeed } from "#/components/apps/incident-feed";
+import { InteractiveMap } from "#/components/apps/interactive-map";
 import { ResourceManagement } from "#/components/apps/resource-management";
 import { AddDepotModal } from "#/components/modals/add-depot-modal";
 import { AddResourceModal } from "#/components/modals/add-resource-modal";
@@ -10,7 +11,7 @@ import { AllocateResourceModal } from "#/components/modals/allocate-resource-mod
 import { ReportIncidentModal } from "#/components/modals/report-incident-modal";
 import { useDisaster } from "#/components/provider/DisasterProvider";
 import type { EmergencyResource, Incident } from "#/types";
-export const Route = createFileRoute("/")({ component: App });
+export const Route = createFileRoute("/")({ component: App, ssr: false });
 
 function App() {
   const { activeTab } = useDisaster();
@@ -50,6 +51,15 @@ function App() {
           <IncidentFeed
             onOpenAllocateModal={handleOpenAllocateModal}
             onOpenReportModal={() => setIsReportModalOpen(true)}
+          />
+        )}
+
+        {/* Interactive map */}
+        {activeTab === "map" && (
+          <InteractiveMap
+            onOpenAllocateModal={handleOpenAllocateModal}
+            onOpenReportModal={() => setIsReportModalOpen(true)}
+            onOpenAddDepotModal={() => setIsAddDepotModalOpen(true)}
           />
         )}
 

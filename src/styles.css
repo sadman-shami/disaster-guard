@@ -131,4 +131,25 @@
   html {
     @apply font-sans;
   }
+
+  /* Tactical Monospace Tag */
+  .tactical-tag {
+    letter-spacing: 0.05em;
+  }
+
+  /* Custom Tactical Scrollbars using theme variables */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--muted);
+    border-radius: var(--radius);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+  }
 }

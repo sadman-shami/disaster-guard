@@ -166,15 +166,15 @@ export const ReportIncidentModal: React.FC<ReportIncidentModalProps> = ({
 
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         {/* Reporter Trust Preview */}
-        <div className="bg-secondary/60 p-3 rounded-lg border border-border flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
+        <div className="bg-secondary/60 p-3 rounded-lg border border-border flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <img
               src={currentUser.avatar}
               alt={currentUser.name}
               className="h-8 w-8 rounded-md object-cover border border-border"
             />
             <div>
-              <div className="font-semibold text-foreground flex items-center space-x-1">
+              <div className="font-semibold text-foreground flex items-center gap-1">
                 <span>Reporting as: {currentUser.name}</span>
                 {currentUser.isVerified && (
                   <UserCheck className="h-3.5 w-3.5 text-primary" />

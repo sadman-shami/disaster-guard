@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-
+import React, { useState } from "react";
+import { Header } from "#/components/apps/header";
 import { useDisaster } from "#/components/provider/DisasterProvider";
 import type { EmergencyResource, Incident } from "#/types";
 export const Route = createFileRoute("/")({ component: App });
@@ -32,8 +32,11 @@ function App() {
   };
 
   return (
-    <main>
-      <h1 className="font-heading text-xl">Home</h1>
-    </main>
+    <React.Fragment>
+      <Header onOpenReportModal={() => setIsReportModalOpen(true)} />
+      <main>
+        <h1 className="font-heading text-xl">Home</h1>
+      </main>
+    </React.Fragment>
   );
 }

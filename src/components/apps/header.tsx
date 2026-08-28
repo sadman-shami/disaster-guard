@@ -1,5 +1,3 @@
-"use client";
-
 import {
   BarChart3,
   Check,
@@ -9,7 +7,6 @@ import {
   PlusCircle,
   Radio,
   RotateCcw,
-  ShieldAlert,
   UserCheck,
   Users,
 } from "lucide-react";

@@ -1,81 +1,84 @@
-import { Progress as ProgressPrimitive } from "@base-ui/react/progress";
+import type * as React from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "#/lib/utils";
 
-function Progress({
+export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
+  value?: number;
+  max?: number;
+  className?: string;
+  indicatorColor?: string;
+}
+
+export function Progress({
   className,
-  children,
-  value,
+  value = 0,
+  max = 100,
+  indicatorColor,
   ...props
-}: ProgressPrimitive.Root.Props) {
+}: ProgressProps) {
+  const percentage = Math.min(100, Math.max(0, (value / max) * 100));
+
   return (
-    <ProgressPrimitive.Root
-      value={value}
-      data-slot="progress"
-      className={cn("flex flex-wrap gap-3", className)}
+    <div
+      className={cn(
+        "relative h-2 w-full overflow-hidden rounded-full bg-secondary/80",
+        className,
+      )}
       {...props}
     >
-      {children}
-      <ProgressTrack>
-        <ProgressIndicator />
-      </ProgressTrack>
-    </ProgressPrimitive.Root>
+      <div
+        className={cn(
+          "h-full w-full flex-1 bg-primary transition-all duration-300 ease-in-out",
+          indicatorColor,
+        )}
+        style={{ transform: `translateX(-${100 - percentage}%)` }}
+      />
+    </div>
   );
 }
 
-function ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {
-  return (
-    <ProgressPrimitive.Track
-      className={cn(
-        "relative flex h-1 w-full items-center overflow-x-hidden rounded-md bg-muted",
-        className,
-      )}
-      data-slot="progress-track"
-      {...props}
-    />
-  );
+export interface SwitchProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+  label?: string;
+  className?: string;
+  id?: string;
+  disabled?: boolean;
 }
 
-function ProgressIndicator({
+export function Switch({
+  checked,
+  onCheckedChange,
   className,
+  label,
+  id,
+  disabled,
   ...props
-}: ProgressPrimitive.Indicator.Props) {
+}: SwitchProps) {
   return (
-    <ProgressPrimitive.Indicator
-      data-slot="progress-indicator"
-      className={cn("h-full bg-primary transition-all", className)}
-      {...props}
-    />
-  );
-}
-
-function ProgressLabel({ className, ...props }: ProgressPrimitive.Label.Props) {
-  return (
-    <ProgressPrimitive.Label
-      className={cn("text-xs/relaxed font-medium", className)}
-      data-slot="progress-label"
-      {...props}
-    />
-  );
-}
-
-function ProgressValue({ className, ...props }: ProgressPrimitive.Value.Props) {
-  return (
-    <ProgressPrimitive.Value
+    <label
+      htmlFor={id}
       className={cn(
-        "ml-auto text-xs/relaxed text-muted-foreground tabular-nums",
+        "inline-flex items-center space-x-2 cursor-pointer select-none",
+        disabled && "opacity-50 cursor-not-allowed",
         className,
       )}
-      data-slot="progress-value"
-      {...props}
-    />
+    >
+      <div className="relative inline-block w-9 h-5">
+        <input
+          type="checkbox"
+          id={id}
+          checked={checked}
+          disabled={disabled}
+          onChange={(e) => onCheckedChange(e.target.checked)}
+          className="sr-only peer"
+          {...props}
+        />
+        <div className="w-9 h-5 bg-input peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-border after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-primary-foreground after:border-border after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary transition-colors"></div>
+      </div>
+      {label && (
+        <span className="text-sm font-medium text-foreground">{label}</span>
+      )}
+    </label>
   );
 }
-
-export {
-  Progress,
-  ProgressTrack,
-  ProgressIndicator,
-  ProgressLabel,
-  ProgressValue,
-};

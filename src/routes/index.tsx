@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Header } from "#/components/apps/header";
 import { IncidentFeed } from "#/components/apps/incident-feed";
+import { ResourceManagement } from "#/components/apps/resource-management";
 import { ReportIncidentModal } from "#/components/modals/report-incident-modal";
 import { useDisaster } from "#/components/provider/DisasterProvider";
 import type { EmergencyResource, Incident } from "#/types";
@@ -41,10 +42,20 @@ function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Incident feed page */}
         {activeTab === "feed" && (
           <IncidentFeed
             onOpenAllocateModal={handleOpenAllocateModal}
             onOpenReportModal={() => setIsReportModalOpen(true)}
+          />
+        )}
+
+        {/* Resource management */}
+        {activeTab === "resources" && (
+          <ResourceManagement
+            onOpenAllocateModal={handleOpenAllocateModal}
+            onOpenAddResourceModal={() => setIsAddResourceModalOpen(true)}
+            onOpenAddDepotModal={() => setIsAddDepotModalOpen(true)}
           />
         )}
       </main>

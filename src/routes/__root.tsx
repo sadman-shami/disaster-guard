@@ -1,4 +1,5 @@
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+
 import { DisasterProvider } from "#/components/provider/DisasterProvider";
 import appCss from "#/styles.css?url";
 

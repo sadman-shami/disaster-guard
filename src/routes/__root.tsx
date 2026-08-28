@@ -18,7 +18,12 @@ export const Route = createRootRoute({
         href: "/favicon.svg",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Disaster Guard | Tactical Emergency Response Grid",
+      },
+      {
+        name: "description",
+        content:
+          "Real-time multi-agency crisis coordination, situational mapping, and resource allocation platform.",
       },
     ],
     links: [

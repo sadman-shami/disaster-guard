@@ -1,5 +1,5 @@
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-
+import { DisasterProvider } from "#/components/provider/DisasterProvider";
 import appCss from "#/styles.css?url";
 
 export const Route = createRootRoute({
@@ -38,7 +38,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <DisasterProvider>{children}</DisasterProvider>
         <Scripts />
       </body>
     </html>

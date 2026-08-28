@@ -293,7 +293,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider tactical-tag">
+            <span className="text-[11px] font-bold text-muted-foreground  tracking-wider tactical-tag">
               Active Hotspots
             </span>
             <div className="p-1.5 rounded-sm bg-primary/10 text-primary border border-primary/20">
@@ -307,7 +307,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
             <span className="text-[10px] text-muted-foreground">
               Total {stats.total} logged
             </span>
-            <span className="text-[10px] text-primary uppercase font-bold">
+            <span className="text-[10px] text-primary  font-bold">
               Filter Active →
             </span>
           </div>
@@ -328,7 +328,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-destructive uppercase tracking-wider tactical-tag">
+            <span className="text-[11px] font-bold text-destructive  tracking-wider tactical-tag">
               Critical Life-Safety
             </span>
             <div className="p-1.5 rounded-sm bg-destructive/20 text-destructive border border-destructive/30 animate-pulse">
@@ -342,7 +342,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
             <span className="text-[10px] text-destructive">
               Immediate Triage
             </span>
-            <span className="text-[10px] text-destructive uppercase font-bold">
+            <span className="text-[10px] text-destructive  font-bold">
               {selectedSeverity === "critical"
                 ? "Filtered ✓"
                 : "Filter Critical →"}
@@ -365,7 +365,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider tactical-tag">
+            <span className="text-[11px] font-bold text-muted-foreground  tracking-wider tactical-tag">
               Verified Incidents
             </span>
             <div className="p-1.5 rounded-sm bg-primary/10 text-primary border border-primary/20">
@@ -379,7 +379,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
             <span className="text-[10px] text-muted-foreground">
               Official Authority
             </span>
-            <span className="text-[10px] text-primary uppercase font-bold">
+            <span className="text-[10px] text-primary  font-bold">
               {selectedStatus === "verified"
                 ? "Filtered ✓"
                 : "Filter Verified →"}
@@ -404,7 +404,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-amber-600 dark:text-amber-300 uppercase tracking-wider tactical-tag">
+            <span className="text-[11px] font-bold text-amber-600 dark:text-amber-300  tracking-wider tactical-tag">
               Pending Supplies
             </span>
             <div className="p-1.5 rounded-sm bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30">
@@ -418,7 +418,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
             <span className="text-[10px] text-amber-600 dark:text-amber-300">
               Needs Logistics
             </span>
-            <span className="text-[10px] text-amber-600 dark:text-amber-300 uppercase font-bold">
+            <span className="text-[10px] text-amber-600 dark:text-amber-300  font-bold">
               {selectedStatus === "needing_supplies"
                 ? "Filtered ✓"
                 : "Filter Supplies →"}
@@ -506,7 +506,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 
         {/* Disaster Type Quick-Filter Carousel */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none pt-1 border-t border-border">
-          <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider tactical-tag shrink-0 mr-1">
+          <span className="text-[11px] font-bold text-muted-foreground  tracking-wider tactical-tag shrink-0 mr-1">
             Category:
           </span>
           {disasterTypes.map((item) => {
@@ -521,7 +521,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                 type="button"
                 key={item.id}
                 onClick={() => setSelectedType(item.id)}
-                className={`flex items-center space-x-1.5 px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider shrink-0 transition-all cursor-pointer ${
+                className={`flex items-center space-x-1.5 px-3 py-1 rounded-md text-xs font-semibold  tracking-wider shrink-0 transition-all cursor-pointer ${
                   isSelected
                     ? "bg-primary text-primary-foreground border border-primary shadow-sm font-bold"
                     : "bg-secondary text-muted-foreground border border-border hover:bg-accent hover:text-foreground"
@@ -551,7 +551,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
               setSelectedStatus("active");
               setSortBy("newest");
             }}
-            className="flex items-center space-x-1.5 px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider shrink-0 transition-all cursor-pointer bg-destructive/20 text-muted-foreground border border-destructive/50 hover:bg-destructive/30 hover:text-foreground"
+            className="flex items-center space-x-1.5 px-3 py-1 rounded-md text-xs font-semibold  tracking-wider shrink-0 transition-all cursor-pointer bg-destructive/20 text-muted-foreground border border-destructive/50 hover:bg-destructive/30 hover:text-foreground"
           >
             <Trash className="h-3.5 w-3.5 text-orange-400" />
             <span>Clear All Filters</span>
@@ -563,7 +563,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
       {filteredIncidents.length === 0 ? (
         <div className="text-center py-16 bg-card rounded-md border border-dashed border-border">
           <AlertCircle className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-          <h3 className="text-base font-bold text-foreground uppercase tracking-wide tactical-tag">
+          <h3 className="text-base font-bold text-foreground  tracking-wide tactical-tag">
             No Matching Incidents
           </h3>
           <p className="text-xs text-muted-foreground max-w-sm mx-auto mt-1">
@@ -572,7 +572,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
           </p>
           <Button
             onClick={onOpenReportModal}
-            className="mt-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-bold uppercase tracking-wider text-xs cursor-pointer"
+            className="mt-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-bold  tracking-wider text-xs cursor-pointer"
           >
             <Plus className="h-4 w-4 mr-1.5" />
             Report New Incident
@@ -584,7 +584,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-border bg-secondary text-[11px] font-bold text-muted-foreground uppercase tracking-wider tactical-tag">
+                <tr className="border-b border-border bg-secondary text-[11px] font-bold text-muted-foreground  tracking-wider tactical-tag">
                   <th className="py-3 px-4">Severity / Type</th>
                   <th className="py-3 px-4">Incident Title & Sector</th>
                   <th className="py-3 px-4">Status</th>
@@ -760,7 +760,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                           </p>
                         </div>
                         <div className="text-right pl-2.5 border-l border-border">
-                          <span className="text-[9px] uppercase font-bold text-muted-foreground block tactical-tag">
+                          <span className="text-[9px]  font-bold text-muted-foreground block tactical-tag">
                             Trust
                           </span>
                           <span className="font-bold text-primary text-xs">
@@ -824,7 +824,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                   {/* Casualties & Affected strip */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-3.5 p-2.5 rounded-sm bg-secondary/50 border border-border text-xs">
                     <div className="border-r border-border">
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold block tactical-tag">
+                      <span className="text-[10px] text-muted-foreground  tracking-wider font-bold block tactical-tag">
                         Estimated Impact
                       </span>
                       <span className="font-bold text-foreground">
@@ -832,7 +832,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                       </span>
                     </div>
                     <div className="border-r border-border">
-                      <span className="text-[10px] text-amber-600 dark:text-amber-400 uppercase tracking-wider font-bold block tactical-tag">
+                      <span className="text-[10px] text-amber-600 dark:text-amber-400  tracking-wider font-bold block tactical-tag">
                         Injured
                       </span>
                       <span className="font-bold text-amber-600 dark:text-amber-300">
@@ -840,7 +840,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                       </span>
                     </div>
                     <div className="border-r border-border">
-                      <span className="text-[10px] text-destructive uppercase tracking-wider font-bold block tactical-tag">
+                      <span className="text-[10px] text-destructive  tracking-wider font-bold block tactical-tag">
                         Missing
                       </span>
                       <span className="font-bold text-destructive">
@@ -848,7 +848,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold block tactical-tag">
+                      <span className="text-[10px] text-muted-foreground  tracking-wider font-bold block tactical-tag">
                         Fatalities
                       </span>
                       <span className="font-bold text-foreground">
@@ -861,7 +861,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                   <div className="mt-3 space-y-2 text-xs">
                     {incident.needs.length > 0 && (
                       <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="font-bold text-destructive uppercase tracking-wider text-[10px] tactical-tag">
+                        <span className="font-bold text-destructive  tracking-wider text-[10px] tactical-tag">
                           Urgent Needs:
                         </span>
                         {incident.needs.map((need, idx) => (
@@ -877,7 +877,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 
                     {incident.allocatedResources.length > 0 && (
                       <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                        <span className="font-bold text-primary uppercase tracking-wider text-[10px] flex items-center gap-1 tactical-tag">
+                        <span className="font-bold text-primary  tracking-wider text-[10px] flex items-center gap-1 tactical-tag">
                           <Truck className="h-3 w-3 text-primary" />
                           Allocated Supplies:
                         </span>
@@ -902,7 +902,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                       size="sm"
                       variant={isCorroboratedByMe ? "default" : "outline"}
                       onClick={() => corroborateIncident(incident.id)}
-                      className={`h-8 text-xs font-bold uppercase tracking-wider rounded-md cursor-pointer ${
+                      className={`h-8 text-xs font-bold  tracking-wider rounded-md cursor-pointer ${
                         isCorroboratedByMe
                           ? "bg-primary hover:bg-primary/90 text-primary-foreground border border-primary"
                           : "border-border bg-card text-foreground hover:bg-accent"
@@ -919,7 +919,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                       onClick={() =>
                         setExpandedUpdatesId(isUpdatesOpen ? null : incident.id)
                       }
-                      className="h-8 text-xs text-muted-foreground hover:text-foreground hover:bg-accent rounded-md uppercase tracking-wider font-semibold cursor-pointer"
+                      className="h-8 text-xs text-muted-foreground hover:text-foreground hover:bg-accent rounded-md  tracking-wider font-semibold cursor-pointer"
                     >
                       <MessageSquare className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
                       <span>Updates ({incident.updates.length})</span>
@@ -935,7 +935,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                       size="sm"
                       variant="outline"
                       onClick={() => focusMapOnIncident(incident.id)}
-                      className="h-8 text-xs text-primary hover:text-primary/90 hover:bg-accent rounded-md uppercase tracking-wider font-bold cursor-pointer"
+                      className="h-8 text-xs text-primary hover:text-primary/90 hover:bg-accent rounded-md  tracking-wider font-bold cursor-pointer"
                     >
                       <Compass className="h-3.5 w-3.5 mr-1" />
                       <span>View on Map</span>
@@ -948,7 +948,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                       <Button
                         size="sm"
                         onClick={() => verifyIncident(incident.id)}
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground h-8 text-xs font-bold uppercase tracking-wider rounded-md cursor-pointer"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground h-8 text-xs font-bold  tracking-wider rounded-md cursor-pointer"
                       >
                         <ShieldCheck className="h-3.5 w-3.5 mr-1" />
                         <span>Verify Authenticity</span>
@@ -960,7 +960,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                         size="sm"
                         variant="outline"
                         onClick={() => onOpenAllocateModal(incident)}
-                        className="border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 h-8 text-xs font-bold uppercase tracking-wider rounded-md cursor-pointer"
+                        className="border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 h-8 text-xs font-bold  tracking-wider rounded-md cursor-pointer"
                       >
                         <Package className="h-3.5 w-3.5 mr-1" />
                         <span>Dispatch Supplies</span>
@@ -995,7 +995,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                 {/* Expanded Updates Timeline & Comment box */}
                 {isUpdatesOpen && (
                   <div className="p-4 bg-secondary/30 border-t border-border space-y-3 animate-in fade-in-50 text-xs">
-                    <h5 className="font-bold text-foreground text-xs uppercase tracking-widest tactical-tag">
+                    <h5 className="font-bold text-foreground text-xs  tracking-widest tactical-tag">
                       Live Incident Dispatch & Field Log
                     </h5>
 
@@ -1051,7 +1051,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                       <Button
                         size="sm"
                         onClick={() => handleSendUpdate(incident.id)}
-                        className="h-8 px-3 text-xs bg-primary hover:bg-primary/90 text-primary-foreground rounded-md uppercase tracking-wider font-bold cursor-pointer"
+                        className="h-8 px-3 text-xs bg-primary hover:bg-primary/90 text-primary-foreground rounded-md  tracking-wider font-bold cursor-pointer"
                       >
                         <Send className="h-3 w-3 mr-1" />
                         <span>Post</span>

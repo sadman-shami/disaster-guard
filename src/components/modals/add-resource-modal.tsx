@@ -34,7 +34,7 @@ export const AddResourceModal: React.FC<AddResourceModalProps> = ({
   const [minThreshold, setMinThreshold] = useState<number>(25);
   const [contactOfficer, setContactOfficer] = useState(currentUser.name);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!name.trim()) {
       alert("Please enter resource name");

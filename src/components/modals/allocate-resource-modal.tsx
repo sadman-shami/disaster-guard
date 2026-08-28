@@ -59,7 +59,7 @@ export const AllocateResourceModal: React.FC<AllocateResourceModalProps> = ({
 
   const maxAvailable = chosenResource?.availableQuantity || 0;
 
-  const handleDispatch = (e: React.FormEvent) => {
+  const handleDispatch = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!chosenIncident || !chosenResource || !chosenDepot) return;
     if (quantity <= 0 || quantity > maxAvailable) {

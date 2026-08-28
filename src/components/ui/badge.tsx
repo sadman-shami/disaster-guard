@@ -19,6 +19,15 @@ const badgeVariants = cva(
         ghost:
           "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
+        critical:
+          "border-destructive bg-destructive/25 text-destructive font-bold animate-pulse",
+        high: "border-orange-500/50 bg-orange-500/20 text-orange-400 font-semibold",
+        moderate:
+          "border-amber-500/50 bg-amber-500/20 text-amber-300 font-medium",
+        low: "border-primary/50 bg-primary/20 text-primary-foreground font-medium",
+        verified: "border-sky-500/50 bg-sky-500/20 text-sky-300 font-semibold",
+        success:
+          "border-emerald-500/50 bg-emerald-500/20 text-emerald-300 font-semibold",
       },
     },
     defaultVariants: {

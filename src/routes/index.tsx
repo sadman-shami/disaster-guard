@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Header } from "#/components/apps/header";
 import { IncidentFeed } from "#/components/apps/incident-feed";
 import { ResourceManagement } from "#/components/apps/resource-management";
+import { AddResourceModal } from "#/components/modals/add-resource-modal";
 import { ReportIncidentModal } from "#/components/modals/report-incident-modal";
 import { useDisaster } from "#/components/provider/DisasterProvider";
 import type { EmergencyResource, Incident } from "#/types";
@@ -64,6 +65,11 @@ function App() {
       <ReportIncidentModal
         open={isReportModalOpen}
         onOpenChange={setIsReportModalOpen}
+      />
+
+      <AddResourceModal
+        open={isAddResourceModalOpen}
+        onOpenChange={setIsAddResourceModalOpen}
       />
     </div>
   );

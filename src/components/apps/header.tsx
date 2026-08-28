@@ -106,9 +106,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
             onClick={() => setActiveTab("feed")}
             className="flex items-center space-x-3 cursor-pointer group select-none shrink-0"
           >
-            <div className="h-9 w-9 rounded-md bg-primary flex items-center justify-center text-primary-foreground shadow-lg border border-primary/40 group-hover:bg-primary/90 transition-colors">
-              <img src="/favicon.svg" alt="logo" />
-            </div>
+            <img src="/favicon.svg" alt="logo" className="size-7 rounded-md" />
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-bold text-sm sm:text-base tracking-wide text-foreground tactical-tag">

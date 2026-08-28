@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Header } from "#/components/apps/header";
 import { IncidentFeed } from "#/components/apps/incident-feed";
 import { ResourceManagement } from "#/components/apps/resource-management";
+import { AddDepotModal } from "#/components/modals/add-depot-modal";
 import { AddResourceModal } from "#/components/modals/add-resource-modal";
 import { AllocateResourceModal } from "#/components/modals/allocate-resource-modal";
 import { ReportIncidentModal } from "#/components/modals/report-incident-modal";
@@ -78,6 +79,11 @@ function App() {
         onOpenChange={setIsAllocateModalOpen}
         targetIncident={selectedIncidentForAllocation}
         preselectedResource={selectedResourceForAllocation}
+      />
+
+      <AddDepotModal
+        open={isAddDepotModalOpen}
+        onOpenChange={setIsAddDepotModalOpen}
       />
     </div>
   );

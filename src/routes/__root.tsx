@@ -14,11 +14,6 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        name: "icon",
-        type: "image/svg+xml",
-        href: "/favicon.svg",
-      },
-      {
         title: "Disaster Guard | Tactical Emergency Response Grid",
       },
       {
@@ -38,6 +33,7 @@ export const Route = createRootRoute({
         integrity: "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=",
         crossOrigin: "",
       },
+      { rel: "icon", href: "/favicon.svg" },
     ],
   }),
   shellComponent: RootDocument,

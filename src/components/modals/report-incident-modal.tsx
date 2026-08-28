@@ -150,8 +150,8 @@ export const ReportIncidentModal: React.FC<ReportIncidentModalProps> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <DialogHeader>
-        <div className="flex items-center gap-4">
-          <div className="p-2 rounded-lg bg-destructive text-destructive-foreground shrink-0">
+        <div className="grid grid-cols-1 sm:flex items-center gap-2">
+          <div className="size-10 flex items-center justify-center p-2 rounded-lg bg-destructive text-destructive-foreground shrink-0">
             <AlertTriangle className="h-5 w-5" />
           </div>
           <div className="text-left">
@@ -352,7 +352,7 @@ export const ReportIncidentModal: React.FC<ReportIncidentModalProps> = ({
         </div>
 
         {/* Casualties & Affected */}
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
           <div>
             <label
               htmlFor=""

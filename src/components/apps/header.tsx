@@ -109,8 +109,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
             <img src="/favicon.svg" alt="logo" className="size-7 rounded-md" />
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-sm sm:text-base tracking-wide text-foreground tactical-tag">
+                <span className="font-bold text-sm hidden sm:block sm:text-base tracking-wide text-foreground tactical-tag">
                   DISASTER GUARD
+                </span>
+                <span className="font-bold text-sm sm:text-base block sm:hidden tracking-wide text-foreground tactical-tag">
+                  DG
                 </span>
               </div>
             </div>
@@ -134,7 +137,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
               className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md text-[11px] border border-border bg-secondary text-muted-foreground hover:text-foreground hover:bg-accent hover:border-border transition-colors cursor-pointer"
             >
               <RotateCcw className="h-3.5 w-3.5" />
-              <span className="hidden xl:inline uppercase font-bold text-[10px]">
+              <span className="hidden xl:inline capitalize font-bold text-[10px]">
                 Reset
               </span>
             </button>
@@ -142,7 +145,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
             {/* Quick Report CTA */}
             <Button
               onClick={onOpenReportModal}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-bold uppercase tracking-wider flex items-center space-x-1.5 text-xs px-3 sm:px-4 shadow-md border border-primary/50 cursor-pointer h-9"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-bold capitalize tracking-wider flex items-center space-x-1.5 text-xs px-3 sm:px-4 shadow-md border border-primary/50 cursor-pointer h-9"
             >
               <PlusCircle className="h-4 w-4" />
               <span className="hidden xs:inline">Report Incident</span>
@@ -184,7 +187,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
               {roleDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-80 rounded-md border border-border bg-card/98 backdrop-blur-md p-2 shadow-2xl z-50 animate-in fade-in-0 zoom-in-95">
                   <div className="px-3 py-2 border-b border-border mb-1.5 flex items-center justify-between">
-                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest tactical-tag">
+                    <p className="text-[11px] font-bold text-muted-foreground capitalize tracking-widest tactical-tag">
                       Command Role Switcher
                     </p>
                     <span className="text-[10px] text-muted-foreground">
@@ -223,7 +226,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
                                   variant={
                                     getRoleBadgeVariant(user.role) as any
                                   }
-                                  className="text-[9px] py-0 px-1.5 uppercase font-bold"
+                                  className="text-[9px] py-0 px-1.5 capitalize font-bold"
                                 >
                                   {user.role.replace("_", " ")}
                                 </Badge>

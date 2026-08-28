@@ -278,7 +278,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
   return (
     <div className="space-y-5">
       {/* Top Situational Summary & Interactive Triage HUD */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Total Active Hotspots */}
         <button
           type="button"
@@ -505,8 +505,8 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
         </div>
 
         {/* Disaster Type Quick-Filter Carousel */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none pt-1 border-t border-border">
-          <span className="text-[11px] font-bold text-muted-foreground  tracking-wider tactical-tag shrink-0 mr-1">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none pt-4 border-t border-border">
+          <span className="text-[11px] font-bold text-muted-foreground tracking-wider tactical-tag shrink-0 mr-1">
             Category:
           </span>
           {disasterTypes.map((item) => {
@@ -521,7 +521,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                 type="button"
                 key={item.id}
                 onClick={() => setSelectedType(item.id)}
-                className={`flex items-center space-x-1.5 px-3 py-1 rounded-md text-xs font-semibold  tracking-wider shrink-0 transition-all cursor-pointer ${
+                className={`flex items-center space-x-1.5 px-3 py-1 rounded-md text-xs font-semibold tracking-wider shrink-0 transition-all cursor-pointer ${
                   isSelected
                     ? "bg-primary text-primary-foreground border border-primary shadow-sm font-bold"
                     : "bg-secondary text-muted-foreground border border-border hover:bg-accent hover:text-foreground"
@@ -895,8 +895,8 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                 </div>
 
                 {/* Card Action Footer */}
-                <div className="bg-secondary/40 px-5 py-3 border-t border-border flex flex-wrap items-center justify-between gap-3 text-xs">
-                  <div className="flex items-center space-x-2">
+                <div className="bg-secondary/40 px-5 py-3 border-t border-border flex items-center justify-between gap-3 text-xs">
+                  <div className="flex gap-2 items-center overflow-x-auto scrollbar-none">
                     {/* Corroboration / Upvote Button */}
                     <Button
                       size="sm"
@@ -915,7 +915,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                     {/* Official Field Updates toggle */}
                     <Button
                       size="sm"
-                      variant="ghost"
+                      variant="outline"
                       onClick={() =>
                         setExpandedUpdatesId(isUpdatesOpen ? null : incident.id)
                       }
@@ -940,10 +940,8 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                       <Compass className="h-3.5 w-3.5 mr-1" />
                       <span>View on Map</span>
                     </Button>
-                  </div>
 
-                  {/* Operational Management controls for Responders & Admins */}
-                  <div className="flex items-center space-x-2">
+                    {/* Operational Management controls for Responders & Admins */}
                     {canVerify && (
                       <Button
                         size="sm"

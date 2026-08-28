@@ -203,10 +203,10 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
   return (
     <div className="space-y-5">
       {/* Top Tactical Metrics Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="rounded-md border border-border bg-card p-4 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider tactical-tag">
+            <span className="text-[11px] font-bold text-muted-foreground capitalize tracking-wider tactical-tag">
               Total Supply Inventory
             </span>
             <div className="p-1.5 rounded-sm bg-secondary text-primary border border-border">
@@ -223,7 +223,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 
         <div className="rounded-md border border-border bg-card p-4 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider tactical-tag">
+            <span className="text-[11px] font-bold text-muted-foreground capitalize tracking-wider tactical-tag">
               Active in Field
             </span>
             <div className="p-1.5 rounded-sm bg-secondary text-primary border border-border">
@@ -240,7 +240,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 
         <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-destructive uppercase tracking-wider tactical-tag">
+            <span className="text-[11px] font-bold text-destructive capitalize tracking-wider tactical-tag">
               Supply Deficits
             </span>
             <div className="p-1.5 rounded-sm bg-destructive/20 text-destructive border border-destructive/30 animate-pulse">
@@ -257,7 +257,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 
         <div className="rounded-md border border-border bg-card p-4 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider tactical-tag">
+            <span className="text-[11px] font-bold text-muted-foreground capitalize tracking-wider tactical-tag">
               Shelter Occupancy
             </span>
             <div className="p-1.5 rounded-sm bg-secondary text-primary border border-border">
@@ -279,52 +279,50 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 
       {/* Sub-Navigation Tabs & Actions Header */}
       <div className="flex items-center justify-between border-b border-border pb-3 flex-wrap gap-3">
-        <div className="flex items-center space-x-2">
-          <button
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none pt-1 mt-4">
+          <Button
             type="button"
             onClick={() => setActiveSubTab("inventory")}
-            className={`px-3.5 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
               activeSubTab === "inventory"
                 ? "bg-card text-foreground border border-border shadow-sm"
                 : "bg-secondary text-muted-foreground hover:text-foreground border border-border"
             }`}
           >
             Supply Catalog ({resources.length})
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={() => setActiveSubTab("depots")}
-            className={`px-3.5 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
               activeSubTab === "depots"
                 ? "bg-card text-foreground border border-border shadow-sm"
                 : "bg-secondary text-muted-foreground hover:text-foreground border border-border"
             }`}
           >
             Shelters & Bases ({depots.length})
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={() => setActiveSubTab("dispatches")}
-            className={`px-3.5 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
               activeSubTab === "dispatches"
                 ? "bg-card text-foreground border border-border shadow-sm"
                 : "bg-secondary text-muted-foreground hover:text-foreground border border-border"
             }`}
           >
             Active Convoys ({dispatchLogs.length})
-          </button>
-        </div>
+          </Button>
 
-        {/* Action button */}
-        <div className="flex items-center space-x-2">
+          {/* Action button */}
           {(currentUser.role === "admin" ||
             currentUser.role === "responder") && (
-            <div>
+            <div className="flex gap-2">
               {activeSubTab === "depots" ? (
                 <Button
                   size="sm"
                   onClick={onOpenAddDepotModal}
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold uppercase tracking-wider rounded-md shadow-sm cursor-pointer h-8"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold capitalize tracking-wider rounded-md shadow-sm cursor-pointer h-8"
                 >
                   <Plus className="h-3.5 w-3.5 mr-1" />
                   Commission Shelter / Base
@@ -335,7 +333,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                     variant="outline"
                     size="sm"
                     onClick={onOpenAddResourceModal}
-                    className="text-xs font-bold uppercase tracking-wider rounded-md border-border bg-card text-foreground hover:bg-accent cursor-pointer h-8"
+                    className="text-xs font-bold capitalize tracking-wider rounded-md border-border bg-card text-foreground hover:bg-accent cursor-pointer h-8"
                   >
                     <Plus className="h-3.5 w-3.5 mr-1" />
                     Add Resource Line
@@ -344,7 +342,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                     variant="outline"
                     size="sm"
                     onClick={onOpenAddDepotModal}
-                    className="text-xs font-bold uppercase tracking-wider rounded-md border-border bg-card text-primary hover:bg-accent cursor-pointer h-8"
+                    className="text-xs font-bold capitalize tracking-wider rounded-md border-border bg-card text-primary hover:bg-accent cursor-pointer h-8"
                   >
                     <Home className="h-3.5 w-3.5 mr-1 text-primary" />
                     Add Shelter/Base
@@ -352,7 +350,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                   <Button
                     size="sm"
                     onClick={() => onOpenAllocateModal()}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold uppercase tracking-wider rounded-md shadow-sm cursor-pointer h-8"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold capitalize tracking-wider rounded-md shadow-sm cursor-pointer h-8"
                   >
                     <Truck className="h-3.5 w-3.5 mr-1" />
                     Dispatch Supplies
@@ -406,7 +404,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 
             {/* Category Quick Chips */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none pt-1 border-t border-border">
-              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider tactical-tag shrink-0 mr-1">
+              <span className="text-[11px] font-bold text-muted-foreground capitalize tracking-wider tactical-tag shrink-0 mr-1">
                 Category:
               </span>
               {categories.map((item) => {
@@ -421,7 +419,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                     type="button"
                     key={item.id}
                     onClick={() => setSelectedCategory(item.id)}
-                    className={`flex items-center space-x-1.5 px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider shrink-0 transition-all cursor-pointer ${
+                    className={`flex items-center space-x-1.5 px-3 py-1 rounded-md text-xs font-semibold capitalize tracking-wider shrink-0 transition-all cursor-pointer ${
                       isSelected
                         ? "bg-primary text-primary-foreground border border-primary shadow-sm font-bold"
                         : "bg-secondary text-muted-foreground border border-border hover:bg-accent hover:text-foreground"
@@ -466,7 +464,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                           <CardTitle className="text-sm font-bold leading-tight text-foreground">
                             {resource.name}
                           </CardTitle>
-                          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                          <span className="text-[10px] text-muted-foreground capitalize tracking-wider">
                             {resource.category.replace("_", " ")}
                           </span>
                         </div>
@@ -538,7 +536,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                         size="sm"
                         variant="subtle"
                         onClick={() => handleQuickRestock(resource.id)}
-                        className="h-7 text-[10px] px-2 font-bold uppercase tracking-wider rounded-md bg-secondary text-foreground hover:bg-accent cursor-pointer"
+                        className="h-7 text-[10px] px-2 font-bold capitalize tracking-wider rounded-md bg-secondary text-foreground hover:bg-accent cursor-pointer"
                         title="Restock this supply line"
                       >
                         +Restock
@@ -548,7 +546,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                     <Button
                       size="sm"
                       onClick={() => onOpenAllocateModal(undefined, resource)}
-                      className="h-7 text-[10px] bg-primary hover:bg-primary/90 text-primary-foreground font-bold uppercase tracking-wider rounded-md px-2.5 cursor-pointer"
+                      className="h-7 text-[10px] bg-primary hover:bg-primary/90 text-primary-foreground font-bold capitalize tracking-wider rounded-md px-2.5 cursor-pointer"
                     >
                       Dispatch
                     </Button>
@@ -602,7 +600,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                 <Button
                   size="sm"
                   onClick={onOpenAddDepotModal}
-                  className="h-9 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold uppercase tracking-wider rounded-md shadow-sm cursor-pointer"
+                  className="h-9 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold capitalize tracking-wider rounded-md shadow-sm cursor-pointer"
                 >
                   <Plus className="h-3.5 w-3.5 mr-1" />
                   Commission Base
@@ -653,7 +651,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                           {depot.type.toUpperCase().replace("_", " ")}
                         </Badge>
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase border ${
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-sm capitalize border ${
                             depot.operatingStatus === "fully_operational"
                               ? "bg-primary/15 text-primary border-primary/30"
                               : depot.operatingStatus === "strained"
@@ -713,7 +711,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                       <div className="pt-1">
                         <label
                           htmlFor=""
-                          className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider flex justify-between mb-1 tactical-tag"
+                          className="text-[10px] font-bold text-muted-foreground capitalize tracking-wider flex justify-between mb-1 tactical-tag"
                         >
                           <span>Simulate Intake / Occupancy Adjustment:</span>
                           <span className="text-primary font-bold">
@@ -737,7 +735,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 
                       {/* Amenities */}
                       <div>
-                        <span className="font-bold text-muted-foreground uppercase tracking-wider block mb-1 text-[10px] tactical-tag">
+                        <span className="font-bold text-muted-foreground capitalize tracking-wider block mb-1 text-[10px] tactical-tag">
                           Capabilities & Amenities:
                         </span>
                         <div className="flex flex-wrap gap-1">
@@ -776,7 +774,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
-                <thead className="bg-secondary text-muted-foreground uppercase font-bold text-[10px] tracking-wider border-b border-border tactical-tag">
+                <thead className="bg-secondary text-muted-foreground capitalize font-bold text-[10px] tracking-wider border-b border-border tactical-tag">
                   <tr>
                     <th className="p-3">Dispatch ID</th>
                     <th className="p-3">Target Incident</th>

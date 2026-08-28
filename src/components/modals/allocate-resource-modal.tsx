@@ -81,11 +81,11 @@ export const AllocateResourceModal: React.FC<AllocateResourceModalProps> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogHeader>
-        <div className="flex items-center space-x-2">
-          <div className="p-2 rounded-lg bg-primary text-primary-foreground shrink-0">
+        <div className="grid grid-cols-1 sm:flex items-center gap-2">
+          <div className="size-10 flex items-center justify-center p-2 rounded-lg bg-primary text-primary-foreground shrink-0">
             <Truck className="h-5 w-5" />
           </div>
-          <div>
+          <div className="text-left">
             <DialogTitle>Dispatch Emergency Supplies</DialogTitle>
             <DialogDescription>
               Authorize logistical convoy dispatch from storage depots to

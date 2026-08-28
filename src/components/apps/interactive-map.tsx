@@ -272,14 +272,14 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Layer Toggles */}
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
-            <span className="text-muted-foreground font-bold uppercase tracking-wider mr-1 flex items-center gap-1 tactical-tag">
+            <span className="text-muted-foreground font-bold capitalize tracking-wider mr-1 flex items-center gap-1 tactical-tag">
               <Layers className="h-3.5 w-3.5" />
               Layers:
             </span>
             <button
               type="button"
               onClick={() => setShowIncidents(!showIncidents)}
-              className={`px-2.5 py-1 rounded-sm text-xs font-bold uppercase tracking-wider border cursor-pointer transition-colors tactical-tag ${
+              className={`px-2.5 py-1 rounded-sm text-xs font-bold capitalize tracking-wider border cursor-pointer transition-colors tactical-tag ${
                 showIncidents
                   ? "bg-destructive/15 border-destructive/40 text-destructive font-bold"
                   : "bg-background border-border text-muted-foreground"
@@ -290,7 +290,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             <button
               type="button"
               onClick={() => setShowShelters(!showShelters)}
-              className={`px-2.5 py-1 rounded-sm text-xs font-bold uppercase tracking-wider border cursor-pointer transition-colors tactical-tag ${
+              className={`px-2.5 py-1 rounded-sm text-xs font-bold capitalize tracking-wider border cursor-pointer transition-colors tactical-tag ${
                 showShelters
                   ? "bg-primary/15 border-primary/40 text-primary font-bold"
                   : "bg-background border-border text-muted-foreground"
@@ -301,7 +301,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             <button
               type="button"
               onClick={() => setShowDepots(!showDepots)}
-              className={`px-2.5 py-1 rounded-sm text-xs font-bold uppercase tracking-wider border cursor-pointer transition-colors tactical-tag ${
+              className={`px-2.5 py-1 rounded-sm text-xs font-bold capitalize tracking-wider border cursor-pointer transition-colors tactical-tag ${
                 showDepots
                   ? "bg-primary/20 border-primary/40 text-primary font-bold"
                   : "bg-background border-border text-muted-foreground"
@@ -313,7 +313,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
           </div>
 
           {/* Right Action Tools */}
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2">
             <select
               value={tileMode}
               onChange={(e) => setTileMode(e.target.value as typeof tileMode)}
@@ -339,7 +339,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 <Button
                   size="sm"
                   onClick={onOpenAddDepotModal}
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold uppercase tracking-wider h-8 text-xs px-2.5 rounded-sm shadow-sm border border-primary/50 cursor-pointer"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold capitalize tracking-wider h-8 text-xs px-2.5 rounded-sm shadow-sm border border-primary/50 cursor-pointer"
                   title="Commission a new shelter, depot or base"
                 >
                   <Home className="h-3.5 w-3.5 mr-1" />
@@ -350,7 +350,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             <Button
               size="sm"
               onClick={handleTriggerSOS}
-              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground font-bold uppercase tracking-wider h-8 text-xs px-2.5 rounded-sm shadow-sm border border-destructive/50 animate-pulse"
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground font-bold capitalize tracking-wider h-8 text-xs px-2.5 rounded-sm shadow-sm border border-destructive/50 animate-pulse"
               title="Broadcast instant SOS distress pin"
             >
               <Radio className="h-3.5 w-3.5 mr-1" />
@@ -495,7 +495,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                             <span className="text-muted-foreground">
                               Status:
                             </span>
-                            <span className="font-semibold text-primary uppercase">
+                            <span className="font-semibold text-primary capitalize">
                               {shelter.operatingStatus.replace("_", " ")}
                             </span>
                           </div>

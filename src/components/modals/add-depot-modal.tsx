@@ -194,11 +194,11 @@ export const AddDepotModal: React.FC<AddDepotModalProps> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogHeader>
-        <div className="flex items-center space-x-2">
-          <div className="p-2 rounded-lg bg-emerald-600/20 text-emerald-400 border border-emerald-800 shrink-0">
+        <div className="grid grid-cols-1 sm:flex items-center gap-2">
+          <div className="size-10 flex items-center justify-center p-2 rounded-lg bg-emerald-600/20 text-emerald-400 border border-emerald-800 shrink-0">
             <Shield className="h-5 w-5" />
           </div>
-          <div>
+          <div className="text-left">
             <DialogTitle>Register Shelter / Strategic Base</DialogTitle>
             <DialogDescription>
               Commission a new emergency civilian shelter, logistics depot, or
@@ -217,7 +217,7 @@ export const AddDepotModal: React.FC<AddDepotModalProps> = ({
           >
             Facility Classification <span className="text-destructive">*</span>
           </label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {[
               {
                 id: "shelter",

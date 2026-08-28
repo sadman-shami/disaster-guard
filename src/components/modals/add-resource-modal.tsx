@@ -65,11 +65,11 @@ export const AddResourceModal: React.FC<AddResourceModalProps> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogHeader>
-        <div className="flex items-center space-x-2">
-          <div className="p-2 rounded-lg bg-primary text-primary-foreground shrink-0">
+        <div className="grid grid-cols-1 sm:flex items-center gap-2">
+          <div className="size-10 flex items-center justify-center p-2 rounded-lg bg-primary text-primary-foreground shrink-0">
             <Package className="h-5 w-5" />
           </div>
-          <div>
+          <div className="text-left">
             <DialogTitle>Register New Resource Type</DialogTitle>
             <DialogDescription>
               Add a new emergency supply line to the unified disaster logistics
@@ -142,7 +142,7 @@ export const AddResourceModal: React.FC<AddResourceModalProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           <div>
             <label
               htmlFor=""

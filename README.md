@@ -1,12 +1,12 @@
 # Disaster Guard — Emergency Management & Resource Allocation Platform
 
-> > Disaster Guard platform engineered for rapid situational awareness, emergency logistics coordination, volunteer taskforce deployment, and multi-agency crisis command.
+> Disaster Guard platform engineered for rapid situational awareness, emergency logistics coordination, volunteer taskforce deployment, and multi-agency crisis command.
 
-> > Configured with high-fidelity emergency response data for **Bangladesh**, including monsoon flash flood mitigation, cyclonic storm surge evacuation, riverbank erosion response, urban waterlogging management, and multi-purpose shelter operations.
+> Configured with high-fidelity emergency response data for **Bangladesh**, including monsoon flash flood mitigation, cyclonic storm surge evacuation, riverbank erosion response, urban waterlogging management, and multi-purpose shelter operations.
 
-> > For the project `Tanstack Start framework` has been used. It uses vite as a bundler. `Nitro` server has been used for routing, nitro can run on edge. This project mainly run on client side. So there is no use for `next.js` extensive caching which may improve performance but for the project `next.js` is not needed.
+> For the project `Tanstack Start framework` has been used. It uses vite as a bundler. `Nitro` server has been used for routing, nitro can run on edge. This project mainly run on client side. So there is no use for `next.js` extensive caching which may improve performance but for the project `next.js` is not needed.
 
-> > This app is featured with tab based routing. No external route has been used for routing.
+> This app is featured with tab based routing. No external route has been used for routing.
 
 ---
 

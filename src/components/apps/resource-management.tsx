@@ -451,7 +451,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
               return (
                 <Card
                   key={resource.id}
-                  className="border-border bg-card hover:border-ring transition-all shadow-sm flex flex-col justify-between rounded-md overflow-hidden"
+                  className="border border-border bg-card transition-all shadow-sm flex flex-col justify-between rounded-md overflow-hidden"
                 >
                   <CardHeader className="p-4 pb-2 border-b border-border">
                     <div className="flex items-start justify-between gap-2">
@@ -638,7 +638,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                 return (
                   <Card
                     key={depot.id}
-                    className="border-border bg-card shadow-sm rounded-md overflow-hidden"
+                    className="border border-border bg-card shadow-sm rounded-md overflow-hidden"
                   >
                     <CardHeader className="p-4 pb-2 border-b border-border">
                       <div className="flex items-center justify-between">
@@ -758,7 +758,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 
       {/* Subtab 3: Dispatches & Convoys */}
       {activeSubTab === "dispatches" && (
-        <Card className="border-border bg-card shadow-sm overflow-hidden rounded-md">
+        <Card className="border border-border bg-card shadow-sm overflow-hidden rounded-md">
           <CardHeader className="p-4 border-b border-border">
             <CardTitle className="text-base font-bold flex items-center gap-2 text-foreground">
               <Truck className="h-5 w-5 text-primary" />
@@ -773,7 +773,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
-                <thead className="bg-secondary text-muted-foreground capitalize font-bold text-[10px] tracking-wider border-b border-border tactical-tag">
+                <thead className="bg-secondary/80 text-muted-foreground capitalize font-bold text-[10px] tracking-wider border-b border-border tactical-tag">
                   <tr>
                     <th className="p-3">Dispatch ID</th>
                     <th className="p-3">Target Incident</th>
@@ -787,7 +787,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                   {dispatchLogs.map((log) => (
                     <tr
                       key={log.id}
-                      className="hover:bg-accent/50 transition-colors"
+                      className="hover:bg-accent/30 transition-colors"
                     >
                       <td className="p-3 font-bold text-primary">{log.id}</td>
                       <td className="p-3">
@@ -799,14 +799,13 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
                         {log.fromDepotName}
                       </td>
                       <td className="p-3">
-                        {log.items.map((item, idx) => (
-                          <span
-                            key={idx}
-                            className="bg-secondary border border-border px-1.5 py-0.5 rounded-xs text-[11px] text-foreground mr-1 block sm:inline-block"
-                          >
-                            {item.quantity} {item.unit} {item.resourceName}
-                          </span>
-                        ))}
+                        <div className="bg-secondary border border-border px-1.5 py-0.5 rounded-xs text-[11px] text-foreground mr-1 block sm:inline-block">
+                          {log.items.map((item, idx) => (
+                            <span key={idx}>
+                              {item.quantity} {item.unit} {item.resourceName}
+                            </span>
+                          ))}
+                        </div>
                       </td>
                       <td className="p-3">
                         <div className="flex items-center space-x-1.5">

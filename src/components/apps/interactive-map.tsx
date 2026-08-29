@@ -815,7 +815,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
           )}
 
           {/* map overview */}
-          <Card className="border-border shadow-xs">
+          <Card className="border border-border shadow-xs">
             <CardHeader>
               <CardTitle className="text-sm font-bold flex items-center gap-1.5">
                 <Info className="h-4 w-4 text-primary" />

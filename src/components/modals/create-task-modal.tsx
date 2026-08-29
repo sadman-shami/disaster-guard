@@ -1,8 +1,6 @@
 import { Check, ClipboardList } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Button } from "#/components/ui/button";
 import {
   Dialog,
@@ -14,6 +12,7 @@ import {
 import { Input } from "#/components/ui/input";
 import { Textarea } from "#/components/ui/textarea";
 import { SKILL_METADATA, TASK_CATEGORY_METADATA } from "#/lib/volunteerUtils";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { TaskCategory, TaskPriority, VolunteerSkill } from "#/types";
 
 interface CreateTaskModalProps {
@@ -28,7 +27,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   preselectedIncidentId,
 }) => {
   const { incidents, volunteerTeams, createVolunteerTask, currentUser } =
-    useDisaster();
+    useDisasterStore();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

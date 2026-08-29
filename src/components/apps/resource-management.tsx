@@ -16,8 +16,6 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import {
@@ -29,6 +27,7 @@ import {
 } from "#/components/ui/card";
 import { Input } from "#/components/ui/input";
 import { Progress } from "#/components/ui/progress";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type {
   EmergencyResource,
   EmergencySupplyCategory,
@@ -57,7 +56,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
     updateDepotOccupancy,
     currentUser,
     setActiveTab,
-  } = useDisaster();
+  } = useDisasterStore();
 
   useEffect(() => {
     if (!["admin", "responder"].includes(currentUser.role))

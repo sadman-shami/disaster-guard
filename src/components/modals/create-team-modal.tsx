@@ -1,8 +1,6 @@
 import { Check, Users } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Button } from "#/components/ui/button";
 import {
   Dialog,
@@ -14,6 +12,7 @@ import {
 import { Input } from "#/components/ui/input";
 import { Textarea } from "#/components/ui/textarea";
 import { SKILL_METADATA, SPECIALTY_METADATA } from "#/lib/volunteerUtils";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { TeamSpecialty } from "#/types";
 
 interface CreateTeamModalProps {
@@ -27,7 +26,8 @@ export const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   onOpenChange,
   preselectedIncidentId,
 }) => {
-  const { volunteers, incidents, depots, createVolunteerTeam } = useDisaster();
+  const { volunteers, incidents, depots, createVolunteerTeam } =
+    useDisasterStore();
 
   const [teamName, setTeamName] = useState("");
   const [callsign, setCallsign] = useState("");

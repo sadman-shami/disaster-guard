@@ -13,8 +13,6 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Button } from "#/components/ui/button";
 import {
   Dialog,
@@ -24,6 +22,7 @@ import {
   DialogTitle,
 } from "#/components/ui/dialog";
 import { Input } from "#/components/ui/input";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { Depot } from "#/types";
 
 interface AddDepotModalProps {
@@ -61,7 +60,7 @@ export const AddDepotModal: React.FC<AddDepotModalProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { createDepot } = useDisaster();
+  const { createDepot } = useDisasterStore();
 
   const [name, setName] = useState("");
   const [type, setType] = useState<Depot["type"]>("shelter");
@@ -213,7 +212,7 @@ export const AddDepotModal: React.FC<AddDepotModalProps> = ({
         <div>
           <label
             htmlFor=""
-            className="block font-semibold text-foreground mb-1.5 uppercase tracking-wider text-[11px]"
+            className="block font-semibold text-foreground mb-1.5 capitalize tracking-wider text-[11px]"
           >
             Facility Classification <span className="text-destructive">*</span>
           </label>

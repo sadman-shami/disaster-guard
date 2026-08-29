@@ -12,10 +12,9 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { ActiveTab, UserRole } from "#/types";
 
 interface HeaderProps {
@@ -33,7 +32,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
     safetyAlerts,
     volunteerTasks,
     resetAllData,
-  } = useDisaster();
+  } = useDisasterStore();
 
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
 

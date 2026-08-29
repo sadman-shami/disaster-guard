@@ -20,11 +20,10 @@ import {
   TileLayer,
   useMap,
 } from "react-leaflet";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { Depot, Incident } from "#/types";
 
 interface InteractiveMapProps {
@@ -61,7 +60,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     setSelectedIncidentId,
     currentUser,
     reportIncident,
-  } = useDisaster();
+  } = useDisasterStore();
 
   // Layers toggle state
   const [showIncidents, setShowIncidents] = useState(true);

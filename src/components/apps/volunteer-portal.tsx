@@ -22,7 +22,6 @@ import { CreateTaskModal } from "#/components/modals/create-task-modal";
 import { CreateTeamModal } from "#/components/modals/create-team-modal";
 import { TaskDetailModal } from "#/components/modals/task-detail-modal";
 import { VolunteerRegisterModal } from "#/components/modals/volunteer-register-modal";
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
@@ -35,6 +34,7 @@ import {
   SPECIALTY_METADATA,
   TASK_CATEGORY_METADATA,
 } from "#/lib/volunteerUtils";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { VolunteerStatus, VolunteerTask, VolunteerTeam } from "#/types";
 
 type SubView = "squads" | "tasks" | "directory" | "my_missions";
@@ -49,7 +49,7 @@ export const VolunteerPortal: React.FC = () => {
     updateVolunteerStatus,
     completeTask,
     setActiveTab,
-  } = useDisaster();
+  } = useDisasterStore();
 
   const [activeSubView, setActiveSubView] = useState<SubView>("squads");
 

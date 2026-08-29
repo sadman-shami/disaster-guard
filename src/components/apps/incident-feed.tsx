@@ -27,12 +27,11 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useMemo, useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { Card } from "#/components/ui/card";
 import { Input } from "#/components/ui/input";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type {
   DisasterType,
   Incident,
@@ -57,7 +56,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
     updateIncidentStatus,
     addIncidentUpdate,
     focusMapOnIncident,
-  } = useDisaster();
+  } = useDisasterStore();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSeverity, setSelectedSeverity] = useState<string>("all");

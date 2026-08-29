@@ -1,8 +1,6 @@
 import { ArrowRight, Check, Users } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Button } from "#/components/ui/button";
 import {
   Dialog,
@@ -12,6 +10,7 @@ import {
   DialogTitle,
 } from "#/components/ui/dialog";
 import { SKILL_METADATA, SPECIALTY_METADATA } from "#/lib/volunteerUtils";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { VolunteerTask } from "#/types";
 
 interface AssignTaskModalProps {
@@ -30,7 +29,7 @@ export const AssignTaskModal: React.FC<AssignTaskModalProps> = ({
     volunteers,
     assignTaskToTeam,
     assignTaskToVolunteers,
-  } = useDisaster();
+  } = useDisasterStore();
 
   const [assignmentMode, setAssignmentMode] = useState<"team" | "individual">(
     "team",

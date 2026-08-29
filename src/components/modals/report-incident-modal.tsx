@@ -1,8 +1,6 @@
 import { AlertTriangle, Compass, MapPin, UserCheck } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import {
@@ -14,6 +12,7 @@ import {
 } from "#/components/ui/dialog";
 import { Input } from "#/components/ui/input";
 import { Textarea } from "#/components/ui/textarea";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { DisasterType, IncidentSeverity } from "#/types";
 
 interface ReportIncidentModalProps {
@@ -25,7 +24,8 @@ export const ReportIncidentModal: React.FC<ReportIncidentModalProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { currentUser, reportIncident, focusMapOnIncident } = useDisaster();
+  const { currentUser, reportIncident, focusMapOnIncident } =
+    useDisasterStore();
 
   const [type, setType] = useState<DisasterType>("flood");
   const [severity, setSeverity] = useState<IncidentSeverity>("critical");

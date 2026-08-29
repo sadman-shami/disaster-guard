@@ -1,8 +1,6 @@
 import { Truck } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import {
@@ -13,6 +11,7 @@ import {
   DialogTitle,
 } from "#/components/ui/dialog";
 import { Input } from "#/components/ui/input";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { EmergencyResource, Incident } from "#/types";
 
 interface AllocateResourceModalProps {
@@ -29,7 +28,7 @@ export const AllocateResourceModal: React.FC<AllocateResourceModalProps> = ({
   preselectedResource,
 }) => {
   const { incidents, resources, depots, allocateResourceToIncident } =
-    useDisaster();
+    useDisasterStore();
 
   const [selectedIncidentId, setSelectedIncidentId] = useState<string>(
     targetIncident?.id || incidents[0]?.id || "",

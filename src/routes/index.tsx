@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { Header } from "#/components/apps/header";
@@ -10,12 +10,12 @@ import { AddDepotModal } from "#/components/modals/add-depot-modal";
 import { AddResourceModal } from "#/components/modals/add-resource-modal";
 import { AllocateResourceModal } from "#/components/modals/allocate-resource-modal";
 import { ReportIncidentModal } from "#/components/modals/report-incident-modal";
-import { useDisaster } from "#/components/provider/DisasterProvider";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { EmergencyResource, Incident } from "#/types";
-export const Route = createFileRoute("/")({ component: App, ssr: false });
+export const Route = createFileRoute("/")({ component: App, ssr: true });
 
 function App() {
-  const { activeTab } = useDisaster();
+  const { activeTab } = useDisasterStore();
 
   // Modal States
   const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false);
@@ -57,11 +57,13 @@ function App() {
 
         {/* Interactive map */}
         {activeTab === "map" && (
-          <InteractiveMap
-            onOpenAllocateModal={handleOpenAllocateModal}
-            onOpenReportModal={() => setIsReportModalOpen(true)}
-            onOpenAddDepotModal={() => setIsAddDepotModalOpen(true)}
-          />
+          <ClientOnly>
+            <InteractiveMap
+              onOpenAllocateModal={handleOpenAllocateModal}
+              onOpenReportModal={() => setIsReportModalOpen(true)}
+              onOpenAddDepotModal={() => setIsAddDepotModalOpen(true)}
+            />
+          </ClientOnly>
         )}
 
         {/* Resource management */}
@@ -74,9 +76,7 @@ function App() {
         )}
 
         {/* Volunteer Portal */}
-        {activeTab === 'volunteers' && (
-          <VolunteerPortal />
-        )}
+        {activeTab === "volunteers" && <VolunteerPortal />}
       </main>
 
       {/* Modals */}

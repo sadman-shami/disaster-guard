@@ -1,8 +1,6 @@
 import { Check, UserPlus } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Button } from "#/components/ui/button";
 import {
   Dialog,
@@ -14,6 +12,7 @@ import {
 import { Input } from "#/components/ui/input";
 import { Textarea } from "#/components/ui/textarea";
 import { SKILL_METADATA } from "#/lib/volunteerUtils";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { VolunteerSkill, VolunteerStatus } from "#/types";
 
 interface VolunteerRegisterModalProps {
@@ -25,7 +24,7 @@ export const VolunteerRegisterModal: React.FC<VolunteerRegisterModalProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { registerVolunteer, currentUser } = useDisaster();
+  const { registerVolunteer, currentUser } = useDisasterStore();
 
   const [name, setName] = useState(
     currentUser.role === "verified_citizen" ? currentUser.name : "",

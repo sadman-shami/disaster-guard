@@ -1,8 +1,6 @@
 import { Package, Plus } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
-
-import { useDisaster } from "#/components/provider/DisasterProvider";
 import { Button } from "#/components/ui/button";
 import {
   Dialog,
@@ -12,6 +10,7 @@ import {
   DialogTitle,
 } from "#/components/ui/dialog";
 import { Input } from "#/components/ui/input";
+import { useDisasterStore } from "#/store/useDisasterStore";
 import type { EmergencySupplyCategory } from "#/types";
 
 interface AddResourceModalProps {
@@ -24,7 +23,7 @@ export const AddResourceModal: React.FC<AddResourceModalProps> = ({
   onOpenChange,
 }) => {
   const { depots, createEmergencyResource, currentUser, usersList } =
-    useDisaster();
+    useDisasterStore();
 
   const [name, setName] = useState("");
   const [category, setCategory] = useState<EmergencySupplyCategory>("medical");

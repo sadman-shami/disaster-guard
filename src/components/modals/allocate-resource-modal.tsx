@@ -87,7 +87,7 @@ export const AllocateResourceModal: React.FC<AllocateResourceModalProps> = ({
           </div>
           <div className="text-left">
             <DialogTitle>Dispatch Emergency Supplies</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-muted-foreground text-xs">
               Authorize logistical convoy dispatch from storage depots to
               incident hotzones.
             </DialogDescription>

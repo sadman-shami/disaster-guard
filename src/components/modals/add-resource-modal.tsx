@@ -71,7 +71,7 @@ export const AddResourceModal: React.FC<AddResourceModalProps> = ({
           </div>
           <div className="text-left">
             <DialogTitle>Register New Resource Type</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-muted-foreground text-xs">
               Add a new emergency supply line to the unified disaster logistics
               inventory.
             </DialogDescription>

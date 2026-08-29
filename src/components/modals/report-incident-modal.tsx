@@ -156,7 +156,7 @@ export const ReportIncidentModal: React.FC<ReportIncidentModalProps> = ({
           </div>
           <div className="text-left">
             <DialogTitle>Emergency Incident Report</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-muted-foreground text-xs">
               Submit an urgent field disaster report. Official responders, FSCD,
               and BDRCS will receive immediate broadcast.
             </DialogDescription>

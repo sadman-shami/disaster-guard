@@ -200,7 +200,7 @@ export const AddDepotModal: React.FC<AddDepotModalProps> = ({
           </div>
           <div className="text-left">
             <DialogTitle>Register Shelter / Strategic Base</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-muted-foreground text-xs">
               Commission a new emergency civilian shelter, logistics depot, or
               forward operating base.
             </DialogDescription>

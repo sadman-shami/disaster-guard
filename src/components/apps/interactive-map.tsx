@@ -219,6 +219,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     } else {
       alert("Your Browser doesn't support geolocation");
       setIsLocating(false);
+      setLat(undefined);
+      setLng(undefined);
     }
   }, []);
 
@@ -257,6 +259,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         });
       lat && lng && setSelectedIncidentId(newId);
     }
+    setLat(undefined);
+    setLng(undefined);
   };
 
   const filteredIncidents = incidents.filter((inc) => {

@@ -128,9 +128,9 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <form onSubmit={handleSubmit} className="space-y-4">
         <DialogHeader>
-          <div className="grid grid-cols-1 sm:flex items-center gap-2">
-            <div className="h-8 w-8 rounded-sm bg-red-950 border border-red-800 flex items-center justify-center text-red-400">
-              <ClipboardList className="h-4 w-4" />
+          <div className="grid grid-cols-1 items-center gap-2">
+            <div className="size-10 flex items-center justify-center p-2 rounded-lg bg-destructive/20 border border-destructive/40 text-destructive shrink-0">
+              <ClipboardList className="h-5 w-5" />
             </div>
             <div className="text-left">
               <DialogTitle className="capitalize">

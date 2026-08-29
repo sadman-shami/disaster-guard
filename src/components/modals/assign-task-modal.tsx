@@ -69,9 +69,9 @@ export const AssignTaskModal: React.FC<AssignTaskModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <div className="space-y-4">
         <DialogHeader>
-          <div className="grid grid-cols-1 sm:flex items-center gap-2">
-            <div className="h-8 w-8 rounded-md bg-primary/20 border border-primary/40 flex items-center justify-center text-primary">
-              <Users className="h-4 w-4" />
+          <div className="grid grid-cols-1 items-center gap-2">
+            <div className="size-10 flex items-center justify-center p-2 rounded-lg bg-primary/20 border border-primary/40 text-primary shrink-0">
+              <Users className="h-5 w-5" />
             </div>
             <div className="text-left">
               <DialogTitle className="capitalize">

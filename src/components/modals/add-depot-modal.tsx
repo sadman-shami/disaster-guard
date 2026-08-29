@@ -194,7 +194,7 @@ export const AddDepotModal: React.FC<AddDepotModalProps> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <DialogHeader>
-        <div className="grid grid-cols-1 sm:flex items-center gap-2">
+        <div className="grid grid-cols-1 items-center gap-2">
           <div className="size-10 flex items-center justify-center p-2 rounded-lg bg-emerald-600/20 text-emerald-400 border border-emerald-800 shrink-0">
             <Shield className="h-5 w-5" />
           </div>

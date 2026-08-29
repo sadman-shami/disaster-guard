@@ -81,7 +81,7 @@ export const AllocateResourceModal: React.FC<AllocateResourceModalProps> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <DialogHeader>
-        <div className="grid grid-cols-1 sm:flex items-center gap-2">
+        <div className="grid grid-cols-1 items-center gap-2">
           <div className="size-10 flex items-center justify-center p-2 rounded-lg bg-primary text-primary-foreground shrink-0">
             <Truck className="h-5 w-5" />
           </div>

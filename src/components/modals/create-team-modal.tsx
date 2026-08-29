@@ -406,7 +406,6 @@ export const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
           <Button
             type="button"
             variant="outline"
-            size="sm"
             onClick={() => onOpenChange(false)}
             className="text-muted-foreground hover:text-foreground"
           >

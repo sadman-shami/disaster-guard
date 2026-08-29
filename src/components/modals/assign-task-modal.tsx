@@ -260,7 +260,6 @@ export const AssignTaskModal: React.FC<AssignTaskModalProps> = ({
           <Button
             type="button"
             variant="outline"
-            size="sm"
             onClick={() => onOpenChange(false)}
             className="text-muted-foreground hover:text-foreground"
           >

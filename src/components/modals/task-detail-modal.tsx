@@ -66,7 +66,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
     task.assignedVolunteerIds?.includes(v.id),
   );
 
-  const handleSendCheckIn = (e: React.FormEvent) => {
+  const handleSendCheckIn = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!checkInNote.trim()) return;
 

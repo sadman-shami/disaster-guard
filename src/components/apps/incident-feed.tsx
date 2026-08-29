@@ -935,7 +935,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                       size="sm"
                       variant="outline"
                       onClick={() => focusMapOnIncident(incident.id)}
-                      className="h-8 text-xs text-primary hover:text-primary/90 hover:bg-accent rounded-md  tracking-wider font-bold cursor-pointer"
+                      className="h-8 text-xs text-muted-foreground hover:text-foreground hover:bg-accent rounded-md  tracking-wider font-bold cursor-pointer"
                     >
                       <Compass className="h-3.5 w-3.5 mr-1" />
                       <span>View on Map</span>

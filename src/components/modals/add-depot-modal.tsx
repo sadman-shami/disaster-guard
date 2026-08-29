@@ -436,7 +436,7 @@ export const AddDepotModal: React.FC<AddDepotModalProps> = ({
           <div>
             <label
               htmlFor="bed"
-              className="block font-semibold text-foreground mb-1 flex items-center gap-1"
+              className="font-semibold text-foreground mb-1 flex items-center gap-1"
             >
               <Bed className="h-3.5 w-3.5 text-primary" />
               Available Beds / Cots

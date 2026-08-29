@@ -5,6 +5,7 @@ import { Header } from "#/components/apps/header";
 import { IncidentFeed } from "#/components/apps/incident-feed";
 import { InteractiveMap } from "#/components/apps/interactive-map";
 import { ResourceManagement } from "#/components/apps/resource-management";
+import { VolunteerPortal } from "#/components/apps/volunteer-portal";
 import { AddDepotModal } from "#/components/modals/add-depot-modal";
 import { AddResourceModal } from "#/components/modals/add-resource-modal";
 import { AllocateResourceModal } from "#/components/modals/allocate-resource-modal";
@@ -70,6 +71,11 @@ function App() {
             onOpenAddResourceModal={() => setIsAddResourceModalOpen(true)}
             onOpenAddDepotModal={() => setIsAddDepotModalOpen(true)}
           />
+        )}
+
+        {/* Volunteer Portal */}
+        {activeTab === 'volunteers' && (
+          <VolunteerPortal />
         )}
       </main>
 

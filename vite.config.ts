@@ -6,12 +6,12 @@ import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
 const config = defineConfig({
-  resolve: { tsconfigPaths: true },
-  plugins: [devtools(), nitro(), tailwindcss(), tanstackStart(), viteReact()],
-  server: {
-    port: 3000,
-    host: true,
-  },
+	resolve: { tsconfigPaths: true },
+	plugins: [devtools(), nitro(), tailwindcss(), tanstackStart(), viteReact()],
+	server: {
+		port: 3000,
+		host: true,
+	},
 });
 
 export default config;

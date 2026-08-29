@@ -15,92 +15,92 @@ import type { EmergencyResource, Incident } from "#/types";
 export const Route = createFileRoute("/")({ component: App, ssr: true });
 
 function App() {
-  const { activeTab } = useDisasterStore();
+	const { activeTab } = useDisasterStore();
 
-  // Modal States
-  const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false);
-  const [isAllocateModalOpen, setIsAllocateModalOpen] =
-    useState<boolean>(false);
-  const [isAddResourceModalOpen, setIsAddResourceModalOpen] =
-    useState<boolean>(false);
-  const [isAddDepotModalOpen, setIsAddDepotModalOpen] =
-    useState<boolean>(false);
+	// Modal States
+	const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false);
+	const [isAllocateModalOpen, setIsAllocateModalOpen] =
+		useState<boolean>(false);
+	const [isAddResourceModalOpen, setIsAddResourceModalOpen] =
+		useState<boolean>(false);
+	const [isAddDepotModalOpen, setIsAddDepotModalOpen] =
+		useState<boolean>(false);
 
-  const [selectedIncidentForAllocation, setSelectedIncidentForAllocation] =
-    useState<Incident | undefined>();
-  const [selectedResourceForAllocation, setSelectedResourceForAllocation] =
-    useState<EmergencyResource | undefined>();
+	const [selectedIncidentForAllocation, setSelectedIncidentForAllocation] =
+		useState<Incident | undefined>();
+	const [selectedResourceForAllocation, setSelectedResourceForAllocation] =
+		useState<EmergencyResource | undefined>();
 
-  const handleOpenAllocateModal = (
-    incident?: Incident,
-    resource?: EmergencyResource,
-  ) => {
-    setSelectedIncidentForAllocation(incident);
-    setSelectedResourceForAllocation(resource);
-    setIsAllocateModalOpen(true);
-  };
+	const handleOpenAllocateModal = (
+		incident?: Incident,
+		resource?: EmergencyResource,
+	) => {
+		setSelectedIncidentForAllocation(incident);
+		setSelectedResourceForAllocation(resource);
+		setIsAllocateModalOpen(true);
+	};
 
-  return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary selection:text-primary-foreground">
-      {/* Header with OPCON status strip, tab switcher & predefined user roles */}
-      <Header onOpenReportModal={() => setIsReportModalOpen(true)} />
+	return (
+		<div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary selection:text-primary-foreground">
+			{/* Header with OPCON status strip, tab switcher & predefined user roles */}
+			<Header onOpenReportModal={() => setIsReportModalOpen(true)} />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Incident feed page */}
-        {activeTab === "feed" && (
-          <IncidentFeed
-            onOpenAllocateModal={handleOpenAllocateModal}
-            onOpenReportModal={() => setIsReportModalOpen(true)}
-          />
-        )}
+			{/* Main Content Area */}
+			<main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+				{/* Incident feed page */}
+				{activeTab === "feed" && (
+					<IncidentFeed
+						onOpenAllocateModal={handleOpenAllocateModal}
+						onOpenReportModal={() => setIsReportModalOpen(true)}
+					/>
+				)}
 
-        {/* Interactive map */}
-        {activeTab === "map" && (
-          <ClientOnly>
-            <InteractiveMap
-              onOpenAllocateModal={handleOpenAllocateModal}
-              onOpenReportModal={() => setIsReportModalOpen(true)}
-              onOpenAddDepotModal={() => setIsAddDepotModalOpen(true)}
-            />
-          </ClientOnly>
-        )}
+				{/* Interactive map */}
+				{activeTab === "map" && (
+					<ClientOnly>
+						<InteractiveMap
+							onOpenAllocateModal={handleOpenAllocateModal}
+							onOpenReportModal={() => setIsReportModalOpen(true)}
+							onOpenAddDepotModal={() => setIsAddDepotModalOpen(true)}
+						/>
+					</ClientOnly>
+				)}
 
-        {/* Resource management */}
-        {activeTab === "resources" && (
-          <ResourceManagement
-            onOpenAllocateModal={handleOpenAllocateModal}
-            onOpenAddResourceModal={() => setIsAddResourceModalOpen(true)}
-            onOpenAddDepotModal={() => setIsAddDepotModalOpen(true)}
-          />
-        )}
+				{/* Resource management */}
+				{activeTab === "resources" && (
+					<ResourceManagement
+						onOpenAllocateModal={handleOpenAllocateModal}
+						onOpenAddResourceModal={() => setIsAddResourceModalOpen(true)}
+						onOpenAddDepotModal={() => setIsAddDepotModalOpen(true)}
+					/>
+				)}
 
-        {/* Volunteer Portal */}
-        {activeTab === "volunteers" && <VolunteerPortal />}
-      </main>
+				{/* Volunteer Portal */}
+				{activeTab === "volunteers" && <VolunteerPortal />}
+			</main>
 
-      {/* Modals */}
-      <ReportIncidentModal
-        open={isReportModalOpen}
-        onOpenChange={setIsReportModalOpen}
-      />
+			{/* Modals */}
+			<ReportIncidentModal
+				open={isReportModalOpen}
+				onOpenChange={setIsReportModalOpen}
+			/>
 
-      <AddResourceModal
-        open={isAddResourceModalOpen}
-        onOpenChange={setIsAddResourceModalOpen}
-      />
+			<AddResourceModal
+				open={isAddResourceModalOpen}
+				onOpenChange={setIsAddResourceModalOpen}
+			/>
 
-      <AllocateResourceModal
-        open={isAllocateModalOpen}
-        onOpenChange={setIsAllocateModalOpen}
-        targetIncident={selectedIncidentForAllocation}
-        preselectedResource={selectedResourceForAllocation}
-      />
+			<AllocateResourceModal
+				open={isAllocateModalOpen}
+				onOpenChange={setIsAllocateModalOpen}
+				targetIncident={selectedIncidentForAllocation}
+				preselectedResource={selectedResourceForAllocation}
+			/>
 
-      <AddDepotModal
-        open={isAddDepotModalOpen}
-        onOpenChange={setIsAddDepotModalOpen}
-      />
-    </div>
-  );
+			<AddDepotModal
+				open={isAddDepotModalOpen}
+				onOpenChange={setIsAddDepotModalOpen}
+			/>
+		</div>
+	);
 }

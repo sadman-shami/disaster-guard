@@ -125,7 +125,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <form onSubmit={handleSubmit} className="space-y-4">
         <DialogHeader>
           <div className="grid grid-cols-1 sm:flex items-center gap-2">
@@ -136,7 +136,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
               <DialogTitle className="capitalize">
                 {"DISPATCH VOLUNTEER MISSION / TASK".toLowerCase()}
               </DialogTitle>
-              <DialogDescription className="text-slate-400 text-xs">
+              <DialogDescription className="text-muted-foreground text-xs">
                 Issue a tactical mission order, define required skillsets, and
                 assign to a squad.
               </DialogDescription>
@@ -146,7 +146,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
 
         <div className="space-y-4 pr-1">
           {/* Category & Priority */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label
                 htmlFor=""
@@ -174,7 +174,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
               >
                 Priority Level <span className="text-destructive">*</span>
               </label>
-              <div className="grid grid-cols-4 gap-2 overflow-x-auto scrollbar-none">
+              <div className="grid grid-cols-4 gap-2 overflow-x-auto scrollbar-none p-2 border border-border rounded-md">
                 {(["critical", "high", "medium", "low"] as TaskPriority[]).map(
                   (p) => {
                     const isSelected = priority === p;
@@ -192,7 +192,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                                 : p === "medium"
                                   ? "bg-amber-500/20 text-amber-300 border-amber-500 font-bold"
                                   : "bg-primary/20 text-primary border-primary font-bold"
-                            : "bg-background border-border text-muted-foreground hover:text-foreground"
+                            : "border-border text-muted-foreground hover:text-foreground"
                         }`}
                       >
                         {p}

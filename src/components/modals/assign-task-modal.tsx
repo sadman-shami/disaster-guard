@@ -66,7 +66,7 @@ export const AssignTaskModal: React.FC<AssignTaskModalProps> = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <div className="space-y-4">
         <DialogHeader>
           <div className="grid grid-cols-1 sm:flex items-center gap-2">

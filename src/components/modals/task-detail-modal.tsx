@@ -87,7 +87,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <div className="space-y-4 pr-1">
         <DialogHeader>
           <div className="flex items-start justify-between gap-2">

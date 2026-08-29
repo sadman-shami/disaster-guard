@@ -84,7 +84,7 @@ export const VolunteerRegisterModal: React.FC<VolunteerRegisterModalProps> = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} className="max-w-2xl">
       <form onSubmit={handleSubmit} className="space-y-4">
         <DialogHeader>
           <div className="grid grid-cols-1 sm:flex items-center gap-2">

@@ -736,7 +736,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 					)}
 
 					{selectedDepot && (
-						<Card className="border-border shadow-xs">
+						<Card className="border border-border shadow-xs">
 							<CardHeader className="pb-3">
 								<div className="flex items-center justify-between">
 									<Badge variant="verified">

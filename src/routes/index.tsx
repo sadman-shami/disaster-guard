@@ -1,6 +1,6 @@
 import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-
+import { AdminDashboard } from "#/components/apps/admin-dashboard";
 import { Header } from "#/components/apps/header";
 import { IncidentFeed } from "#/components/apps/incident-feed";
 import { InteractiveMap } from "#/components/apps/interactive-map";
@@ -77,6 +77,11 @@ function App() {
 
 				{/* Volunteer Portal */}
 				{activeTab === "volunteers" && <VolunteerPortal />}
+
+				{/* Admin Dashboard */}
+				{activeTab === "admin" && (
+					<AdminDashboard onOpenAllocateModal={handleOpenAllocateModal} />
+				)}
 			</main>
 
 			{/* Modals */}

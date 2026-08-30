@@ -173,7 +173,7 @@ export const VolunteerPortal: React.FC = () => {
 				</div>
 
 				{/* 4-Stat Metric Row */}
-				<div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-border">
+				<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4  gap-3 mt-4 pt-3 border-t border-border">
 					<div className="bg-secondary/50 border border-border p-2.5 rounded-md">
 						<div className="text-[10px] text-muted-foreground capitalize">
 							Enlisted Volunteers

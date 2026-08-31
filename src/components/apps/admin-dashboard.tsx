@@ -3,6 +3,7 @@ import {
 	Building,
 	Clock,
 	Flame,
+	Package,
 	Search,
 	ShieldCheck,
 	TrendingUp,
@@ -10,7 +11,18 @@ import {
 	Users,
 } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+	Area,
+	AreaChart,
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Pie,
+	PieChart,
+	XAxis,
+	YAxis,
+} from "recharts";
 
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
@@ -23,12 +35,67 @@ import {
 } from "#/components/ui/card";
 import { Input } from "#/components/ui/input";
 import type { Incident, IncidentStatus } from "#/types";
-import { useDisasterStore } from "@/store/useDisasterStore";
+import { useDisasterStore } from "#/store/useDisasterStore";
+import { ANALYTICS_DATA } from "#/mockdata";
+import {
+	ChartContainer,
+	ChartLegend,
+	ChartLegendContent,
+	ChartTooltip,
+	ChartTooltipContent,
+	type ChartConfig,
+} from "#/components/ui/chart";
 
 interface AdminDashboardProps {
 	onOpenAllocateModal: (incident: Incident) => void;
 	onOpenAddDepotModal?: () => void;
 }
+
+const incidentTrendsConfig = {
+	reports: {
+		label: "Reports",
+		color: "var(--chart-1)",
+	},
+	resolved: {
+		label: "Resolved",
+		color: "var(--chart-2)",
+	},
+	critical: {
+		label: "Critical",
+		color: "var(--destructive)",
+	},
+} satisfies ChartConfig;
+
+const incidentTypeConfig = {
+	active: {
+		label: "Active",
+		color: "var(--chart-1)",
+	},
+	resolved: {
+		label: "Resolved",
+		color: "var(--chart-2)",
+	},
+} satisfies ChartConfig;
+
+const liveSeverityConfig = {
+	count: { label: "Count" },
+	critical: {
+		label: "Critical / Life Safety",
+		color: "var(--destructive)",
+	},
+	priority: {
+		label: "High Priority",
+		color: "var(--chart-1)",
+	},
+	moderate: {
+		label: "Moderate Advisory",
+		color: "var(--chart-2)",
+	},
+	low: {
+		label: "Low / Monitored",
+		color: "var(--chart-4)",
+	},
+};
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 	onOpenAllocateModal,
@@ -69,6 +136,39 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 			return false;
 		return true;
 	});
+
+	const liveSeverityData = useMemo(() => {
+		const counts = { critical: 0, high: 0, moderate: 0, low: 0 };
+		incidents.forEach((i) => {
+			counts[i.severity]++;
+		});
+		return [
+			{
+				name: "Critical / Life Safety",
+				count: counts.critical,
+				fill: "var(--destructive)",
+				severity: "critical",
+			},
+			{
+				name: "High Priority",
+				count: counts.high,
+				fill: "var(--chart-1)",
+				severity: "priority",
+			},
+			{
+				name: "Moderate Advisory",
+				count: counts.moderate,
+				fill: "var(--chart-2)",
+				severity: "moderate",
+			},
+			{
+				name: "Low / Monitored",
+				count: counts.low,
+				fill: "var(--chart-4)",
+				severity: "low",
+			},
+		];
+	}, [incidents]);
 
 	const totalCasualties = incidents.reduce(
 		(acc, i) => ({
@@ -173,6 +273,144 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 						FEMA Standard (&lt;10m)
 					</span>
 				</div>
+			</div>
+
+			{/* Analytics Charts Grid */}
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+				{/* Chart 1: Incident Trends Over Time (Area Chart) */}
+				<Card className="border border-border bg-card shadow-sm rounded-md">
+					<CardHeader className="p-4 pb-2">
+						<CardTitle className="text-sm font-bold flex items-center gap-2 text-foreground">
+							<TrendingUp className="h-4 w-4 text-primary" />
+							Incident Velocity & Resolution Curve (Hourly)
+						</CardTitle>
+						<CardDescription className="text-xs text-muted-foreground">
+							Live incoming emergency reports vs field containment & resolution
+							rates
+						</CardDescription>
+					</CardHeader>
+					<CardContent className="p-4">
+						<div className="w-full">
+							<ChartContainer config={incidentTrendsConfig}>
+								<AreaChart
+									accessibilityLayer
+									data={ANALYTICS_DATA.hourlyIncidentTrends}
+									margin={{ left: 12, right: 12 }}
+								>
+									<CartesianGrid vertical={false} />
+									<XAxis
+										dataKey="time"
+										tickLine={false}
+										axisLine={false}
+										tickMargin={8}
+									/>
+									<YAxis tickLine axisLine tickMargin={6} />
+									<ChartTooltip
+										cursor={false}
+										content={<ChartTooltipContent indicator="line" />}
+									/>
+									<Area
+										type="natural"
+										dataKey="reports"
+										name="Incoming Reports"
+										stroke="oklch(0.511 0.096 186.391)"
+										fillOpacity={0.4}
+										fill="var(--chart-1)"
+									/>
+									<Area
+										type="natural"
+										dataKey="resolved"
+										name="Resolved"
+										stroke="oklch(0.696 0.17 162.48)"
+										fillOpacity={0.4}
+										fill="var(--chart-2)"
+									/>
+									<Area
+										type="natural"
+										dataKey="critical"
+										name="Life-Safety Hotspots"
+										stroke="oklch(0.577 0.245 27.325)"
+										fillOpacity={0.4}
+										fill="var(--destructive)"
+									/>
+									<ChartLegend content={<ChartLegendContent />} />
+								</AreaChart>
+							</ChartContainer>
+						</div>
+					</CardContent>
+				</Card>
+
+				{/* Chart 2: Incident Severity Distribution (Donut Chart) */}
+				<Card className="border border-border bg-card shadow-sm rounded-md">
+					<CardHeader className="p-4 pb-2">
+						<CardTitle className="text-sm font-bold flex items-center gap-2 text-foreground">
+							<Flame className="h-4 w-4 text-destructive" />
+							Incident Severity Breakdown
+						</CardTitle>
+						<CardDescription className="text-xs text-muted-foreground">
+							Distribution of monitored hazards by threat tier and civilian
+							life-safety
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<div className="w-full">
+							<ChartContainer
+								config={liveSeverityConfig}
+								className="mx-auto aspect-square h-80"
+							>
+								<PieChart>
+									<Pie data={liveSeverityData} dataKey={"count"} />
+									<ChartTooltip
+										cursor={false}
+										content={<ChartTooltipContent indicator="line" />}
+									/>
+									<ChartLegend
+										content={<ChartLegendContent nameKey="severity" />}
+										className="flex flex-wrap justify-center items-center"
+									/>
+								</PieChart>
+							</ChartContainer>
+						</div>
+					</CardContent>
+				</Card>
+
+				{/* Chart 3: Disasters by Category (Bar Chart) */}
+				<Card className="border border-border bg-card shadow-sm rounded-md">
+					<CardHeader className="p-4 pb-2">
+						<CardTitle className="text-sm font-bold flex items-center gap-2 text-foreground">
+							<Activity className="h-4 w-4 text-primary" />
+							Hazard Incidents by Type
+						</CardTitle>
+						<CardDescription className="text-xs text-muted-foreground">
+							Active response status vs contained across disaster
+							classifications
+						</CardDescription>
+					</CardHeader>
+					<CardContent className="p-4">
+						<div className="w-full">
+							<ChartContainer config={incidentTypeConfig}>
+								<BarChart
+									accessibilityLayer
+									data={ANALYTICS_DATA.incidentByType}
+								>
+									<CartesianGrid vertical={false} />
+									<XAxis
+										dataKey={"type"}
+										tickLine={false}
+										tickMargin={10}
+										axisLine={false}
+									/>
+									<ChartTooltip content={<ChartTooltipContent />} />
+									<Bar dataKey="active" fill="var(--chart-1)" radius={4} />
+									<Bar dataKey="resolved" fill="var(--chart-2)" radius={4} />
+									<ChartLegend content={<ChartLegendContent />} />
+								</BarChart>
+							</ChartContainer>
+						</div>
+					</CardContent>
+				</Card>
+
+				{/* Chart 4: Resource Fulfillment by Response Sector (Composed Bar & Line) */}
 			</div>
 
 			{/* Master Incident Command Operations Table */}

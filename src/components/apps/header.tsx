@@ -29,14 +29,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 		activeTab,
 		setActiveTab,
 		incidents,
-		safetyAlerts,
 		volunteerTasks,
 		resetAllData,
 	} = useDisasterStore();
 
 	const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
 
-	const activeAlertsCount = safetyAlerts.filter((a) => a.active).length;
 	const criticalIncidentsCount = incidents.filter(
 		(i) => i.severity === "critical" && i.status !== "resolved",
 	).length;
@@ -60,7 +58,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 			id: "map",
 			label: "Safety Map",
 			icon: <MapPin className="h-4 w-4" />,
-			badge: activeAlertsCount > 0 ? activeAlertsCount : undefined,
 		},
 		{
 			id: "resources",

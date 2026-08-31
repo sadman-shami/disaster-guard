@@ -37,7 +37,7 @@ export const VolunteerRegisterModal: React.FC<VolunteerRegisterModalProps> = ({
 	const [certificationsText, setCertificationsText] = useState(
 		"FEMA IS-100 / Red Cross CPR",
 	);
-	const [status, setStatus] = useState<VolunteerStatus>("ready");
+	const [status, _setStatus] = useState<VolunteerStatus>("ready");
 
 	const handleToggleSkill = (sk: VolunteerSkill) => {
 		setSkills((prev) =>

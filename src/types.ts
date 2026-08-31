@@ -161,21 +161,6 @@ export interface EvacuationZone {
 	description: string;
 }
 
-export interface SafetyAlert {
-	id: string;
-	title: string;
-	severity: "extreme" | "severe" | "moderate" | "advisory";
-	disasterType: DisasterType;
-	headline: string;
-	instructions: string[];
-	affectedAreas: string[];
-	zones: EvacuationZone[];
-	broadcastAt: string;
-	expiresAt: string;
-	active: boolean;
-	broadcastedBy: string;
-}
-
 export interface ResourceDispatchLog {
 	id: string;
 	incidentId: string;

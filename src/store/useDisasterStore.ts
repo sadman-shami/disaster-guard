@@ -5,7 +5,6 @@ import {
 	INITIAL_DISPATCH_LOGS,
 	INITIAL_INCIDENTS,
 	INITIAL_RESOURCES,
-	INITIAL_SAFETY_ALERTS,
 	INITIAL_VOLUNTEER_TASKS,
 	INITIAL_VOLUNTEER_TEAMS,
 	INITIAL_VOLUNTEERS,
@@ -13,12 +12,12 @@ import {
 } from "#/mockdata";
 import type {
 	ActiveTab,
+	AllocatedResourceItem,
 	Depot,
 	EmergencyResource,
 	Incident,
 	IncidentStatus,
 	ResourceDispatchLog,
-	SafetyAlert,
 	TaskStatus,
 	User,
 	UserRole,
@@ -37,7 +36,6 @@ export interface DisasterStoreState {
 	selectedIncidentId: string | null;
 	resources: EmergencyResource[];
 	depots: Depot[];
-	safetyAlerts: SafetyAlert[];
 	dispatchLogs: ResourceDispatchLog[];
 
 	// Volunteer & Squad Management
@@ -93,9 +91,6 @@ export interface DisasterStoreState {
 	createDepot: (depotData: Omit<Depot, "id">) => string;
 	updateDepotOccupancy: (depotId: string, newOccupancy: number) => void;
 
-	// Alert Actions
-	deactivateSafetyAlert: (alertId: string) => void;
-
 	// Volunteer Squad Actions
 	createVolunteerTeam: (
 		teamData: Omit<VolunteerTeam, "id" | "createdAt">,
@@ -142,7 +137,6 @@ export const useDisasterStore = create<DisasterStoreState>()(
 			selectedIncidentId: null,
 			resources: INITIAL_RESOURCES,
 			depots: INITIAL_DEPOTS,
-			safetyAlerts: INITIAL_SAFETY_ALERTS,
 			dispatchLogs: INITIAL_DISPATCH_LOGS,
 			volunteers: INITIAL_VOLUNTEERS,
 			volunteerTeams: INITIAL_VOLUNTEER_TEAMS,
@@ -363,7 +357,7 @@ export const useDisasterStore = create<DisasterStoreState>()(
 						const existingAlloc = inc.allocatedResources.find(
 							(ar) => ar.resourceId === resourceId,
 						);
-						let newAllocatedList;
+						let newAllocatedList: AllocatedResourceItem[];
 						if (existingAlloc) {
 							newAllocatedList = inc.allocatedResources.map((ar) =>
 								ar.resourceId === resourceId
@@ -511,15 +505,6 @@ export const useDisasterStore = create<DisasterStoreState>()(
 						}
 						return d;
 					}),
-				});
-			},
-
-			deactivateSafetyAlert: (alertId) => {
-				const { safetyAlerts } = get();
-				set({
-					safetyAlerts: safetyAlerts.map((a) =>
-						a.id === alertId ? { ...a, active: false } : a,
-					),
 				});
 			},
 
@@ -930,7 +915,6 @@ export const useDisasterStore = create<DisasterStoreState>()(
 					incidents: INITIAL_INCIDENTS,
 					resources: INITIAL_RESOURCES,
 					depots: INITIAL_DEPOTS,
-					safetyAlerts: INITIAL_SAFETY_ALERTS,
 					dispatchLogs: INITIAL_DISPATCH_LOGS,
 					volunteers: INITIAL_VOLUNTEERS,
 					volunteerTeams: INITIAL_VOLUNTEER_TEAMS,
@@ -948,7 +932,6 @@ export const useDisasterStore = create<DisasterStoreState>()(
 				incidents: state.incidents,
 				resources: state.resources,
 				depots: state.depots,
-				safetyAlerts: state.safetyAlerts,
 				dispatchLogs: state.dispatchLogs,
 				volunteers: state.volunteers,
 				volunteerTeams: state.volunteerTeams,

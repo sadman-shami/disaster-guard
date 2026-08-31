@@ -184,7 +184,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 
 							{/* Role Dropdown Menu */}
 							{roleDropdownOpen && (
-								<div className="absolute right-0 mt-2 w-80 rounded-md border border-border bg-card/98 backdrop-blur-md p-2 shadow-2xl z-50 animate-in fade-in-0 zoom-in-95">
+								<div className="absolute right-0 mt-2 w-80 rounded-md border border-border bg-card/95 backdrop-blur-2xl p-2 shadow-2xl z-50 animate-in fade-in-0 zoom-in-95">
 									<div className="px-3 py-2 border-b border-border mb-1.5 flex items-center justify-between">
 										<p className="text-[11px] font-bold text-muted-foreground capitalize tracking-widest tactical-tag">
 											Command Role Switcher

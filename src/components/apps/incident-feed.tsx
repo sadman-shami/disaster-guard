@@ -731,7 +731,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 								className="overflow-hidden border border-border bg-card transition-all shadow-sm rounded-md"
 							>
 								{/* Header ribbon */}
-								<div className="p-4 pb-3.5">
+								<div className="p-4">
 									<div className="border-b border-border pb-4">
 										{/* Reporter Trust Card */}
 										<div className="bg-secondary/60 border border-border rounded-md p-2.5 text-xs shrink-0 self-start w-full sm:w-auto shadow-inner">
@@ -894,7 +894,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 								</div>
 
 								{/* Card Action Footer */}
-								<div className="bg-secondary/40 px-5 py-3 border-t border-border flex items-center justify-between gap-3 text-xs">
+								<div className="px-5 pt-3 border-t border-border flex items-center justify-between gap-3 text-xs">
 									<div className="flex gap-2 items-center overflow-x-auto scrollbar-none">
 										{/* Corroboration / Upvote Button */}
 										<Button
@@ -991,7 +991,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 
 								{/* Expanded Updates Timeline & Comment box */}
 								{isUpdatesOpen && (
-									<div className="p-4 bg-secondary/30 border-t border-border space-y-3 animate-in fade-in-50 text-xs">
+									<div className="p-4 border-t border-border space-y-3 animate-in fade-in-50 text-xs">
 										<h5 className="font-bold text-foreground text-xs  tracking-widest tactical-tag">
 											Live Incident Dispatch & Field Log
 										</h5>

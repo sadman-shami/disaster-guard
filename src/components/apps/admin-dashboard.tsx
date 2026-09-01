@@ -35,18 +35,18 @@ import {
 	CardHeader,
 	CardTitle,
 } from "#/components/ui/card";
-import { Input } from "#/components/ui/input";
-import type { Incident, IncidentStatus } from "#/types";
-import { useDisasterStore } from "#/store/useDisasterStore";
-import { ANALYTICS_DATA } from "#/mockdata";
 import {
+	type ChartConfig,
 	ChartContainer,
 	ChartLegend,
 	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
-	type ChartConfig,
 } from "#/components/ui/chart";
+import { Input } from "#/components/ui/input";
+import { ANALYTICS_DATA } from "#/mockdata";
+import { useDisasterStore } from "#/store/useDisasterStore";
+import type { Incident, IncidentStatus } from "#/types";
 
 interface AdminDashboardProps {
 	onOpenAllocateModal: (incident: Incident) => void;

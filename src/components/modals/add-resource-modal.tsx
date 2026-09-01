@@ -153,7 +153,7 @@ export const AddResourceModal: React.FC<AddResourceModalProps> = ({
 							type="number"
 							min={1}
 							value={quantity}
-							onChange={(e) => setQuantity(parseInt(e.target.value) || 0)}
+							onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 0)}
 							className="text-xs"
 						/>
 					</div>
@@ -181,7 +181,9 @@ export const AddResourceModal: React.FC<AddResourceModalProps> = ({
 							type="number"
 							min={1}
 							value={minThreshold}
-							onChange={(e) => setMinThreshold(parseInt(e.target.value) || 0)}
+							onChange={(e) =>
+								setMinThreshold(parseInt(e.target.value, 10) || 0)
+							}
 							className="text-xs"
 						/>
 					</div>

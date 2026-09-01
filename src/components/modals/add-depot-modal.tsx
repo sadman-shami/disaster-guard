@@ -405,7 +405,7 @@ export const AddDepotModal: React.FC<AddDepotModalProps> = ({
 							max={50000}
 							value={capacity}
 							onChange={(e) =>
-								handleCapacityChange(parseInt(e.target.value) || 0)
+								handleCapacityChange(parseInt(e.target.value, 10) || 0)
 							}
 							required
 							className="text-xs"
@@ -426,7 +426,7 @@ export const AddDepotModal: React.FC<AddDepotModalProps> = ({
 							max={capacity}
 							value={currentOccupancy}
 							onChange={(e) =>
-								handleOccupancyChange(parseInt(e.target.value) || 0)
+								handleOccupancyChange(parseInt(e.target.value, 10) || 0)
 							}
 							className="text-xs"
 						/>
@@ -445,7 +445,9 @@ export const AddDepotModal: React.FC<AddDepotModalProps> = ({
 							type="number"
 							min={0}
 							value={availableBeds}
-							onChange={(e) => setAvailableBeds(parseInt(e.target.value) || 0)}
+							onChange={(e) =>
+								setAvailableBeds(parseInt(e.target.value, 10) || 0)
+							}
 							className="text-xs"
 						/>
 					</div>

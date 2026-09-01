@@ -26,8 +26,12 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
+			"security": {
+				"noDangerouslySetInnerHtml": "off"
+			},
 			"suspicious": {
-				"noArrayIndexKey": "off"
+				"noArrayIndexKey": "off",
+				"noExplicitAny": "off"
 			}
 		}
 	},

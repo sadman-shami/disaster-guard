@@ -526,7 +526,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 												onChange={(e) =>
 													setRestockQty({
 														...restockQty,
-														[resource.id]: parseInt(e.target.value) || 0,
+														[resource.id]: parseInt(e.target.value, 10) || 0,
 													})
 												}
 												className="h-7 w-16 text-xs px-1.5 bg-background border-border text-foreground rounded-md"
@@ -725,7 +725,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 													onChange={(e) =>
 														updateDepotOccupancy(
 															depot.id,
-															parseInt(e.target.value),
+															parseInt(e.target.value, 10),
 														)
 													}
 													className="w-full h-1.5 bg-muted rounded-sm appearance-none cursor-pointer accent-primary"

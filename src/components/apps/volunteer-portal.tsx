@@ -63,7 +63,7 @@ export const VolunteerPortal: React.FC = () => {
 	const [selectedTask, setSelectedTask] = useState<VolunteerTask | undefined>(
 		undefined,
 	);
-	const [selectedTeam, setSelectedTeam] = useState<VolunteerTeam | undefined>(
+	const [_selectedTeam, setSelectedTeam] = useState<VolunteerTeam | undefined>(
 		undefined,
 	);
 

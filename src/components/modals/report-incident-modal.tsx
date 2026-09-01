@@ -364,7 +364,9 @@ export const ReportIncidentModal: React.FC<ReportIncidentModalProps> = ({
 							type="number"
 							min={1}
 							value={affectedCount}
-							onChange={(e) => setAffectedCount(parseInt(e.target.value) || 0)}
+							onChange={(e) =>
+								setAffectedCount(parseInt(e.target.value, 10) || 0)
+							}
 							className="text-xs"
 						/>
 					</div>
@@ -379,7 +381,7 @@ export const ReportIncidentModal: React.FC<ReportIncidentModalProps> = ({
 							type="number"
 							min={0}
 							value={injured}
-							onChange={(e) => setInjured(parseInt(e.target.value) || 0)}
+							onChange={(e) => setInjured(parseInt(e.target.value, 10) || 0)}
 							className="text-xs text-orange-400 font-bold"
 						/>
 					</div>
@@ -394,7 +396,7 @@ export const ReportIncidentModal: React.FC<ReportIncidentModalProps> = ({
 							type="number"
 							min={0}
 							value={missing}
-							onChange={(e) => setMissing(parseInt(e.target.value) || 0)}
+							onChange={(e) => setMissing(parseInt(e.target.value, 10) || 0)}
 							className="text-xs text-destructive font-bold"
 						/>
 					</div>

@@ -197,7 +197,7 @@ export const AllocateResourceModal: React.FC<AllocateResourceModalProps> = ({
 								min={1}
 								max={Math.max(1, maxAvailable)}
 								value={quantity}
-								onChange={(e) => setQuantity(parseInt(e.target.value))}
+								onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
 								className="w-full h-1.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
 							/>
 							<div className="flex justify-between text-[10px] text-muted-foreground mt-1">

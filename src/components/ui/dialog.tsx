@@ -35,13 +35,13 @@ export function Dialog({
 			{/* Backdrop */}
 			<button
 				type="button"
-				className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-in fade-in-0 duration-200"
+				className="fixed inset-0 bg-background/70 backdrop-blur-md transition-opacity animate-in fade-in-0 duration-200"
 				onClick={() => onOpenChange(false)}
 			/>
 			{/* Modal Dialog Content */}
 			<div
 				className={cn(
-					"relative z-50 w-full max-w-lg rounded-lg border border-border bg-card p-6 text-card-foreground shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto",
+					"relative z-50 w-full max-w-lg rounded-lg border border-border bg-card/70 backdrop-blur-md p-6 text-card-foreground shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto",
 					className,
 				)}
 			>

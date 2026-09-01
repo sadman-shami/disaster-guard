@@ -13,8 +13,6 @@ import {
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import {
-	Area,
-	AreaChart,
 	Bar,
 	BarChart,
 	CartesianGrid,
@@ -23,7 +21,6 @@ import {
 	Pie,
 	PieChart,
 	XAxis,
-	YAxis,
 } from "recharts";
 
 import { Badge } from "#/components/ui/badge";

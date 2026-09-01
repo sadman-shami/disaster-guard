@@ -309,10 +309,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 					<CardContent className="p-4">
 						<div className="w-full">
 							<ChartContainer config={incidentTrendsConfig}>
-								<AreaChart
+								<BarChart
 									accessibilityLayer
 									data={ANALYTICS_DATA.hourlyIncidentTrends}
-									margin={{ left: 12, right: 12 }}
 								>
 									<CartesianGrid vertical={false} />
 									<XAxis
@@ -321,37 +320,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 										axisLine={false}
 										tickMargin={8}
 									/>
-									<YAxis tickLine axisLine tickMargin={6} />
 									<ChartTooltip
-										cursor={false}
 										content={<ChartTooltipContent indicator="line" />}
 									/>
-									<Area
-										type="natural"
-										dataKey="reports"
-										name="Incoming Reports"
-										stroke="oklch(0.511 0.096 186.391)"
-										fillOpacity={0.4}
-										fill="var(--chart-1)"
-									/>
-									<Area
-										type="natural"
-										dataKey="resolved"
-										name="Resolved"
-										stroke="oklch(0.696 0.17 162.48)"
-										fillOpacity={0.4}
-										fill="var(--chart-2)"
-									/>
-									<Area
-										type="natural"
+									<Bar dataKey="reports" fill="var(--chart-1)" radius={4} />
+									<Bar dataKey="resolved" fill="var(--chart-2)" radius={4} />
+									<Bar
 										dataKey="critical"
-										name="Life-Safety Hotspots"
-										stroke="oklch(0.577 0.245 27.325)"
-										fillOpacity={0.4}
 										fill="var(--destructive)"
+										radius={4}
 									/>
 									<ChartLegend content={<ChartLegendContent />} />
-								</AreaChart>
+								</BarChart>
 							</ChartContainer>
 						</div>
 					</CardContent>

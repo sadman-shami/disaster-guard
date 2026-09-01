@@ -18,6 +18,8 @@ import {
 	Bar,
 	BarChart,
 	CartesianGrid,
+	ComposedChart,
+	Line,
 	Pie,
 	PieChart,
 	XAxis,
@@ -96,6 +98,21 @@ const liveSeverityConfig = {
 		color: "var(--chart-4)",
 	},
 };
+
+const resourceFulfillmentConfig = {
+	requested: {
+		label: "Requested Assets",
+		color: "var(--chart-1)",
+	},
+	fulfilled: {
+		label: "Fulfilled Assets",
+		color: "var(--chart-2)",
+	},
+	rate: {
+		label: "Fulfillment %",
+		color: "var(--chart-3)",
+	},
+} as ChartConfig;
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 	onOpenAllocateModal,
@@ -411,6 +428,59 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 				</Card>
 
 				{/* Chart 4: Resource Fulfillment by Response Sector (Composed Bar & Line) */}
+				<Card className="border border-border bg-card shadow-sm rounded-md">
+					<CardHeader className="p-4 pb-2">
+						<CardTitle className="text-sm font-bold flex items-center gap-2 text-foreground">
+							<Package className="h-4 w-4 text-primary" />
+							Emergency Resource Fulfillment by Sector
+						</CardTitle>
+						<CardDescription className="text-xs text-muted-foreground">
+							Requested supplies vs dispatched & delivered across tactical
+							sectors
+						</CardDescription>
+					</CardHeader>
+					<CardContent className="p-4">
+						<div className="w-full">
+							<ChartContainer config={resourceFulfillmentConfig}>
+								<ComposedChart
+									data={ANALYTICS_DATA.resourceFulfillmentBySector}
+								>
+									<CartesianGrid vertical={false} />
+									<XAxis
+										dataKey="sector"
+										tickLine={false}
+										axisLine={false}
+										tickMargin={8}
+										fontSize={11}
+									/>
+									<ChartTooltip content={<ChartTooltipContent />} />
+									<ChartLegend content={<ChartLegendContent />} />
+									<Bar
+										yAxisId="left"
+										dataKey="requested"
+										name="Requested Assets"
+										radius={4}
+										fill="var(--chart-1)"
+									/>
+									<Bar
+										yAxisId="left"
+										dataKey="fulfilled"
+										name="Fulfilled Assets"
+										radius={4}
+										fill="var(--chart-2)"
+									/>
+									<Line
+										yAxisId="right"
+										dataKey="rate"
+										name="Fulfillment %"
+										strokeWidth={3}
+										stroke="var(--chart-3)"
+									/>
+								</ComposedChart>
+							</ChartContainer>
+						</div>
+					</CardContent>
+				</Card>
 			</div>
 
 			{/* Master Incident Command Operations Table */}

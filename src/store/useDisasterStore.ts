@@ -11,7 +11,6 @@ import {
 	PREDEFINED_USERS,
 } from "#/mockdata";
 import type {
-	ActiveTab,
 	AllocatedResourceItem,
 	Depot,
 	EmergencyResource,
@@ -32,7 +31,6 @@ export interface DisasterStoreState {
 	currentUser: User;
 	usersList: User[];
 	incidents: Incident[];
-	activeTab: ActiveTab;
 	selectedIncidentId: string | null;
 	resources: EmergencyResource[];
 	depots: Depot[];
@@ -43,10 +41,26 @@ export interface DisasterStoreState {
 	volunteerTeams: VolunteerTeam[];
 	volunteerTasks: VolunteerTask[];
 
+	// Modal States & Actions
+	isReportModalOpen: boolean;
+	isAllocateModalOpen: boolean;
+	isAddResourceModalOpen: boolean;
+	isAddDepotModalOpen: boolean;
+	selectedIncidentForAllocation?: Incident;
+	selectedResourceForAllocation?: EmergencyResource;
+
+	setIsReportModalOpen: (open: boolean) => void;
+	setIsAllocateModalOpen: (open: boolean) => void;
+	setIsAddResourceModalOpen: (open: boolean) => void;
+	setIsAddDepotModalOpen: (open: boolean) => void;
+	openAllocateModal: (
+		incident?: Incident,
+		resource?: EmergencyResource,
+	) => void;
+
 	// Actions
 	setCurrentUser: (user: User) => void;
 	switchUserRole: (role: UserRole) => void;
-	setActiveTab: (tab: ActiveTab) => void;
 	setSelectedIncidentId: (id: string | null) => void;
 	focusMapOnIncident: (id: string) => void;
 
@@ -142,21 +156,41 @@ export const useDisasterStore = create<DisasterStoreState>()(
 			volunteerTeams: INITIAL_VOLUNTEER_TEAMS,
 			volunteerTasks: INITIAL_VOLUNTEER_TASKS,
 
+			isReportModalOpen: false,
+			isAllocateModalOpen: false,
+			isAddResourceModalOpen: false,
+			isAddDepotModalOpen: false,
+			selectedIncidentForAllocation: undefined,
+			selectedResourceForAllocation: undefined,
+
+			setIsReportModalOpen: (open) => set({ isReportModalOpen: open }),
+			setIsAllocateModalOpen: (open) => set({ isAllocateModalOpen: open }),
+			setIsAddResourceModalOpen: (open) =>
+				set({ isAddResourceModalOpen: open }),
+			setIsAddDepotModalOpen: (open) => set({ isAddDepotModalOpen: open }),
+			openAllocateModal: (incident, resource) =>
+				set({
+					selectedIncidentForAllocation: incident,
+					selectedResourceForAllocation: resource,
+					isAllocateModalOpen: true,
+				}),
+
 			setCurrentUser: (user) => set({ currentUser: user }),
 
 			switchUserRole: (role) => {
-				const matched = PREDEFINED_USERS.find((u) => u.role === role);
+				const { usersList } = get();
+				const matched =
+					usersList.find((u) => u.role === role) ||
+					PREDEFINED_USERS.find((u) => u.role === role);
 				if (matched) {
 					set({ currentUser: matched });
 				}
 			},
 
-			setActiveTab: (tab) => set({ activeTab: tab }),
-
 			setSelectedIncidentId: (id) => set({ selectedIncidentId: id }),
 
 			focusMapOnIncident: (id) => {
-				set({ selectedIncidentId: id, activeTab: "map" });
+				set({ selectedIncidentId: id });
 			},
 
 			reportIncident: (incidentData) => {
@@ -912,6 +946,7 @@ export const useDisasterStore = create<DisasterStoreState>()(
 			resetAllData: () => {
 				set({
 					currentUser: PREDEFINED_USERS[0],
+					usersList: PREDEFINED_USERS,
 					incidents: INITIAL_INCIDENTS,
 					resources: INITIAL_RESOURCES,
 					depots: INITIAL_DEPOTS,
@@ -919,7 +954,6 @@ export const useDisasterStore = create<DisasterStoreState>()(
 					volunteers: INITIAL_VOLUNTEERS,
 					volunteerTeams: INITIAL_VOLUNTEER_TEAMS,
 					volunteerTasks: INITIAL_VOLUNTEER_TASKS,
-					activeTab: "feed",
 					selectedIncidentId: null,
 				});
 			},
@@ -929,6 +963,7 @@ export const useDisasterStore = create<DisasterStoreState>()(
 			storage: createJSONStorage(() => localStorage),
 			partialize: (state) => ({
 				currentUser: state.currentUser,
+				usersList: state.usersList,
 				incidents: state.incidents,
 				resources: state.resources,
 				depots: state.depots,
@@ -936,7 +971,6 @@ export const useDisasterStore = create<DisasterStoreState>()(
 				volunteers: state.volunteers,
 				volunteerTeams: state.volunteerTeams,
 				volunteerTasks: state.volunteerTasks,
-				activeTab: state.activeTab,
 			}),
 		},
 	),

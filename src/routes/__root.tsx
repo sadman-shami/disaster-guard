@@ -1,4 +1,12 @@
-import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import {
+	createRootRoute,
+	HeadContent,
+	Outlet,
+	Scripts,
+} from "@tanstack/react-router";
+import { Header } from "#/components/apps/header";
+import { GlobalModals } from "#/components/modals/global-modals";
+import { useDisasterStore } from "#/store/useDisasterStore";
 
 import appCss from "#/styles.css?url";
 
@@ -35,9 +43,24 @@ export const Route = createRootRoute({
 			{ rel: "icon", href: "/favicon.svg" },
 		],
 	}),
+	component: RootComponent,
 	shellComponent: RootDocument,
 	ssr: true,
 });
+
+function RootComponent() {
+	const { setIsReportModalOpen } = useDisasterStore();
+
+	return (
+		<div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary selection:text-primary-foreground">
+			<Header onOpenReportModal={() => setIsReportModalOpen(true)} />
+			<main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+				<Outlet />
+			</main>
+			<GlobalModals />
+		</div>
+	);
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (

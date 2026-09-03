@@ -10,12 +10,13 @@ import {
 	UserCheck,
 	Users,
 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import type React from "react";
 import { useState } from "react";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { useDisasterStore } from "#/store/useDisasterStore";
-import type { ActiveTab, UserRole } from "#/types";
+import type { UserRole } from "#/types";
 
 interface HeaderProps {
 	onOpenReportModal: () => void;
@@ -26,12 +27,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 		currentUser,
 		usersList,
 		switchUserRole,
-		activeTab,
-		setActiveTab,
 		incidents,
 		volunteerTasks,
 		resetAllData,
+		setIsReportModalOpen,
 	} = useDisasterStore();
+
+	const handleOpenReport =
+		onOpenReportModal || (() => setIsReportModalOpen(true));
 
 	const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
 
@@ -43,35 +46,37 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 	).length;
 
 	const navItems: {
-		id: ActiveTab;
+		to: string;
 		label: string;
 		icon: React.ReactNode;
 		badge?: number;
+		exact?: boolean;
 	}[] = [
 		{
-			id: "feed",
+			to: "/",
 			label: "Incident Feed",
 			icon: <Radio className="h-4 w-4" />,
 			badge: incidents.filter((i) => i.status !== "resolved").length,
+			exact: true,
 		},
 		{
-			id: "map",
+			to: "/map",
 			label: "Safety Map",
 			icon: <MapPin className="h-4 w-4" />,
 		},
 		{
-			id: "resources",
+			to: "/resources",
 			label: "Resource Management",
 			icon: <Package className="h-4 w-4" />,
 		},
 		{
-			id: "volunteers",
+			to: "/volunteers",
 			label: "Volunteer Portal",
 			icon: <Users className="h-4 w-4" />,
 			badge: activeTasksCount > 0 ? activeTasksCount : undefined,
 		},
 		{
-			id: "admin",
+			to: "/admin",
 			label: "Admin Command",
 			icon: <BarChart3 className="h-4 w-4" />,
 			badge: criticalIncidentsCount > 0 ? criticalIncidentsCount : undefined,
@@ -97,9 +102,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex items-center justify-between h-16 gap-4">
 					{/* Logo & Brand Identity */}
-					<button
-						type="button"
-						onClick={() => setActiveTab("feed")}
+					<Link
+						to="/"
 						className="flex items-center space-x-3 cursor-pointer group select-none shrink-0"
 					>
 						<img src="/favicon.svg" alt="logo" className="size-7 rounded-md" />
@@ -113,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 								</span>
 							</div>
 						</div>
-					</button>
+					</Link>
 
 					{/* Utility Controls & Action CTAs & Role Switcher */}
 					<div className="flex items-center space-x-2 sm:space-x-2.5 shrink-0">
@@ -140,7 +144,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 
 						{/* Quick Report CTA */}
 						<Button
-							onClick={onOpenReportModal}
+							onClick={handleOpenReport}
 							className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-bold capitalize tracking-wider flex items-center space-x-1.5 text-xs px-3 sm:px-4 shadow-md border border-primary/50 cursor-pointer h-9"
 						>
 							<PlusCircle className="h-4 w-4" />
@@ -257,32 +261,32 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 					</div>
 				</div>
 
-				{/* Mobile Navigation Tabs */}
-				<div className="flex overflow-x-auto py-2 border-t border-border gap-1 scrollbar-none">
-					{navItems.map((item) => {
-						const isActive = activeTab === item.id;
-						return (
-							<button
-								key={item.id}
-								type="button"
-								onClick={() => setActiveTab(item.id)}
-								className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-sm text-xs font-medium shrink-0 transition-colors ${
-									isActive
-										? "bg-card text-foreground font-bold border border-border"
-										: "bg-secondary text-muted-foreground"
-								}`}
-							>
-								{item.icon}
-								<span>{item.label}</span>
-								{item.badge !== undefined && item.badge > 0 && (
-									<span className="text-[10px] px-1.5 py-0.2 rounded-xs bg-destructive text-destructive-foreground font-bold">
-										{item.badge}
-									</span>
-								)}
-							</button>
-						);
-					})}
-				</div>
+				{/* Dedicated Navigation Pages */}
+				<nav
+					className="flex overflow-x-auto py-2 border-t border-border gap-1 scrollbar-none"
+					aria-label="Main Navigation"
+				>
+					{navItems.map((item) => (
+						<Link
+							key={item.to}
+							to={item.to}
+							activeOptions={{ exact: item.exact }}
+							className="flex items-center space-x-1.5 px-3 py-1.5 rounded-sm text-xs font-medium shrink-0 transition-colors border border-transparent bg-secondary text-muted-foreground hover:text-foreground hover:bg-accent cursor-pointer"
+							activeProps={{
+								className:
+									"!bg-card !text-foreground !font-bold !border-border shadow-xs",
+							}}
+						>
+							{item.icon}
+							<span>{item.label}</span>
+							{item.badge !== undefined && item.badge > 0 && (
+								<span className="text-[10px] px-1.5 py-0.2 rounded-xs bg-destructive text-destructive-foreground font-bold">
+									{item.badge}
+								</span>
+							)}
+						</Link>
+					))}
+				</nav>
 			</div>
 		</header>
 	);

@@ -11,7 +11,7 @@ import {
 	Users,
 } from "lucide-react";
 import type React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
 	Bar,
 	BarChart,
@@ -115,24 +115,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 	onOpenAllocateModal,
 	onOpenAddDepotModal,
 }) => {
-	const {
-		incidents,
-		depots,
-		currentUser,
-		verifyIncident,
-		updateIncidentStatus,
-		setActiveTab,
-	} = useDisasterStore();
+	const { incidents, depots, verifyIncident, updateIncidentStatus } =
+		useDisasterStore();
 
 	const [tableSearch, setTableSearch] = useState("");
 	const [tableSeverityFilter, setTableSeverityFilter] = useState("all");
 	const [tableStatusFilter, setTableStatusFilter] = useState("all");
-
-	useEffect(() => {
-		if (!["admin"].includes(currentUser.role)) {
-			setActiveTab("feed");
-		}
-	}, [currentUser, setActiveTab]);
 
 	const filteredIncidents = incidents.filter((inc) => {
 		if (tableSearch.trim()) {

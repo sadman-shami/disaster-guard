@@ -303,11 +303,3 @@ export interface VolunteerTask {
 	checkIns: TaskCheckIn[];
 	safetyNotes?: string;
 }
-
-export type ActiveTab =
-	| "feed"
-	| "map"
-	| "resources"
-	| "volunteers"
-	| "admin"
-	| "report";

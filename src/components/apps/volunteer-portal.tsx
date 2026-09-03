@@ -48,7 +48,6 @@ export const VolunteerPortal: React.FC = () => {
 		deleteVolunteerTeam,
 		updateVolunteerStatus,
 		completeTask,
-		setActiveTab,
 	} = useDisasterStore();
 
 	const [activeSubView, setActiveSubView] = useState<SubView>("squads");
@@ -73,11 +72,6 @@ export const VolunteerPortal: React.FC = () => {
 	const [taskFilterPriority, setTaskFilterPriority] = useState<string>("all");
 	const [volFilterStatus, setVolFilterStatus] = useState<string>("all");
 	const [volFilterSkill, setVolFilterSkill] = useState<string>("all");
-
-	useEffect(() => {
-		if (!["admin", "responder"].includes(currentUser.role))
-			setActiveTab("feed");
-	}, [currentUser, setActiveTab]);
 
 	// Metrics
 	const totalVolunteers = volunteers.length;

@@ -55,13 +55,7 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 		addResourceStock,
 		updateDepotOccupancy,
 		currentUser,
-		setActiveTab,
 	} = useDisasterStore();
-
-	useEffect(() => {
-		if (!["admin", "responder"].includes(currentUser.role))
-			setActiveTab("feed");
-	}, [currentUser, setActiveTab]);
 
 	const [searchQuery, setSearchQuery] = useState("");
 	const [selectedCategory, setSelectedCategory] = useState<string>("all");

@@ -12,8 +12,10 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import type React from "react";
+import { useState } from "react";
 import { Button } from "#/components/ui/button";
 import { useDisasterStore } from "#/store/useDisasterStore";
+import { UserProfileView } from "#/components/apps/user-profile-view";
 
 interface HeaderProps {
 	onOpenReportModal: () => void;
@@ -21,6 +23,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 	const navigate = useNavigate();
+	const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 	const {
 		currentUser,
 		incidents,
@@ -149,7 +152,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 
 						{/* Current User Profile & Logout */}
 						<div className="flex items-center space-x-2">
-							<div className="flex items-center space-x-2.5 p-1.5 px-2.5 rounded-md border border-border bg-secondary/80 text-left">
+							<button
+								type="button"
+								onClick={() => setIsProfileModalOpen(true)}
+								title="View User Profile Details"
+								className="flex items-center space-x-2.5 p-1.5 px-2.5 rounded-md border border-border bg-secondary/80 hover:bg-accent text-left transition-colors cursor-pointer"
+							>
 								<div className="relative">
 									<img
 										src={currentUser.avatar}
@@ -171,7 +179,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 										{currentUser.role.replace("_", " ")} • {currentUser.badgeTitle}
 									</div>
 								</div>
-							</div>
+							</button>
 							<Button
 								onClick={handleLogout}
 								variant="outline"
@@ -212,6 +220,27 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 					))}
 				</nav>
 			</div>
+
+			{/* User Profile Read-Only Modal */}
+			{isProfileModalOpen && (
+				<div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in">
+					<div className="relative w-full max-w-md">
+						<div className="absolute -top-3 -right-3 z-10">
+							<button
+								type="button"
+								onClick={() => setIsProfileModalOpen(false)}
+								className="size-8 rounded-full bg-card border border-border text-foreground hover:bg-accent flex items-center justify-center font-bold shadow-md cursor-pointer"
+							>
+								✕
+							</button>
+						</div>
+						<UserProfileView
+							user={currentUser}
+							onClose={() => setIsProfileModalOpen(false)}
+						/>
+					</div>
+				</div>
+			)}
 		</header>
 	);
 };

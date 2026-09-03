@@ -1,7 +1,7 @@
 import {
 	BarChart3,
-	Check,
-	ChevronDown,
+	Lock,
+	LogOut,
 	MapPin,
 	Package,
 	PlusCircle,
@@ -10,23 +10,19 @@ import {
 	UserCheck,
 	Users,
 } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import type React from "react";
-import { useState } from "react";
-import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { useDisasterStore } from "#/store/useDisasterStore";
-import type { UserRole } from "#/types";
 
 interface HeaderProps {
 	onOpenReportModal: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
+	const navigate = useNavigate();
 	const {
 		currentUser,
-		usersList,
-		switchUserRole,
 		incidents,
 		volunteerTasks,
 		resetAllData,
@@ -36,7 +32,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 	const handleOpenReport =
 		onOpenReportModal || (() => setIsReportModalOpen(true));
 
-	const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
+	const handleLogout = () => {
+		navigate({ to: "/signin" });
+	};
 
 	const criticalIncidentsCount = incidents.filter(
 		(i) => i.severity === "critical" && i.status !== "resolved",
@@ -81,20 +79,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 			icon: <BarChart3 className="h-4 w-4" />,
 			badge: criticalIncidentsCount > 0 ? criticalIncidentsCount : undefined,
 		},
+		{
+			to: "/signin",
+			label: "Sign In",
+			icon: <Lock className="h-4 w-4" />,
+		},
+		{
+			to: "/signup",
+			label: "Sign Up",
+			icon: <UserCheck className="h-4 w-4" />,
+		},
 	];
-
-	const getRoleBadgeVariant = (role: UserRole) => {
-		switch (role) {
-			case "admin":
-				return "destructive";
-			case "responder":
-				return "high";
-			case "verified_citizen":
-				return "verified";
-			default:
-				return "secondary";
-		}
-	};
 
 	return (
 		<header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur-md">
@@ -152,13 +147,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 							<span className="xs:hidden">Report</span>
 						</Button>
 
-						{/* Role Switcher Pill & Dropdown */}
-						<div className="relative">
-							<button
-								onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-								className="flex items-center space-x-2.5 p-1.5 px-2 rounded-md border border-border bg-secondary hover:bg-accent hover:border-border transition-all cursor-pointer text-left"
-								type="button"
-							>
+						{/* Current User Profile & Logout */}
+						<div className="flex items-center space-x-2">
+							<div className="flex items-center space-x-2.5 p-1.5 px-2.5 rounded-md border border-border bg-secondary/80 text-left">
 								<div className="relative">
 									<img
 										src={currentUser.avatar}
@@ -167,7 +158,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 									/>
 									<span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border border-background"></span>
 								</div>
-								<div className="hidden xl:block text-xs">
+								<div className="text-xs">
 									<div className="font-bold text-foreground flex items-center space-x-1">
 										<span className="truncate max-w-30">
 											{currentUser.name}
@@ -176,87 +167,20 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 											<UserCheck className="h-3 w-3 text-sky-400 shrink-0" />
 										)}
 									</div>
-									<div className="text-[10px] text-muted-foreground truncate max-w-32.5">
-										{currentUser.badgeTitle}
+									<div className="text-[10px] text-muted-foreground truncate max-w-32.5 capitalize">
+										{currentUser.role.replace("_", " ")} • {currentUser.badgeTitle}
 									</div>
 								</div>
-								<ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
-							</button>
-
-							{/* Role Dropdown Menu */}
-							{roleDropdownOpen && (
-								<div className="absolute right-0 mt-2 w-80 rounded-md border border-border bg-card/95 backdrop-blur-2xl p-2 shadow-2xl z-50 animate-in fade-in-0 zoom-in-95">
-									<div className="px-3 py-2 border-b border-border mb-1.5 flex items-center justify-between">
-										<p className="text-[11px] font-bold text-muted-foreground capitalize tracking-widest tactical-tag">
-											Command Role Switcher
-										</p>
-										<span className="text-[10px] text-muted-foreground">
-											Live Persona
-										</span>
-									</div>
-									<div className="space-y-1.5">
-										{usersList.map((user) => {
-											const isSelected = user.id === currentUser.id;
-											return (
-												<button
-													type="button"
-													key={user.id}
-													onClick={() => {
-														switchUserRole(user.role);
-														setRoleDropdownOpen(false);
-													}}
-													className={`w-full flex items-start space-x-2.5 p-2.5 rounded-sm text-left transition-all cursor-pointer ${
-														isSelected
-															? "bg-accent border border-border shadow-sm"
-															: "hover:bg-accent/50 border border-transparent"
-													}`}
-												>
-													<img
-														src={user.avatar}
-														alt={user.name}
-														className="h-8 w-8 rounded-sm object-cover mt-0.5 border border-border"
-													/>
-													<div className="flex-1 min-w-0">
-														<div className="flex items-center justify-between">
-															<span className="text-xs font-bold text-foreground truncate">
-																{user.name}
-															</span>
-															<div className="flex items-center space-x-1">
-																<Badge
-																	variant={
-																		getRoleBadgeVariant(user.role) as any
-																	}
-																	className="text-[9px] py-0 px-1.5 capitalize font-bold"
-																>
-																	{user.role.replace("_", " ")}
-																</Badge>
-																{isSelected && (
-																	<Check className="h-3.5 w-3.5 text-primary ml-1" />
-																)}
-															</div>
-														</div>
-														<p className="text-[11px] text-muted-foreground truncate mt-0.5">
-															{user.badgeTitle}
-														</p>
-														<div className="flex items-center space-x-2 mt-1 text-[10px] text-muted-foreground">
-															<span>
-																Trust:{" "}
-																<strong className="text-primary">
-																	{user.trustScore}%
-																</strong>
-															</span>
-															<span>•</span>
-															<span>
-																{user.isVerified ? "Verified" : "Community"}
-															</span>
-														</div>
-													</div>
-												</button>
-											);
-										})}
-									</div>
-								</div>
-							)}
+							</div>
+							<Button
+								onClick={handleLogout}
+								variant="outline"
+								size="icon"
+								title="Sign Out / Log Out"
+								className="h-9 w-9 border-border bg-secondary/80 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 cursor-pointer shrink-0"
+							>
+								<LogOut className="h-4 w-4" />
+							</Button>
 						</div>
 					</div>
 				</div>

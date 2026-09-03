@@ -61,6 +61,8 @@ export interface DisasterStoreState {
 	// Actions
 	setCurrentUser: (user: User) => void;
 	switchUserRole: (role: UserRole) => void;
+	signInWithEmail: (email: string, password: string) => { success: boolean; error?: string };
+	signUpUser: (data: { name: string; email: string; password: string; role: UserRole; organization?: string }) => { success: boolean; error?: string };
 	setSelectedIncidentId: (id: string | null) => void;
 	focusMapOnIncident: (id: string) => void;
 
@@ -185,6 +187,68 @@ export const useDisasterStore = create<DisasterStoreState>()(
 				if (matched) {
 					set({ currentUser: matched });
 				}
+			},
+
+			signInWithEmail: (email, _password) => {
+				const { usersList } = get();
+				const cleanEmail = email.trim().toLowerCase();
+				const matched = usersList.find(
+					(u) => u.email.toLowerCase() === cleanEmail,
+				);
+				if (matched) {
+					set({ currentUser: matched });
+					return { success: true };
+				}
+				return {
+					success: false,
+					error: "No account found with this email address. Please sign up or use a demo account.",
+				};
+			},
+
+			signUpUser: (data) => {
+				const { usersList } = get();
+				const cleanEmail = data.email.trim().toLowerCase();
+				const existing = usersList.find(
+					(u) => u.email.toLowerCase() === cleanEmail,
+				);
+				if (existing) {
+					return {
+						success: false,
+						error: "Email is already registered. Please sign in instead.",
+					};
+				}
+
+				const newUserId = `usr-reg-${Date.now()}`;
+				const newUser: User = {
+					id: newUserId,
+					name: data.name,
+					email: data.email,
+					role: data.role,
+					badgeTitle:
+						data.role === "admin"
+							? "Emergency Operations Commander"
+							: data.role === "responder"
+								? "Emergency Field Responder"
+								: data.role === "verified_citizen"
+									? "Verified Community First Responder"
+									: "Registered Community Member",
+					avatar: `https://images.unsplash.com/photo-${1500000000000 + (Date.now() % 900000)}?auto=format&fit=crop&q=80&w=200`,
+					organization: data.organization || "Independent Response Unit",
+					trustScore:
+						data.role === "admin" || data.role === "responder" ? 95 : 80,
+					isVerified:
+						data.role === "admin" ||
+						data.role === "responder" ||
+						data.role === "verified_citizen",
+					phone: `+880 1${Math.floor(100000000 + Math.random() * 900000000)}`,
+					assignedJurisdiction: "Assigned Sector Alpha",
+				};
+
+				set({
+					usersList: [newUser, ...usersList],
+					currentUser: newUser,
+				});
+				return { success: true };
 			},
 
 			setSelectedIncidentId: (id) => set({ selectedIncidentId: id }),

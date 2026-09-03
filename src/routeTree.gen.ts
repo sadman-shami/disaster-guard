@@ -14,6 +14,8 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as FeedRouteImport } from './routes/feed'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as SigninRouteImport } from './routes/signin'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as VolunteersRouteImport } from './routes/volunteers'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +43,16 @@ const ResourcesRoute = ResourcesRouteImport.update({
   path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SigninRoute = SigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VolunteersRoute = VolunteersRouteImport.update({
   id: '/volunteers',
   path: '/volunteers',
@@ -53,6 +65,8 @@ export interface FileRoutesByFullPath {
   '/feed': typeof FeedRoute
   '/map': typeof MapRoute
   '/resources': typeof ResourcesRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/volunteers': typeof VolunteersRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +75,8 @@ export interface FileRoutesByTo {
   '/feed': typeof FeedRoute
   '/map': typeof MapRoute
   '/resources': typeof ResourcesRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/volunteers': typeof VolunteersRoute
 }
 export interface FileRoutesById {
@@ -70,13 +86,31 @@ export interface FileRoutesById {
   '/feed': typeof FeedRoute
   '/map': typeof MapRoute
   '/resources': typeof ResourcesRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/volunteers': typeof VolunteersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/feed' | '/map' | '/resources' | '/volunteers'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/feed'
+    | '/map'
+    | '/resources'
+    | '/signin'
+    | '/signup'
+    | '/volunteers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/feed' | '/map' | '/resources' | '/volunteers'
+  to:
+    | '/'
+    | '/admin'
+    | '/feed'
+    | '/map'
+    | '/resources'
+    | '/signin'
+    | '/signup'
+    | '/volunteers'
   id:
     | '__root__'
     | '/'
@@ -84,6 +118,8 @@ export interface FileRouteTypes {
     | '/feed'
     | '/map'
     | '/resources'
+    | '/signin'
+    | '/signup'
     | '/volunteers'
   fileRoutesById: FileRoutesById
 }
@@ -93,6 +129,8 @@ export interface RootRouteChildren {
   FeedRoute: typeof FeedRoute
   MapRoute: typeof MapRoute
   ResourcesRoute: typeof ResourcesRoute
+  SigninRoute: typeof SigninRoute
+  SignupRoute: typeof SignupRoute
   VolunteersRoute: typeof VolunteersRoute
 }
 
@@ -133,6 +171,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/volunteers': {
       id: '/volunteers'
       path: '/volunteers'
@@ -149,6 +201,8 @@ const rootRouteChildren: RootRouteChildren = {
   FeedRoute: FeedRoute,
   MapRoute: MapRoute,
   ResourcesRoute: ResourcesRoute,
+  SigninRoute: SigninRoute,
+  SignupRoute: SignupRoute,
   VolunteersRoute: VolunteersRoute,
 }
 export const routeTree = rootRouteImport

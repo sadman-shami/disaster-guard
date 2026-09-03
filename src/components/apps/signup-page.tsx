@@ -1,7 +1,16 @@
 import type React from "react";
 import { useState } from "react";
 import { useNavigate, Link } from "@tanstack/react-router";
-import { ShieldAlert, Lock, Mail, User, Building2, ArrowRight, AlertCircle, CheckCircle2 } from "lucide-react";
+import {
+	ShieldAlert,
+	Lock,
+	Mail,
+	User,
+	Building2,
+	ArrowRight,
+	AlertCircle,
+	CheckCircle2,
+} from "lucide-react";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 import { useDisasterStore } from "#/store/useDisasterStore";
@@ -55,12 +64,17 @@ export const SignUpPage: React.FC = () => {
 			setIsLoading(false);
 
 			if (result.success) {
-				setSuccessMessage("Account created successfully! Initializing command session...");
+				setSuccessMessage(
+					"Account created successfully! Initializing command session...",
+				);
 				setTimeout(() => {
 					navigate({ to: "/" });
 				}, 1000);
 			} else {
-				setError(result.error || "Failed to create account. Please try a different email.");
+				setError(
+					result.error ||
+						"Failed to create account. Please try a different email.",
+				);
 			}
 		}, 500);
 	};
@@ -79,7 +93,8 @@ export const SignUpPage: React.FC = () => {
 						Register for Disaster Guard
 					</h1>
 					<p className="text-sm text-muted-foreground">
-						Create your responder or community account to report incidents and coordinate relief resources.
+						Create your responder or community account to report incidents and
+						coordinate relief resources.
 					</p>
 				</div>
 
@@ -99,7 +114,10 @@ export const SignUpPage: React.FC = () => {
 
 				<form onSubmit={handleSignUp} className="space-y-4">
 					<div className="space-y-1.5">
-						<label htmlFor="signup-name" className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block">
+						<label
+							htmlFor="signup-name"
+							className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
+						>
 							Full Name
 						</label>
 						<div className="relative">
@@ -119,7 +137,10 @@ export const SignUpPage: React.FC = () => {
 					</div>
 
 					<div className="space-y-1.5">
-						<label htmlFor="signup-email" className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block">
+						<label
+							htmlFor="signup-email"
+							className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
+						>
 							Email Address
 						</label>
 						<div className="relative">
@@ -140,7 +161,10 @@ export const SignUpPage: React.FC = () => {
 
 					<div className="grid grid-cols-2 gap-3">
 						<div className="space-y-1.5">
-							<label htmlFor="signup-role" className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block">
+							<label
+								htmlFor="signup-role"
+								className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
+							>
 								Access Role
 							</label>
 							<select
@@ -150,14 +174,19 @@ export const SignUpPage: React.FC = () => {
 								className="w-full bg-secondary/50 border border-border rounded-md px-3 h-10 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
 							>
 								<option value="citizen">Community Citizen</option>
-								<option value="verified_citizen">Verified First Responder</option>
+								<option value="verified_citizen">
+									Verified First Responder
+								</option>
 								<option value="responder">Emergency Unit Lead</option>
 								<option value="admin">Operations Admin</option>
 							</select>
 						</div>
 
 						<div className="space-y-1.5">
-							<label htmlFor="signup-org" className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block">
+							<label
+								htmlFor="signup-org"
+								className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
+							>
 								Organization / Unit
 							</label>
 							<div className="relative">
@@ -177,7 +206,10 @@ export const SignUpPage: React.FC = () => {
 					</div>
 
 					<div className="space-y-1.5">
-						<label htmlFor="signup-password" className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block">
+						<label
+							htmlFor="signup-password"
+							className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
+						>
 							Password
 						</label>
 						<div className="relative">
@@ -204,7 +236,10 @@ export const SignUpPage: React.FC = () => {
 					</div>
 
 					<div className="space-y-1.5">
-						<label htmlFor="signup-confirm-password" className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block">
+						<label
+							htmlFor="signup-confirm-password"
+							className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
+						>
 							Confirm Password
 						</label>
 						<div className="relative">
@@ -228,7 +263,11 @@ export const SignUpPage: React.FC = () => {
 						disabled={isLoading}
 						className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-10 shadow-lg cursor-pointer flex items-center justify-center space-x-2"
 					>
-						<span>{isLoading ? "Creating Secure Account..." : "Create Account & Sign In"}</span>
+						<span>
+							{isLoading
+								? "Creating Secure Account..."
+								: "Create Account & Sign In"}
+						</span>
 						<ArrowRight className="size-4" />
 					</Button>
 				</form>
@@ -236,7 +275,10 @@ export const SignUpPage: React.FC = () => {
 				<div className="text-center pt-2">
 					<p className="text-xs text-muted-foreground">
 						Already have an account?{" "}
-						<Link to="/signin" className="text-primary font-bold hover:underline">
+						<Link
+							to="/signin"
+							className="text-primary font-bold hover:underline"
+						>
 							Sign in here
 						</Link>
 					</p>

@@ -1,7 +1,15 @@
 import type React from "react";
 import { useState } from "react";
 import { useNavigate, Link } from "@tanstack/react-router";
-import { ShieldAlert, Lock, Mail, ArrowRight, AlertCircle, CheckCircle2, UserCheck } from "lucide-react";
+import {
+	ShieldAlert,
+	Lock,
+	Mail,
+	ArrowRight,
+	AlertCircle,
+	CheckCircle2,
+	UserCheck,
+} from "lucide-react";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 import { useDisasterStore } from "#/store/useDisasterStore";
@@ -34,12 +42,17 @@ export const SignInPage: React.FC = () => {
 			setIsLoading(false);
 
 			if (result.success) {
-				setSuccessMessage("Authentication verified. Redirecting to tactical command feed...");
+				setSuccessMessage(
+					"Authentication verified. Redirecting to tactical command feed...",
+				);
 				setTimeout(() => {
 					navigate({ to: "/" });
 				}, 1000);
 			} else {
-				setError(result.error || "Invalid credentials. Please verify your email or sign up.");
+				setError(
+					result.error ||
+						"Invalid credentials. Please verify your email or sign up.",
+				);
 			}
 		}, 400);
 	};
@@ -64,7 +77,8 @@ export const SignInPage: React.FC = () => {
 						Disaster Guard Sign In
 					</h1>
 					<p className="text-sm text-muted-foreground">
-						Enter your authorized agency or community credentials to access the crisis grid.
+						Enter your authorized agency or community credentials to access the
+						crisis grid.
 					</p>
 				</div>
 
@@ -84,7 +98,10 @@ export const SignInPage: React.FC = () => {
 
 				<form onSubmit={handleSignIn} className="space-y-4">
 					<div className="space-y-1.5">
-						<label htmlFor="signin-email" className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block">
+						<label
+							htmlFor="signin-email"
+							className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
+						>
 							Authorized Email
 						</label>
 						<div className="relative">
@@ -105,13 +122,18 @@ export const SignInPage: React.FC = () => {
 
 					<div className="space-y-1.5">
 						<div className="flex items-center justify-between">
-							<label htmlFor="signin-password" className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block">
+							<label
+								htmlFor="signin-password"
+								className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
+							>
 								Secure Password
 							</label>
 							<button
 								type="button"
 								onClick={() => {
-									alert("Password reset instructions have been dispatched to your registered secure comms channel.");
+									alert(
+										"Password reset instructions have been dispatched to your registered secure comms channel.",
+									);
 								}}
 								className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-0 p-0"
 							>
@@ -146,7 +168,9 @@ export const SignInPage: React.FC = () => {
 						disabled={isLoading}
 						className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-10 shadow-lg cursor-pointer flex items-center justify-center space-x-2"
 					>
-						<span>{isLoading ? "Authenticating Grid..." : "Sign In to Command"}</span>
+						<span>
+							{isLoading ? "Authenticating Grid..." : "Sign In to Command"}
+						</span>
 						<ArrowRight className="size-4" />
 					</Button>
 				</form>
@@ -181,7 +205,10 @@ export const SignInPage: React.FC = () => {
 				<div className="text-center pt-2">
 					<p className="text-xs text-muted-foreground">
 						Don't have an emergency responder account?{" "}
-						<Link to="/signup" className="text-primary font-bold hover:underline">
+						<Link
+							to="/signup"
+							className="text-primary font-bold hover:underline"
+						>
 							Sign up now
 						</Link>
 					</p>

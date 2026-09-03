@@ -61,8 +61,17 @@ export interface DisasterStoreState {
 	// Actions
 	setCurrentUser: (user: User) => void;
 	switchUserRole: (role: UserRole) => void;
-	signInWithEmail: (email: string, password: string) => { success: boolean; error?: string };
-	signUpUser: (data: { name: string; email: string; password: string; role: UserRole; organization?: string }) => { success: boolean; error?: string };
+	signInWithEmail: (
+		email: string,
+		password: string,
+	) => { success: boolean; error?: string };
+	signUpUser: (data: {
+		name: string;
+		email: string;
+		password: string;
+		role: UserRole;
+		organization?: string;
+	}) => { success: boolean; error?: string };
 	setSelectedIncidentId: (id: string | null) => void;
 	focusMapOnIncident: (id: string) => void;
 
@@ -201,7 +210,8 @@ export const useDisasterStore = create<DisasterStoreState>()(
 				}
 				return {
 					success: false,
-					error: "No account found with this email address. Please sign up or use a demo account.",
+					error:
+						"No account found with this email address. Please sign up or use a demo account.",
 				};
 			},
 

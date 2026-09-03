@@ -9,6 +9,9 @@ import { GlobalModals } from "#/components/modals/global-modals";
 import { useDisasterStore } from "#/store/useDisasterStore";
 
 import appCss from "#/styles.css?url";
+import { UserProfileView } from "#/components/apps/user-profile-view";
+import { useState } from "react";
+import { Dialog } from "#/components/ui/dialog";
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -49,15 +52,27 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
-	const { setIsReportModalOpen } = useDisasterStore();
+	const { setIsReportModalOpen, currentUser } = useDisasterStore();
+	const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
 
 	return (
 		<div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary selection:text-primary-foreground">
-			<Header onOpenReportModal={() => setIsReportModalOpen(true)} />
+			<Header
+				onOpenReportModal={() => setIsReportModalOpen(true)}
+				setIsProfileModalOpen={setIsProfileModalOpen}
+			/>
 			<main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 				<Outlet />
 			</main>
 			<GlobalModals />
+			{isProfileModalOpen && (
+				<Dialog open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen}>
+					<UserProfileView
+						user={currentUser}
+						onClose={() => setIsProfileModalOpen(false)}
+					/>
+				</Dialog>
+			)}
 		</div>
 	);
 }

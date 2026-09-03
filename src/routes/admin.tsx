@@ -9,7 +9,8 @@ export const Route = createFileRoute("/admin")({
 });
 
 function AdminPage() {
-	const { openAllocateModal, setIsAddDepotModalOpen, currentUser } = useDisasterStore();
+	const { openAllocateModal, setIsAddDepotModalOpen, currentUser } =
+		useDisasterStore();
 
 	if (currentUser.role !== "admin") {
 		return (
@@ -23,7 +24,13 @@ function AdminPage() {
 							Admin Command Restricted
 						</h1>
 						<p className="text-xs text-muted-foreground">
-							This operational sector requires authorized <strong>Operations Admin</strong> credentials. Your current signed-in role is <span className="capitalize font-bold text-foreground">{currentUser.role.replace("_", " ")}</span> ({currentUser.name}).
+							This operational sector requires authorized{" "}
+							<strong>Operations Admin</strong> credentials. Your current
+							signed-in role is{" "}
+							<span className="capitalize font-bold text-foreground">
+								{currentUser.role.replace("_", " ")}
+							</span>{" "}
+							({currentUser.name}).
 						</p>
 					</div>
 					<div className="pt-2 flex flex-col space-y-2">

@@ -16,7 +16,8 @@ function ResourcesPage() {
 		currentUser,
 	} = useDisasterStore();
 
-	const isAuthorized = currentUser.role === "admin" || currentUser.role === "responder";
+	const isAuthorized =
+		currentUser.role === "admin" || currentUser.role === "responder";
 
 	if (!isAuthorized) {
 		return (
@@ -30,7 +31,14 @@ function ResourcesPage() {
 							Resource Logistics Restricted
 						</h1>
 						<p className="text-xs text-muted-foreground">
-							Resource allocation and depot management require <strong>Emergency Unit Lead (Responder)</strong> or <strong>Operations Admin</strong> credentials. Your current signed-in role is <span className="capitalize font-bold text-foreground">{currentUser.role.replace("_", " ")}</span> ({currentUser.name}).
+							Resource allocation and depot management require{" "}
+							<strong>Emergency Unit Lead (Responder)</strong> or{" "}
+							<strong>Operations Admin</strong> credentials. Your current
+							signed-in role is{" "}
+							<span className="capitalize font-bold text-foreground">
+								{currentUser.role.replace("_", " ")}
+							</span>{" "}
+							({currentUser.name}).
 						</p>
 					</div>
 					<div className="pt-2 flex flex-col space-y-2">

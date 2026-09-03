@@ -18,12 +18,15 @@ import { useDisasterStore } from "#/store/useDisasterStore";
 import { UserProfileView } from "#/components/apps/user-profile-view";
 
 interface HeaderProps {
+	setIsProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	onOpenReportModal: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
+export const Header: React.FC<HeaderProps> = ({
+	onOpenReportModal,
+	setIsProfileModalOpen,
+}) => {
 	const navigate = useNavigate();
-	const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 	const {
 		currentUser,
 		incidents,
@@ -176,7 +179,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 										)}
 									</div>
 									<div className="text-[10px] text-muted-foreground truncate max-w-32.5 capitalize">
-										{currentUser.role.replace("_", " ")} • {currentUser.badgeTitle}
+										{currentUser.role.replace("_", " ")} •{" "}
+										{currentUser.badgeTitle}
 									</div>
 								</div>
 							</button>
@@ -220,27 +224,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenReportModal }) => {
 					))}
 				</nav>
 			</div>
-
-			{/* User Profile Read-Only Modal */}
-			{isProfileModalOpen && (
-				<div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in">
-					<div className="relative w-full max-w-md">
-						<div className="absolute -top-3 -right-3 z-10">
-							<button
-								type="button"
-								onClick={() => setIsProfileModalOpen(false)}
-								className="size-8 rounded-full bg-card border border-border text-foreground hover:bg-accent flex items-center justify-center font-bold shadow-md cursor-pointer"
-							>
-								✕
-							</button>
-						</div>
-						<UserProfileView
-							user={currentUser}
-							onClose={() => setIsProfileModalOpen(false)}
-						/>
-					</div>
-				</div>
-			)}
 		</header>
 	);
 };

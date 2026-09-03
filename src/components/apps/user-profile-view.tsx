@@ -1,5 +1,13 @@
 import type React from "react";
-import { UserCheck, Shield, Building2, Phone, MapPin, Award, CheckCircle2 } from "lucide-react";
+import {
+	UserCheck,
+	Shield,
+	Building2,
+	Phone,
+	MapPin,
+	Award,
+	CheckCircle2,
+} from "lucide-react";
 import type { User } from "#/types";
 import { Badge } from "#/components/ui/badge";
 
@@ -8,7 +16,10 @@ interface UserProfileViewProps {
 	onClose?: () => void;
 }
 
-export const UserProfileView: React.FC<UserProfileViewProps> = ({ user, onClose }) => {
+export const UserProfileView: React.FC<UserProfileViewProps> = ({
+	user,
+	onClose,
+}) => {
 	const getRoleBadgeVariant = (role: string) => {
 		switch (role) {
 			case "admin":
@@ -23,7 +34,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ user, onClose 
 	};
 
 	return (
-		<div className="bg-card border border-border rounded-xl p-6 shadow-2xl max-w-md w-full mx-auto space-y-6 text-card-foreground">
+		<div className="p-6 w-full mx-auto space-y-6">
 			{/* Header / Avatar */}
 			<div className="flex items-center space-x-4 pb-6 border-b border-border">
 				<div className="relative">
@@ -40,14 +51,19 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ user, onClose 
 				</div>
 				<div className="flex-1 min-w-0">
 					<div className="flex items-center space-x-2">
-						<h2 className="text-lg font-bold truncate text-foreground">{user.name}</h2>
+						<h2 className="text-lg font-bold truncate text-foreground">
+							{user.name}
+						</h2>
 						{user.isVerified && (
-							<UserCheck className="h-4 w-4 text-sky-400 shrink-0" title="Verified Personnel" />
+							<UserCheck className="h-4 w-4 text-sky-400 shrink-0" />
 						)}
 					</div>
 					<p className="text-xs text-muted-foreground truncate">{user.email}</p>
 					<div className="mt-2 flex items-center space-x-2">
-						<Badge variant={getRoleBadgeVariant(user.role) as any} className="text-[10px] capitalize font-bold px-2 py-0.5">
+						<Badge
+							variant={getRoleBadgeVariant(user.role) as any}
+							className="text-[10px] capitalize font-bold px-2 py-0.5"
+						>
 							{user.role.replace("_", " ")}
 						</Badge>
 						<span className="text-[10px] px-2 py-0.5 rounded-sm bg-secondary text-secondary-foreground font-medium border border-border">
@@ -72,7 +88,9 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ user, onClose 
 						<Building2 className="h-4 w-4 text-primary" />
 						<span>Organization / Agency</span>
 					</div>
-					<span className="font-bold text-foreground">{user.organization || "Bangladesh Disaster Management Bureau"}</span>
+					<span className="font-bold text-foreground">
+						{user.organization || "Bangladesh Disaster Management Bureau"}
+					</span>
 				</div>
 
 				<div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 border border-border/60">
@@ -81,7 +99,11 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ user, onClose 
 						<span>Security & Access Clearance</span>
 					</div>
 					<span className="font-bold text-foreground capitalize">
-						{user.role === "admin" ? "Full Operations Control" : user.role === "responder" ? "Logistics & Tactical Lead" : "Standard Community Access"}
+						{user.role === "admin"
+							? "Full Operations Control"
+							: user.role === "responder"
+								? "Logistics & Tactical Lead"
+								: "Standard Community Access"}
 					</span>
 				</div>
 
@@ -91,7 +113,9 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({ user, onClose 
 							<MapPin className="h-4 w-4 text-primary" />
 							<span>Assigned Jurisdiction</span>
 						</div>
-						<span className="font-bold text-foreground">{user.assignedJurisdiction}</span>
+						<span className="font-bold text-foreground">
+							{user.assignedJurisdiction}
+						</span>
 					</div>
 				)}
 

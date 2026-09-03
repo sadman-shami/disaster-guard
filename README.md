@@ -40,16 +40,18 @@ Disaster Guard Bangladesh is a comprehensive, real-time crisis response, disaste
 ## 📦 Getting Started & Development
 
 1. **Install Dependencies**:
+
    ```bash
-   npm install
+   pnpm install
    ```
 
 2. **Run Development Server**:
+
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 3. **Build for Production**:
    ```bash
-   npm run build
+   pnpm run build
    ```

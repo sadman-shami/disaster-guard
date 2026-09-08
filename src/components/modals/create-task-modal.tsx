@@ -1,6 +1,7 @@
-import { Check, ClipboardList } from "lucide-react";
+import { Check, ClipboardList, Lock, ArrowRight } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "#/components/ui/button";
 import {
 	Dialog,
@@ -49,6 +50,43 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
 		[],
 	);
 	const [safetyNotes, setSafetyNotes] = useState("");
+
+	if (!currentUser) {
+		return (
+			<Dialog open={open} onOpenChange={onOpenChange} className="max-w-md">
+				<DialogHeader>
+					<div className="grid grid-cols-1 items-center gap-2">
+						<div className="size-10 flex items-center justify-center p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+							<Lock className="h-5 w-5" />
+						</div>
+						<div className="text-left">
+							<DialogTitle>Authentication Required</DialogTitle>
+							<DialogDescription className="text-muted-foreground text-xs">
+								You must be signed in to create and coordinate emergency volunteer tasks.
+							</DialogDescription>
+						</div>
+					</div>
+				</DialogHeader>
+				<div className="py-4 space-y-3">
+					<Link
+						to="/signin"
+						onClick={() => onOpenChange(false)}
+						className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-10 px-4 py-2 rounded-md inline-flex items-center justify-center space-x-2 text-xs transition-colors"
+					>
+						<span>Sign In to Create Task</span>
+						<ArrowRight className="size-4" />
+					</Link>
+					<Link
+						to="/signup"
+						onClick={() => onOpenChange(false)}
+						className="w-full border border-border bg-secondary hover:bg-accent text-foreground font-medium h-10 px-4 py-2 rounded-md inline-flex items-center justify-center space-x-2 text-xs transition-colors"
+					>
+						Create New Account
+					</Link>
+				</div>
+			</Dialog>
+		);
+	}
 
 	const activeIncidents = incidents.filter((i) => i.status !== "resolved");
 

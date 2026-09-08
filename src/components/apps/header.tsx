@@ -1,6 +1,5 @@
 import {
 	BarChart3,
-	Lock,
 	LogOut,
 	MapPin,
 	Package,
@@ -12,10 +11,8 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import type React from "react";
-import { useState } from "react";
 import { Button } from "#/components/ui/button";
 import { useDisasterStore } from "#/store/useDisasterStore";
-import { UserProfileView } from "#/components/apps/user-profile-view";
 
 interface HeaderProps {
 	setIsProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,12 +30,14 @@ export const Header: React.FC<HeaderProps> = ({
 		volunteerTasks,
 		resetAllData,
 		setIsReportModalOpen,
+		signOut,
 	} = useDisasterStore();
 
 	const handleOpenReport =
 		onOpenReportModal || (() => setIsReportModalOpen(true));
 
 	const handleLogout = () => {
+		signOut();
 		navigate({ to: "/signin" });
 	};
 
@@ -84,16 +83,6 @@ export const Header: React.FC<HeaderProps> = ({
 			label: "Admin Command",
 			icon: <BarChart3 className="h-4 w-4" />,
 			badge: criticalIncidentsCount > 0 ? criticalIncidentsCount : undefined,
-		},
-		{
-			to: "/signin",
-			label: "Sign In",
-			icon: <Lock className="h-4 w-4" />,
-		},
-		{
-			to: "/signup",
-			label: "Sign Up",
-			icon: <UserCheck className="h-4 w-4" />,
 		},
 	];
 
@@ -153,47 +142,69 @@ export const Header: React.FC<HeaderProps> = ({
 							<span className="xs:hidden">Report</span>
 						</Button>
 
-						{/* Current User Profile & Logout */}
-						<div className="flex items-center space-x-2">
-							<button
-								type="button"
-								onClick={() => setIsProfileModalOpen(true)}
-								title="View User Profile Details"
-								className="flex items-center space-x-2.5 p-1.5 px-2.5 rounded-md border border-border bg-secondary/80 hover:bg-accent text-left transition-colors cursor-pointer"
-							>
-								<div className="relative">
-									<img
-										src={currentUser.avatar}
-										alt={currentUser.name}
-										className="h-7 w-7 rounded-sm object-cover border border-border"
-									/>
-									<span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border border-background"></span>
-								</div>
-								<div className="text-xs">
-									<div className="font-bold text-foreground flex items-center space-x-1">
-										<span className="truncate max-w-30">
-											{currentUser.name}
-										</span>
-										{currentUser.isVerified && (
-											<UserCheck className="h-3 w-3 text-sky-400 shrink-0" />
-										)}
+						{/* Current User Profile & Logout or Sign In / Sign Up */}
+						{currentUser ? (
+							<div className="flex items-center space-x-2">
+								<button
+									type="button"
+									onClick={() => setIsProfileModalOpen(true)}
+									title="View User Profile Details"
+									className="flex items-center space-x-2.5 p-1.5 px-2.5 rounded-md border border-border bg-secondary/80 hover:bg-accent text-left transition-colors cursor-pointer"
+								>
+									<div className="relative">
+										<img
+											src={currentUser.avatar}
+											alt={currentUser.name}
+											className="h-7 w-7 rounded-sm object-cover border border-border"
+										/>
+										<span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border border-background"></span>
 									</div>
-									<div className="text-[10px] text-muted-foreground truncate max-w-32.5 capitalize">
-										{currentUser.role.replace("_", " ")} •{" "}
-										{currentUser.badgeTitle}
+									<div className="text-xs">
+										<div className="font-bold text-foreground flex items-center space-x-1">
+											<span className="truncate max-w-30">
+												{currentUser.name}
+											</span>
+											{currentUser.isVerified && (
+												<UserCheck className="h-3 w-3 text-sky-400 shrink-0" />
+											)}
+										</div>
+										<div className="text-[10px] text-muted-foreground truncate max-w-32.5 capitalize">
+											{currentUser.role.replace("_", " ")} •{" "}
+											{currentUser.badgeTitle}
+										</div>
 									</div>
-								</div>
-							</button>
-							<Button
-								onClick={handleLogout}
-								variant="outline"
-								size="icon"
-								title="Sign Out / Log Out"
-								className="h-9 w-9 border-border bg-secondary/80 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 cursor-pointer shrink-0"
-							>
-								<LogOut className="h-4 w-4" />
-							</Button>
-						</div>
+								</button>
+								<Button
+									onClick={handleLogout}
+									variant="outline"
+									size="icon"
+									title="Sign Out / Log Out"
+									className="h-9 w-9 border-border bg-secondary/80 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 cursor-pointer shrink-0"
+								>
+									<LogOut className="h-4 w-4" />
+								</Button>
+							</div>
+						) : (
+							<div className="flex items-center space-x-2">
+								<Link to="/signin">
+									<Button
+										variant="outline"
+										size="sm"
+										className="h-9 text-xs font-bold border-border bg-secondary hover:bg-accent cursor-pointer px-3"
+									>
+										Sign In
+									</Button>
+								</Link>
+								<Link to="/signup">
+									<Button
+										size="sm"
+										className="h-9 text-xs font-bold bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer px-3 shadow-sm"
+									>
+										Sign Up
+									</Button>
+								</Link>
+							</div>
+						)}
 					</div>
 				</div>
 

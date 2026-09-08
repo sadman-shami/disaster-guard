@@ -67,7 +67,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
 
 	const handleSendCheckIn = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!checkInNote.trim()) return;
+		if (!checkInNote.trim() || !currentUser) return;
 
 		checkInToTask(task.id, currentUser.id, checkInNote.trim());
 		setCheckInNote("");

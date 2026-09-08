@@ -1,5 +1,6 @@
 import L from "leaflet";
 import {
+	ArrowRight,
 	Home,
 	Info,
 	Layers,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import {
 	MapContainer,
 	Marker,
@@ -23,6 +25,7 @@ import {
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
+import { Dialog } from "#/components/ui/dialog";
 import { useDisasterStore } from "#/store/useDisasterStore";
 import type { Depot, Incident } from "#/types";
 
@@ -81,6 +84,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 		shelterName: string;
 		distanceKm: string;
 	} | null>(null);
+	const [showSosAuthModal, setShowSosAuthModal] = useState(false);
 
 	// Sync selectedIncidentId from context
 	useEffect(() => {
@@ -225,6 +229,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
 	// Trigger rapid SOS incident
 	const handleTriggerSOS = () => {
+		if (!currentUser) {
+			setShowSosAuthModal(true);
+			return;
+		}
 		if (!isLocating) {
 			const newId =
 				lat &&
@@ -337,6 +345,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 						</select>
 
 						{onOpenAddDepotModal &&
+							currentUser &&
 							(currentUser.role === "admin" ||
 								currentUser.role === "responder") && (
 								<Button
@@ -432,8 +441,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 												>
 													Safe Evac Route
 												</Button>
-												{(currentUser.role === "admin" ||
-													currentUser.role === "responder") && (
+												{currentUser &&
+													(currentUser.role === "admin" ||
+														currentUser.role === "responder") && (
 													<Button
 														onClick={() => onOpenAllocateModal(incident)}
 														variant={"default"}
@@ -719,8 +729,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 										Plot Safe Evacuation Route
 									</Button>
 
-									{(currentUser.role === "admin" ||
-										currentUser.role === "responder") && (
+									{currentUser &&
+										(currentUser.role === "admin" ||
+											currentUser.role === "responder") && (
 										<Button
 											variant="outline"
 											onClick={() => onOpenAllocateModal(selectedIncident)}
@@ -858,6 +869,40 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 					</Card>
 				</div>
 			</div>
+
+			<Dialog open={showSosAuthModal} onOpenChange={setShowSosAuthModal}>
+				<div className="max-w-md w-full bg-card border border-border p-8 rounded-xl shadow-2xl text-center space-y-6">
+					<div className="inline-flex items-center justify-center size-16 rounded-full bg-destructive/10 text-destructive mx-auto border border-destructive/20">
+						<Radio className="size-8" />
+					</div>
+					<div className="space-y-2">
+						<h3 className="text-xl font-bold tracking-tight text-foreground">
+							SOS Distress Beacon Requires Sign-In
+						</h3>
+						<p className="text-xs text-muted-foreground">
+							To broadcast emergency SOS distress signals and request immediate life-safety extraction, you must be signed in with a verified account.
+						</p>
+					</div>
+					<div className="pt-2 flex flex-col space-y-2">
+						<Link
+							to="/signin"
+							className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-10 px-4 py-2 rounded-md inline-flex items-center justify-center space-x-2 text-sm shadow-lg transition-colors"
+							onClick={() => setShowSosAuthModal(false)}
+						>
+							<span>Sign In to Broadcast SOS</span>
+							<ArrowRight className="size-4" />
+						</Link>
+						<Link
+							to="/signup"
+							className="w-full border border-border bg-secondary hover:bg-accent text-foreground font-bold h-10 px-4 py-2 rounded-md inline-flex items-center justify-center space-x-2 text-xs transition-colors"
+							onClick={() => setShowSosAuthModal(false)}
+						>
+							<UserCheck className="size-4" />
+							<span>Create New Account</span>
+						</Link>
+					</div>
+				</div>
+			</Dialog>
 		</div>
 	);
 };

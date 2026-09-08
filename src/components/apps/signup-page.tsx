@@ -14,7 +14,6 @@ import {
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 import { useDisasterStore } from "#/store/useDisasterStore";
-import type { UserRole } from "#/types";
 
 export const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
@@ -24,7 +23,6 @@ export const SignUpPage: React.FC = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
-	const [role, setRole] = useState<UserRole>("citizen");
 	const [organization, setOrganization] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -58,7 +56,7 @@ export const SignUpPage: React.FC = () => {
 				name,
 				email,
 				password,
-				role,
+				role: "citizen",
 				organization: organization.trim() || undefined,
 			});
 			setIsLoading(false);
@@ -159,49 +157,25 @@ export const SignUpPage: React.FC = () => {
 						</div>
 					</div>
 
-					<div className="grid grid-cols-2 gap-3">
-						<div className="space-y-1.5">
-							<label
-								htmlFor="signup-role"
-								className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
-							>
-								Access Role
-							</label>
-							<select
-								id="signup-role"
-								value={role}
-								onChange={(e) => setRole(e.target.value as UserRole)}
-								className="w-full bg-secondary/50 border border-border rounded-md px-3 h-10 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-							>
-								<option value="citizen">Community Citizen</option>
-								<option value="verified_citizen">
-									Verified First Responder
-								</option>
-								<option value="responder">Emergency Unit Lead</option>
-								<option value="admin">Operations Admin</option>
-							</select>
-						</div>
-
-						<div className="space-y-1.5">
-							<label
-								htmlFor="signup-org"
-								className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
-							>
-								Organization / Unit
-							</label>
-							<div className="relative">
-								<span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground pointer-events-none">
-									<Building2 className="size-3.5" />
-								</span>
-								<Input
-									id="signup-org"
-									type="text"
-									placeholder="FSCD / Red Crescent"
-									value={organization}
-									onChange={(e) => setOrganization(e.target.value)}
-									className="pl-8 bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground/50 h-10 text-xs"
-								/>
-							</div>
+					<div className="space-y-1.5">
+						<label
+							htmlFor="signup-org"
+							className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag block"
+						>
+							Organization / Affiliation (Optional)
+						</label>
+						<div className="relative">
+							<span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground pointer-events-none">
+								<Building2 className="size-4" />
+							</span>
+							<Input
+								id="signup-org"
+								type="text"
+								placeholder="FSCD / Red Crescent / Community Group"
+								value={organization}
+								onChange={(e) => setOrganization(e.target.value)}
+								className="pl-9 bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground/50 h-10"
+							/>
 						</div>
 					</div>
 

@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useMemo, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { Card } from "#/components/ui/card";
@@ -57,6 +58,12 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 		addIncidentUpdate,
 		focusMapOnIncident,
 	} = useDisasterStore();
+
+	const navigate = useNavigate();
+	const handleViewOnMap = (incidentId: string) => {
+		focusMapOnIncident(incidentId);
+		navigate({ to: "/map" });
+	};
 
 	const [searchQuery, setSearchQuery] = useState("");
 	const [selectedSeverity, setSelectedSeverity] = useState<string>("all");
@@ -258,6 +265,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 	}, [incidents]);
 
 	const handleSendUpdate = (incidentId: string) => {
+		if (!currentUser) return;
 		const text = updateInputText[incidentId];
 		if (!text || !text.trim()) return;
 		addIncidentUpdate(incidentId, text.trim());
@@ -595,9 +603,10 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 							</thead>
 							<tbody className="divide-y divide-border">
 								{filteredIncidents.map((incident) => {
-									const canManage =
-										currentUser.role === "admin" ||
-										currentUser.role === "responder";
+									const canManage = currentUser
+										? currentUser.role === "admin" ||
+										  currentUser.role === "responder"
+										: false;
 
 									return (
 										<tr
@@ -682,7 +691,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 												<Button
 													size="sm"
 													variant="ghost"
-													onClick={() => focusMapOnIncident(incident.id)}
+													onClick={() => handleViewOnMap(incident.id)}
 													className="h-7 px-2 text-[11px] text-primary hover:bg-accent rounded-sm font-bold"
 													title="Locate on Map"
 												>
@@ -713,17 +722,19 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 				/* Rich Card Grid / Stream View */
 				<div className="space-y-4">
 					{filteredIncidents.map((incident) => {
-						const isCorroboratedByMe = incident.corroboratedByUserIds.includes(
-							currentUser.id,
-						);
+						const isCorroboratedByMe = currentUser
+							? incident.corroboratedByUserIds.includes(currentUser.id)
+							: false;
 						const isUpdatesOpen = expandedUpdatesId === incident.id;
-						const canVerify =
-							(currentUser.role === "admin" ||
-								currentUser.role === "responder") &&
-							!incident.reportedBy.isVerified &&
-							incident.status !== "verified";
-						const canManage =
-							currentUser.role === "admin" || currentUser.role === "responder";
+						const canVerify = currentUser
+							? (currentUser.role === "admin" ||
+									currentUser.role === "responder") &&
+							  !incident.reportedBy.isVerified &&
+							  incident.status !== "verified"
+							: false;
+						const canManage = currentUser
+							? currentUser.role === "admin" || currentUser.role === "responder"
+							: false;
 
 						return (
 							<Card
@@ -933,7 +944,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 										<Button
 											size="sm"
 											variant="outline"
-											onClick={() => focusMapOnIncident(incident.id)}
+											onClick={() => handleViewOnMap(incident.id)}
 											className="h-8 text-xs text-muted-foreground hover:text-foreground hover:bg-accent rounded-md  tracking-wider font-bold cursor-pointer"
 										>
 											<Compass className="h-3.5 w-3.5 mr-1" />
@@ -1032,7 +1043,7 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
 										{/* Add Update Box */}
 										<div className="flex items-center space-x-2 pt-2 border-t border-border">
 											<Input
-												placeholder={`Post field update as ${currentUser.name}...`}
+												placeholder={currentUser ? `Post field update as ${currentUser.name}...` : "Sign in to post updates..."}
 												value={updateInputText[incident.id] || ""}
 												onChange={(e) =>
 													setUpdateInputText({

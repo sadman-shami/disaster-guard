@@ -15,7 +15,7 @@ import {
 	Users,
 } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { AssignTaskModal } from "#/components/modals/assign-task-modal";
 import { CreateTaskModal } from "#/components/modals/create-task-modal";
@@ -102,8 +102,9 @@ export const VolunteerPortal: React.FC = () => {
 	};
 
 	// Find user's assigned team & tasks
-	const myVolunteerProfile =
-		volunteers.find((v) => v.id === currentUser.id) || volunteers[0];
+	const myVolunteerProfile = currentUser
+		? volunteers.find((v) => v.id === currentUser.id) || volunteers[0]
+		: volunteers[0];
 	const myTeam = volunteerTeams.find((t) =>
 		t.memberIds.includes(myVolunteerProfile?.id),
 	);
@@ -923,17 +924,17 @@ export const VolunteerPortal: React.FC = () => {
 					<div className="bg-card border border-border rounded-md p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 shadow-xs">
 						<div className="flex items-center space-x-3">
 							<img
-								src={myVolunteerProfile?.avatar || currentUser.avatar}
+								src={myVolunteerProfile?.avatar || currentUser?.avatar || ""}
 								alt=""
 								className="h-12 w-12 rounded-md object-cover border-2 border-border shrink-0"
 							/>
 							<div>
 								<div className="flex flex-wrap items-center gap-2">
 									<h3 className="text-sm font-bold text-foreground">
-										{myVolunteerProfile?.name || currentUser.name}
+										{myVolunteerProfile?.name || currentUser?.name || "Guest"}
 									</h3>
 									<Badge className="text-[10px] px-1.5 py-0.2 bg-primary/15 text-primary border border-primary/30 rounded-xs font-bold">
-										{currentUser.badgeTitle}
+										{currentUser?.badgeTitle || "Volunteer"}
 									</Badge>
 								</div>
 								<div className="flex flex-col text-xs text-muted-foreground mt-0.5 items-start space-x-3">

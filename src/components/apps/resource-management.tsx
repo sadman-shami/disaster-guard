@@ -15,7 +15,7 @@ import {
 	X,
 } from "lucide-react";
 import type React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import {
@@ -310,7 +310,9 @@ export const ResourceManagement: React.FC<ResourceManagementProps> = ({
 			</div>
 
 			{/* Action button */}
-			{(currentUser.role === "admin" || currentUser.role === "responder") && (
+			{currentUser &&
+				(currentUser.role === "admin" ||
+					currentUser.role === "responder") && (
 				<div className="flex gap-2 overflow-x-auto scrollbar-none">
 					{activeSubTab === "depots" ? (
 						<Button

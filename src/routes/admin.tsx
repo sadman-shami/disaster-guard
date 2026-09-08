@@ -12,7 +12,7 @@ function AdminPage() {
 	const { openAllocateModal, setIsAddDepotModalOpen, currentUser } =
 		useDisasterStore();
 
-	if (currentUser.role !== "admin") {
+	if (!currentUser || currentUser.role !== "admin") {
 		return (
 			<div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
 				<div className="max-w-md w-full bg-card border border-border p-8 rounded-xl shadow-2xl text-center space-y-6">
@@ -25,12 +25,18 @@ function AdminPage() {
 						</h1>
 						<p className="text-xs text-muted-foreground">
 							This operational sector requires authorized{" "}
-							<strong>Operations Admin</strong> credentials. Your current
-							signed-in role is{" "}
-							<span className="capitalize font-bold text-foreground">
-								{currentUser.role.replace("_", " ")}
-							</span>{" "}
-							({currentUser.name}).
+							<strong>Operations Admin</strong> credentials.{" "}
+							{currentUser ? (
+								<>
+									Your current signed-in role is{" "}
+									<span className="capitalize font-bold text-foreground">
+										{currentUser.role.replace("_", " ")}
+									</span>{" "}
+									({currentUser.name}).
+								</>
+							) : (
+								<>You are currently not signed in.</>
+							)}
 						</p>
 					</div>
 					<div className="pt-2 flex flex-col space-y-2">

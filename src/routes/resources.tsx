@@ -17,7 +17,8 @@ function ResourcesPage() {
 	} = useDisasterStore();
 
 	const isAuthorized =
-		currentUser.role === "admin" || currentUser.role === "responder";
+		currentUser &&
+		(currentUser.role === "admin" || currentUser.role === "responder");
 
 	if (!isAuthorized) {
 		return (
@@ -33,12 +34,18 @@ function ResourcesPage() {
 						<p className="text-xs text-muted-foreground">
 							Resource allocation and depot management require{" "}
 							<strong>Emergency Unit Lead (Responder)</strong> or{" "}
-							<strong>Operations Admin</strong> credentials. Your current
-							signed-in role is{" "}
-							<span className="capitalize font-bold text-foreground">
-								{currentUser.role.replace("_", " ")}
-							</span>{" "}
-							({currentUser.name}).
+							<strong>Operations Admin</strong> credentials.{" "}
+							{currentUser ? (
+								<>
+									Your current signed-in role is{" "}
+									<span className="capitalize font-bold text-foreground">
+										{currentUser.role.replace("_", " ")}
+									</span>{" "}
+									({currentUser.name}).
+								</>
+							) : (
+								<>You are currently not signed in.</>
+							)}
 						</p>
 					</div>
 					<div className="pt-2 flex flex-col space-y-2">

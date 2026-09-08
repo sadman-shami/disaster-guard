@@ -28,7 +28,7 @@ import type {
 } from "#/types";
 
 export interface DisasterStoreState {
-	currentUser: User;
+	currentUser: User | null;
 	usersList: User[];
 	incidents: Incident[];
 	selectedIncidentId: string | null;
@@ -59,7 +59,8 @@ export interface DisasterStoreState {
 	) => void;
 
 	// Actions
-	setCurrentUser: (user: User) => void;
+	setCurrentUser: (user: User | null) => void;
+	signOut: () => void;
 	switchUserRole: (role: UserRole) => void;
 	signInWithEmail: (
 		email: string,
@@ -188,6 +189,8 @@ export const useDisasterStore = create<DisasterStoreState>()(
 
 			setCurrentUser: (user) => set({ currentUser: user }),
 
+			signOut: () => set({ currentUser: null }),
+
 			switchUserRole: (role) => {
 				const { usersList } = get();
 				const matched =
@@ -269,11 +272,12 @@ export const useDisasterStore = create<DisasterStoreState>()(
 
 			reportIncident: (incidentData) => {
 				const { currentUser, incidents } = get();
+				const user = currentUser || PREDEFINED_USERS[0];
 				const newId = `inc-${Date.now().toString().slice(-4)}`;
 				const isAutoVerified =
-					currentUser.role === "admin" ||
-					currentUser.role === "responder" ||
-					currentUser.isVerified;
+					user.role === "admin" ||
+					user.role === "responder" ||
+					user.isVerified;
 				const initialStatus: IncidentStatus = isAutoVerified
 					? "verified"
 					: "reported";
@@ -285,19 +289,19 @@ export const useDisasterStore = create<DisasterStoreState>()(
 					createdAt: "Just now",
 					updatedAt: "Just now",
 					corroborations: 1,
-					corroboratedByUserIds: [currentUser.id],
+					corroboratedByUserIds: [user.id],
 					assignedTeams: isAutoVerified ? ["Local Rapid Response Team"] : [],
 					allocatedResources: [],
 					updates: [
 						{
 							id: `upd-${Date.now()}`,
-							authorName: currentUser.name,
-							authorRole: currentUser.badgeTitle,
+							authorName: user.name,
+							authorRole: user.badgeTitle,
 							message: `Initial report logged: "${incidentData.title}" (${incidentData.severity.toUpperCase()} Priority).`,
 							timestamp: "Just now",
 							isOfficial:
-								currentUser.role === "admin" ||
-								currentUser.role === "responder",
+								user.role === "admin" ||
+								user.role === "responder",
 						},
 					],
 				};
@@ -308,6 +312,7 @@ export const useDisasterStore = create<DisasterStoreState>()(
 
 			verifyIncident: (incidentId) => {
 				const { currentUser, incidents } = get();
+				const user = currentUser || PREDEFINED_USERS[0];
 				set({
 					incidents: incidents.map((inc) => {
 						if (inc.id === incidentId) {
@@ -325,9 +330,9 @@ export const useDisasterStore = create<DisasterStoreState>()(
 									...inc.updates,
 									{
 										id: `upd-${Date.now()}`,
-										authorName: currentUser.name,
-										authorRole: currentUser.badgeTitle,
-										message: `Incident authenticity officially verified by ${currentUser.name} (${currentUser.organization || "Incident Command"}).`,
+										authorName: user.name,
+										authorRole: user.badgeTitle,
+										message: `Incident authenticity officially verified by ${user.name} (${user.organization || "Incident Command"}).`,
 										timestamp: "Just now",
 										isOfficial: true,
 									},
@@ -342,6 +347,7 @@ export const useDisasterStore = create<DisasterStoreState>()(
 
 			updateIncidentStatus: (incidentId, status) => {
 				const { currentUser, incidents } = get();
+				const user = currentUser || PREDEFINED_USERS[0];
 				set({
 					incidents: incidents.map((inc) => {
 						if (inc.id === incidentId) {
@@ -353,13 +359,13 @@ export const useDisasterStore = create<DisasterStoreState>()(
 									...inc.updates,
 									{
 										id: `upd-${Date.now()}`,
-										authorName: currentUser.name,
-										authorRole: currentUser.badgeTitle,
+										authorName: user.name,
+										authorRole: user.badgeTitle,
 										message: `Operational status updated to: [${status.toUpperCase().replace("_", " ")}].`,
 										timestamp: "Just now",
 										isOfficial:
-											currentUser.role === "admin" ||
-											currentUser.role === "responder",
+											user.role === "admin" ||
+											user.role === "responder",
 									},
 								],
 							};
@@ -371,17 +377,18 @@ export const useDisasterStore = create<DisasterStoreState>()(
 
 			corroborateIncident: (incidentId) => {
 				const { currentUser, incidents } = get();
+				const user = currentUser || PREDEFINED_USERS[0];
 				set({
 					incidents: incidents.map((inc) => {
 						if (inc.id === incidentId) {
 							const hasVoted = inc.corroboratedByUserIds.includes(
-								currentUser.id,
+								user.id,
 							);
 							const updatedUserIds = hasVoted
 								? inc.corroboratedByUserIds.filter(
-										(uid) => uid !== currentUser.id,
+										(uid) => uid !== user.id,
 									)
-								: [...inc.corroboratedByUserIds, currentUser.id];
+								: [...inc.corroboratedByUserIds, user.id];
 
 							return {
 								...inc,
@@ -396,6 +403,7 @@ export const useDisasterStore = create<DisasterStoreState>()(
 
 			addIncidentUpdate: (incidentId, message) => {
 				const { currentUser, incidents } = get();
+				const user = currentUser || PREDEFINED_USERS[0];
 				set({
 					incidents: incidents.map((inc) => {
 						if (inc.id === incidentId) {
@@ -406,13 +414,13 @@ export const useDisasterStore = create<DisasterStoreState>()(
 									...inc.updates,
 									{
 										id: `upd-${Date.now()}`,
-										authorName: currentUser.name,
-										authorRole: currentUser.badgeTitle,
+										authorName: user.name,
+										authorRole: user.badgeTitle,
 										message,
 										timestamp: "Just now",
 										isOfficial:
-											currentUser.role === "admin" ||
-											currentUser.role === "responder",
+											user.role === "admin" ||
+											user.role === "responder",
 									},
 								],
 							};
@@ -431,6 +439,7 @@ export const useDisasterStore = create<DisasterStoreState>()(
 			) => {
 				const { resources, incidents, depots, dispatchLogs, currentUser } =
 					get();
+				const user = currentUser || PREDEFINED_USERS[0];
 				const targetResource = resources.find((r) => r.id === resourceId);
 				const targetIncident = incidents.find((i) => i.id === incidentId);
 				const targetDepot = depots.find((d) => d.id === depotId);
@@ -495,8 +504,8 @@ export const useDisasterStore = create<DisasterStoreState>()(
 								...inc.updates,
 								{
 									id: `upd-${Date.now()}`,
-									authorName: currentUser.name,
-									authorRole: currentUser.badgeTitle,
+									authorName: user.name,
+									authorRole: user.badgeTitle,
 									message: `Dispatched ${qty} ${targetResource.unit} of "${targetResource.name}" from ${targetDepot.name}.`,
 									timestamp: "Just now",
 									isOfficial: true,
@@ -524,10 +533,10 @@ export const useDisasterStore = create<DisasterStoreState>()(
 					dispatchedAt: "Just now",
 					eta: "10 mins",
 					status: "dispatched",
-					dispatchedBy: currentUser.name,
+					dispatchedBy: user.name,
 					notes:
 						notes ||
-						`Direct emergency consignment approved by ${currentUser.badgeTitle}`,
+						`Direct emergency consignment approved by ${user.badgeTitle}`,
 				};
 
 				set({

@@ -12,6 +12,7 @@ export interface User {
 	isVerified: boolean;
 	phone?: string;
 	assignedJurisdiction?: string;
+	isVolunteer?: boolean;
 }
 
 export type IncidentSeverity = "critical" | "high" | "moderate" | "low";

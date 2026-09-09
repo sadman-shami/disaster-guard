@@ -53,6 +53,7 @@ export const PREDEFINED_USERS: User[] = [
 		isVerified: true,
 		phone: "+880 1912-334455",
 		assignedJurisdiction: "Surma Basin Emergency Medical Zone",
+		isVolunteer: true,
 	},
 	{
 		id: "usr-cit-1",
@@ -67,6 +68,7 @@ export const PREDEFINED_USERS: User[] = [
 		isVerified: false,
 		phone: "+880 1611-998877",
 		assignedJurisdiction: "Feni Sadar & Fulgazi Sector",
+		isVolunteer: true,
 	},
 ];
 

@@ -71,14 +71,13 @@ export const Header: React.FC<HeaderProps> = ({
 			label: "Volunteer Profile",
 			icon: <Users className="h-4 w-4" />,
 			badge: activeTasksCount > 0 ? activeTasksCount : undefined,
-		},
-		...(isPrivileged
-			? [
-					{
+		},{
 						to: "/map",
 						label: "Safety Map",
 						icon: <MapPin className="h-4 w-4" />,
 					},
+		...(isPrivileged
+			? [
 					{
 						to: "/resources",
 						label: "Resource Management",

@@ -152,6 +152,7 @@ export interface DisasterStoreState {
 	// Admin Management Actions
 	updateUserRole: (userId: string, role: UserRole) => void;
 	toggleUserVerification: (userId: string) => void;
+	toggleUserVolunteerStatus: (userId: string) => void;
 	deleteUser: (userId: string) => void;
 	deleteResource: (resourceId: string) => void;
 	updateResource: (resourceId: string, updates: Partial<EmergencyResource>) => void;
@@ -173,7 +174,29 @@ export const useDisasterStore = create<DisasterStoreState>()(
 			resources: INITIAL_RESOURCES,
 			depots: INITIAL_DEPOTS,
 			dispatchLogs: INITIAL_DISPATCH_LOGS,
-			volunteers: INITIAL_VOLUNTEERS,
+			volunteers: [
+				...INITIAL_VOLUNTEERS,
+				...PREDEFINED_USERS.filter(
+					(u) => u.isVolunteer && !INITIAL_VOLUNTEERS.some((v) => v.email.toLowerCase() === u.email.toLowerCase()),
+				).map((u) => ({
+					id: u.id,
+					name: u.name,
+					email: u.email,
+					phone: u.phone || "+880 1700-112233",
+					avatar: u.avatar,
+					skills: ["first_aid_cpr", "food_water_dist"] as any,
+					status: "ready" as const,
+					certifications: [u.badgeTitle],
+					experienceHours: 45,
+					joinedDate: "Community Member",
+					location: {
+						address: u.assignedJurisdiction || "Sector Alpha",
+						lat: 23.8103,
+						lng: 90.4125,
+					},
+					emergencyContact: "Emergency Operations Dispatch",
+				})),
+			],
 			volunteerTeams: INITIAL_VOLUNTEER_TEAMS,
 			volunteerTasks: INITIAL_VOLUNTEER_TASKS,
 
@@ -1074,6 +1097,56 @@ export const useDisasterStore = create<DisasterStoreState>()(
 					return u;
 				});
 				set({ usersList: updatedUsers });
+				if (currentUser && currentUser.id === userId) {
+					const updatedCurrent = updatedUsers.find((u) => u.id === userId);
+					if (updatedCurrent) set({ currentUser: updatedCurrent });
+				}
+			},
+
+			toggleUserVolunteerStatus: (userId) => {
+				const { usersList, currentUser, volunteers } = get();
+				const updatedUsers = usersList.map((u) => {
+					if (u.id === userId) {
+						return {
+							...u,
+							isVolunteer: !u.isVolunteer,
+						};
+					}
+					return u;
+				});
+
+				const updatedVolunteers = updatedUsers
+					.filter((u) => u.isVolunteer)
+					.map((u) => {
+						const existing = volunteers.find(
+							(v) => v.email.toLowerCase() === u.email.toLowerCase(),
+						);
+						if (existing) return existing;
+						return {
+							id: u.id,
+							name: u.name,
+							email: u.email,
+							phone: u.phone || "+880 1700-112233",
+							avatar: u.avatar,
+							skills: ["first_aid_cpr", "food_water_dist"] as any,
+							status: "ready" as const,
+							certifications: [u.badgeTitle],
+							experienceHours: 40,
+							joinedDate: "Community Member",
+							location: {
+								address: u.assignedJurisdiction || "Sector Alpha",
+								lat: 23.8103,
+								lng: 90.4125,
+							},
+							emergencyContact: "Emergency Operations Dispatch",
+						};
+					});
+
+				set({
+					usersList: updatedUsers,
+					volunteers: updatedVolunteers,
+				});
+
 				if (currentUser && currentUser.id === userId) {
 					const updatedCurrent = updatedUsers.find((u) => u.id === userId);
 					if (updatedCurrent) set({ currentUser: updatedCurrent });

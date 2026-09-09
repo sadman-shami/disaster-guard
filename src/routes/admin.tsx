@@ -12,7 +12,11 @@ function AdminPage() {
 	const { openAllocateModal, setIsAddDepotModalOpen, currentUser } =
 		useDisasterStore();
 
-	if (!currentUser || currentUser.role !== "admin") {
+	const isAuthorized =
+		currentUser &&
+		(currentUser.role === "admin" || currentUser.role === "responder");
+
+	if (!isAuthorized) {
 		return (
 			<div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
 				<div className="max-w-md w-full bg-card border border-border p-8 rounded-xl shadow-2xl text-center space-y-6">
@@ -21,11 +25,11 @@ function AdminPage() {
 					</div>
 					<div className="space-y-2">
 						<h1 className="text-xl font-bold tracking-tight text-foreground">
-							Admin Command Restricted
+							Admin & Responder Command Restricted
 						</h1>
 						<p className="text-xs text-muted-foreground">
 							This operational sector requires authorized{" "}
-							<strong>Operations Admin</strong> credentials.{" "}
+							<strong>Operations Admin</strong> or <strong>Emergency Responder</strong> credentials.{" "}
 							{currentUser ? (
 								<>
 									Your current signed-in role is{" "}
@@ -44,7 +48,7 @@ function AdminPage() {
 							to="/admin/login"
 							className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground font-bold h-10 px-4 py-2 rounded-md inline-flex items-center justify-center space-x-2 text-sm shadow-lg transition-colors"
 						>
-							<span>Sign In with Admin Credentials</span>
+							<span>Sign In with Admin / Responder Credentials</span>
 							<ArrowRight className="size-4" />
 						</Link>
 						<Link

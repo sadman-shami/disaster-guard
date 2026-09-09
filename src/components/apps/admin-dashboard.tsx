@@ -128,6 +128,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 		deleteIncident,
 		updateUserRole,
 		toggleUserVerification,
+		toggleUserVolunteerStatus,
 		deleteUser,
 		deleteResource,
 		addResourceStock,
@@ -1080,6 +1081,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 											<th className="p-3">Access Role</th>
 											<th className="p-3">Trust Score</th>
 											<th className="p-3">Verification</th>
+											<th className="p-3">Volunteer Status</th>
 											<th className="p-3 text-right">Actions</th>
 										</tr>
 									</thead>
@@ -1097,8 +1099,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 															className="size-7 rounded-full object-cover border border-border"
 														/>
 														<div>
-															<div className="font-bold text-foreground text-xs">
+															<div className="font-bold text-foreground text-xs flex items-center gap-1.5">
 																{user.name}
+																{user.isVolunteer && (
+																	<Badge variant="outline" className="bg-amber-500/10 text-amber-500 border-amber-500/30 text-[9px] font-bold px-1.5 py-0">
+																		🛡️ Volunteer
+																	</Badge>
+																)}
 															</div>
 															<div className="text-[10px] text-muted-foreground font-mono">
 																{user.email}
@@ -1153,6 +1160,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 														}`}
 													>
 														{user.isVerified ? "Verified" : "Unverified"}
+													</button>
+												</td>
+
+												<td className="p-3">
+													<button
+														type="button"
+														onClick={() => toggleUserVolunteerStatus(user.id)}
+														className={`px-2.5 py-1 rounded text-[10px] font-bold cursor-pointer transition-colors inline-flex items-center space-x-1 ${
+															user.isVolunteer
+																? "bg-primary/10 text-primary border border-primary/30 hover:bg-primary/20"
+																: "bg-secondary text-muted-foreground border border-border hover:bg-muted"
+														}`}
+													>
+														<span>{user.isVolunteer ? "🛡️ Volunteer Active" : "Assign Volunteer"}</span>
 													</button>
 												</td>
 

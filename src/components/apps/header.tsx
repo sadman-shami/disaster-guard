@@ -48,6 +48,10 @@ export const Header: React.FC<HeaderProps> = ({
 		(t) => t.status === "in_progress" || t.status === "assigned",
 	).length;
 
+	const isPrivileged =
+		currentUser &&
+		(currentUser.role === "admin" || currentUser.role === "responder");
+
 	const navItems: {
 		to: string;
 		label: string;
@@ -63,27 +67,31 @@ export const Header: React.FC<HeaderProps> = ({
 			exact: true,
 		},
 		{
-			to: "/map",
-			label: "Safety Map",
-			icon: <MapPin className="h-4 w-4" />,
-		},
-		{
-			to: "/resources",
-			label: "Resource Management",
-			icon: <Package className="h-4 w-4" />,
-		},
-		{
 			to: "/volunteers",
-			label: "Volunteer Portal",
+			label: "Volunteer Profile",
 			icon: <Users className="h-4 w-4" />,
 			badge: activeTasksCount > 0 ? activeTasksCount : undefined,
 		},
-		{
-			to: "/admin",
-			label: "Admin Command",
-			icon: <BarChart3 className="h-4 w-4" />,
-			badge: criticalIncidentsCount > 0 ? criticalIncidentsCount : undefined,
-		},
+		...(isPrivileged
+			? [
+					{
+						to: "/map",
+						label: "Safety Map",
+						icon: <MapPin className="h-4 w-4" />,
+					},
+					{
+						to: "/resources",
+						label: "Resource Management",
+						icon: <Package className="h-4 w-4" />,
+					},
+					{
+						to: "/admin",
+						label: "Admin Command",
+						icon: <BarChart3 className="h-4 w-4" />,
+						badge: criticalIncidentsCount > 0 ? criticalIncidentsCount : undefined,
+					},
+			  ]
+			: []),
 	];
 
 	return (

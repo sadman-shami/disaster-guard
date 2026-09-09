@@ -41,8 +41,8 @@ function AdminPage() {
 					</div>
 					<div className="pt-2 flex flex-col space-y-2">
 						<Link
-							to="/signin"
-							className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-10 px-4 py-2 rounded-md inline-flex items-center justify-center space-x-2 text-sm shadow-lg transition-colors"
+							to="/admin/login"
+							className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground font-bold h-10 px-4 py-2 rounded-md inline-flex items-center justify-center space-x-2 text-sm shadow-lg transition-colors"
 						>
 							<span>Sign In with Admin Credentials</span>
 							<ArrowRight className="size-4" />

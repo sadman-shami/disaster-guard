@@ -149,6 +149,15 @@ export interface DisasterStoreState {
 		skills: VolunteerSkill[],
 	) => void;
 
+	// Admin Management Actions
+	updateUserRole: (userId: string, role: UserRole) => void;
+	toggleUserVerification: (userId: string) => void;
+	deleteUser: (userId: string) => void;
+	deleteResource: (resourceId: string) => void;
+	updateResource: (resourceId: string, updates: Partial<EmergencyResource>) => void;
+	deleteIncident: (incidentId: string) => void;
+	updateIncident: (incidentId: string, updates: Partial<Incident>) => void;
+
 	// Reset Actions
 	resetAllData: () => void;
 }
@@ -1023,6 +1032,114 @@ export const useDisasterStore = create<DisasterStoreState>()(
 					volunteers: volunteers.map((v) =>
 						v.id === volunteerId ? { ...v, skills } : v,
 					),
+				});
+			},
+
+			updateUserRole: (userId, role) => {
+				const { usersList, currentUser } = get();
+				const updatedUsers = usersList.map((u) => {
+					if (u.id === userId) {
+						return {
+							...u,
+							role,
+							badgeTitle:
+								role === "admin"
+									? "Emergency Operations Commander"
+									: role === "responder"
+										? "Emergency Field Responder"
+										: role === "verified_citizen"
+											? "Verified Community First Responder"
+											: "Registered Community Member",
+						};
+					}
+					return u;
+				});
+				set({ usersList: updatedUsers });
+				if (currentUser && currentUser.id === userId) {
+					const updatedCurrent = updatedUsers.find((u) => u.id === userId);
+					if (updatedCurrent) set({ currentUser: updatedCurrent });
+				}
+			},
+
+			toggleUserVerification: (userId) => {
+				const { usersList, currentUser } = get();
+				const updatedUsers = usersList.map((u) => {
+					if (u.id === userId) {
+						return {
+							...u,
+							isVerified: !u.isVerified,
+							trustScore: !u.isVerified ? 95 : 75,
+						};
+					}
+					return u;
+				});
+				set({ usersList: updatedUsers });
+				if (currentUser && currentUser.id === userId) {
+					const updatedCurrent = updatedUsers.find((u) => u.id === userId);
+					if (updatedCurrent) set({ currentUser: updatedCurrent });
+				}
+			},
+
+			deleteUser: (userId) => {
+				const { usersList, currentUser } = get();
+				set({
+					usersList: usersList.filter((u) => u.id !== userId),
+				});
+				if (currentUser && currentUser.id === userId) {
+					set({ currentUser: null });
+				}
+			},
+
+			deleteResource: (resourceId) => {
+				const { resources } = get();
+				set({
+					resources: resources.filter((r) => r.id !== resourceId),
+				});
+			},
+
+			updateResource: (resourceId, updates) => {
+				const { resources } = get();
+				set({
+					resources: resources.map((r) => {
+						if (r.id === resourceId) {
+							const updated = { ...r, ...updates };
+							const available = updated.totalQuantity - (updated.allocatedQuantity || 0);
+							return {
+								...updated,
+								availableQuantity: Math.max(0, available),
+								status:
+									available <= 0
+										? "critical_shortage"
+										: available <= updated.minThreshold
+											? "low_stock"
+											: "optimal",
+							};
+						}
+						return r;
+					}),
+				});
+			},
+
+			deleteIncident: (incidentId) => {
+				const { incidents } = get();
+				set({
+					incidents: incidents.filter((i) => i.id !== incidentId),
+				});
+			},
+
+			updateIncident: (incidentId, updates) => {
+				const { incidents } = get();
+				set({
+					incidents: incidents.map((i) => {
+						if (i.id === incidentId) {
+							return {
+								...i,
+								...updates,
+								updatedAt: "Just now",
+							};
+						}
+						return i;
+					}),
 				});
 			},
 

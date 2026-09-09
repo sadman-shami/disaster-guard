@@ -1,26 +1,27 @@
 import {
 	Activity,
-	Building,
-	Clock,
-	Flame,
 	Package,
 	Search,
 	ShieldCheck,
-	TrendingUp,
 	UserCheck,
 	Users,
+	Trash2,
+	Plus,
+	FileText,
+	Flame,
+	TrendingUp
 } from "lucide-react";
 import type React from "react";
 import { useMemo, useState } from "react";
 import {
 	Bar,
-	BarChart,
 	CartesianGrid,
 	ComposedChart,
 	Line,
-	Pie,
-	PieChart,
 	XAxis,
+	BarChart,
+	Pie,
+	PieChart
 } from "recharts";
 
 import { Badge } from "#/components/ui/badge";
@@ -35,15 +36,16 @@ import {
 import {
 	type ChartConfig,
 	ChartContainer,
-	ChartLegend,
-	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
+		ChartLegend,
+	ChartLegendContent,
 } from "#/components/ui/chart";
 import { Input } from "#/components/ui/input";
 import { ANALYTICS_DATA } from "#/mockdata";
 import { useDisasterStore } from "#/store/useDisasterStore";
-import type { Incident, IncidentStatus } from "#/types";
+import type { Incident, IncidentStatus, UserRole } from "#/types";
+import { SystemOverviewSummary } from "./system-overview-summary";
 
 interface AdminDashboardProps {
 	onOpenAllocateModal: (incident: Incident) => void;
@@ -115,26 +117,91 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 	onOpenAllocateModal,
 	onOpenAddDepotModal,
 }) => {
-	const { incidents, depots, verifyIncident, updateIncidentStatus } =
-		useDisasterStore();
+	const {
+		incidents,
+		resources,
+		depots,
+		usersList,
+		currentUser,
+		verifyIncident,
+		updateIncidentStatus,
+		deleteIncident,
+		updateUserRole,
+		toggleUserVerification,
+		deleteUser,
+		deleteResource,
+		addResourceStock,
+		setIsAddResourceModalOpen,
+	} = useDisasterStore();
 
-	const [tableSearch, setTableSearch] = useState("");
-	const [tableSeverityFilter, setTableSeverityFilter] = useState("all");
-	const [tableStatusFilter, setTableStatusFilter] = useState("all");
+	const [activeTab, setActiveTab] = useState<
+		"overview" | "users" | "resources" | "incidents"
+	>("overview");
 
+	// Search & filters state
+	const [incidentSearch, setIncidentSearch] = useState("");
+	const [incidentSeverityFilter, setIncidentSeverityFilter] = useState("all");
+	const [incidentStatusFilter, setIncidentStatusFilter] = useState("all");
+
+	const [userSearch, setUserSearch] = useState("");
+	const [userRoleFilter, setUserRoleFilter] = useState("all");
+
+	const [resourceSearch, setResourceSearch] = useState("");
+	const [resourceCategoryFilter, setResourceCategoryFilter] = useState("all");
+
+	// Filtered incidents
 	const filteredIncidents = incidents.filter((inc) => {
-		if (tableSearch.trim()) {
-			const q = tableSearch.toLowerCase();
+		if (incidentSearch.trim()) {
+			const q = incidentSearch.toLowerCase();
 			if (
 				!inc.title.toLowerCase().includes(q) &&
-				!inc.location.address.toLowerCase().includes(q)
+				!inc.location.address.toLowerCase().includes(q) &&
+				!inc.reportedBy.name.toLowerCase().includes(q)
 			) {
 				return false;
 			}
 		}
-		if (tableSeverityFilter !== "all" && inc.severity !== tableSeverityFilter)
+		if (
+			incidentSeverityFilter !== "all" &&
+			inc.severity !== incidentSeverityFilter
+		)
 			return false;
-		if (tableStatusFilter !== "all" && inc.status !== tableStatusFilter)
+		if (incidentStatusFilter !== "all" && inc.status !== incidentStatusFilter)
+			return false;
+		return true;
+	});
+
+	// Filtered users
+	const filteredUsers = usersList.filter((u) => {
+		if (userSearch.trim()) {
+			const q = userSearch.toLowerCase();
+			if (
+				!u.name.toLowerCase().includes(q) &&
+				!u.email.toLowerCase().includes(q) &&
+				!u.organization?.toLowerCase().includes(q)
+			) {
+				return false;
+			}
+		}
+		if (userRoleFilter !== "all" && u.role !== userRoleFilter) return false;
+		return true;
+	});
+
+	// Filtered resources
+	const filteredResources = resources.filter((res) => {
+		if (resourceSearch.trim()) {
+			const q = resourceSearch.toLowerCase();
+			if (
+				!res.name.toLowerCase().includes(q) &&
+				!res.depotName.toLowerCase().includes(q)
+			) {
+				return false;
+			}
+		}
+		if (
+			resourceCategoryFilter !== "all" &&
+			res.category !== resourceCategoryFilter
+		)
 			return false;
 		return true;
 	});
@@ -142,7 +209,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 	const liveSeverityData = useMemo(() => {
 		const counts = { critical: 0, high: 0, moderate: 0, low: 0 };
 		incidents.forEach((i) => {
-			counts[i.severity]++;
+			if (counts[i.severity] !== undefined) counts[i.severity]++;
 		});
 		return [
 			{
@@ -172,112 +239,272 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 		];
 	}, [incidents]);
 
-	const totalCasualties = incidents.reduce(
-		(acc, i) => ({
-			injured: acc.injured + i.casualties.injured,
-			missing: acc.missing + i.casualties.missing,
-			fatalities: acc.fatalities + i.casualties.fatalities,
-		}),
-		{ injured: 0, missing: 0, fatalities: 0 },
-	);
-
-	const totalAffected = incidents.reduce((sum, i) => sum + i.affectedCount, 0);
-
 	return (
-		<div className="space-y-6">
-			{/* Command Operations Bar */}
-			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-card rounded-md border border-border">
-				<div className="flex items-center space-x-2">
-					<span className="h-2.5 w-2.5 rounded-full bg-primary animate-pulse"></span>
-					<span className="text-xs font-bold text-foreground capitalize tracking-wider tactical-tag">
-						Strategic Command Grid Active
-					</span>
-					<span className="text-[11px] text-muted-foreground">
-						• {depots.length} Bases & Shelters Online
-					</span>
+		<div className="space-y-6 max-w-7xl mx-auto px-4 py-8">
+			{/* Admin Header Banner */}
+			<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-card border border-border p-6 rounded-xl shadow-sm relative overflow-hidden">
+				<div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-amber-500 to-primary" />
+				<div className="space-y-1">
+					<div className="flex items-center space-x-2">
+						<div className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-destructive/10 text-destructive uppercase tracking-wider border border-destructive/20">
+							Operations Command Center
+						</div>
+						<span className="text-xs text-muted-foreground">
+							Commander: {currentUser?.name || "Authorized Admin"}
+						</span>
+					</div>
+					<h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
+						Master Administration Panel
+					</h1>
+					<p className="text-xs text-muted-foreground">
+						Complete operational oversight and management for users, emergency
+						stockpiles, and crowdsourced disaster reports.
+					</p>
 				</div>
-				{onOpenAddDepotModal && (
+				<div className="flex items-center space-x-2 shrink-0">
 					<Button
+						variant="outline"
 						size="sm"
-						onClick={onOpenAddDepotModal}
-						className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold capitalize tracking-wider text-xs h-8 rounded-sm shadow-sm cursor-pointer"
+						onClick={() => setIsAddResourceModalOpen(true)}
+						className="text-xs font-bold border-border bg-secondary/50 hover:bg-secondary text-foreground"
 					>
-						<Building className="h-3.5 w-3.5 mr-1.5" />
-						Commission Shelter / Strategic Base
+						<Plus className="size-3.5 mr-1.5" />
+						Add Resource Supply
 					</Button>
-				)}
-			</div>
-
-			{/* Top Strategic KPIs */}
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-				<div className="rounded-md border border-border bg-card p-4 shadow-sm">
-					<div className="flex items-center justify-between">
-						<span className="text-xs font-semibold text-muted-foreground capitalize tracking-wider tactical-tag">
-							Total Impacted Citizens
-						</span>
-						<div className="p-1.5 rounded-sm bg-primary/10 text-primary border border-primary/20">
-							<Users className="h-4 w-4" />
-						</div>
-					</div>
-					<p className="text-2xl font-bold text-foreground mt-2">
-						{totalAffected.toLocaleString()}
-					</p>
-					<div className="flex items-center space-x-1 text-[10px] text-primary mt-1">
-						<TrendingUp className="h-3 w-3" />
-						<span>96% EVACUATION COMPLIANCE</span>
-					</div>
-				</div>
-
-				<div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 shadow-sm">
-					<div className="flex items-center justify-between">
-						<span className="text-xs font-bold text-destructive capitalize tracking-wider tactical-tag">
-							Casualties / Injured
-						</span>
-						<div className="p-1.5 rounded-sm bg-destructive/20 text-destructive border border-destructive/30 animate-pulse">
-							<Flame className="h-4 w-4" />
-						</div>
-					</div>
-					<p className="text-2xl font-bold text-destructive mt-2">
-						{totalCasualties.injured} Injured / {totalCasualties.missing}{" "}
-						Missing
-					</p>
-					<span className="text-[10px] text-destructive/80 capitalize tracking-wide">
-						All triage posts manned
-					</span>
-				</div>
-
-				<div className="rounded-md border border-border bg-card p-4 shadow-sm">
-					<div className="flex items-center justify-between">
-						<span className="text-xs font-semibold text-muted-foreground capitalize tracking-wider tactical-tag">
-							Active Tactical Units
-						</span>
-						<div className="p-1.5 rounded-sm bg-secondary text-secondary-foreground border border-border">
-							<Activity className="h-4 w-4" />
-						</div>
-					</div>
-					<p className="text-2xl font-bold text-foreground mt-2">48 Teams</p>
-					<span className="text-[10px] text-muted-foreground capitalize tracking-wide tactical-tag">
-						USAR & Helitack Taskforces
-					</span>
-				</div>
-
-				<div className="rounded-md border border-border bg-card p-4 shadow-sm">
-					<div className="flex items-center justify-between">
-						<span className="text-xs font-semibold text-muted-foreground capitalize tracking-wider tactical-tag">
-							Mean Dispatch Latency
-						</span>
-						<div className="p-1.5 rounded-sm bg-primary/10 text-primary border border-primary/20">
-							<Clock className="h-4 w-4" />
-						</div>
-					</div>
-					<p className="text-2xl font-bold text-primary mt-2">8.4 mins</p>
-					<span className="text-[10px] text-primary/90 capitalize tracking-wide">
-						FEMA Standard (&lt;10m)
-					</span>
+					{onOpenAddDepotModal && (
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={onOpenAddDepotModal}
+							className="text-xs font-bold border-border bg-secondary/50 hover:bg-secondary text-foreground"
+						>
+							<Package className="size-3.5 mr-1.5" />
+							Register Depot
+						</Button>
+					)}
 				</div>
 			</div>
 
-			{/* Analytics Charts Grid */}
+			{/* Navigation Tabs */}
+			<div className="flex items-center space-x-2 border-b border-border pb-3 overflow-x-auto">
+				<button
+					type="button"
+					onClick={() => setActiveTab("overview")}
+					className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center space-x-2 cursor-pointer transition-colors ${
+						activeTab === "overview"
+							? "bg-primary text-primary-foreground shadow-sm"
+							: "bg-secondary/40 text-muted-foreground hover:bg-secondary hover:text-foreground"
+					}`}
+				>
+					<Activity className="size-4" />
+					<span>Overview & Analytics</span>
+				</button>
+
+				<button
+					type="button"
+					onClick={() => setActiveTab("incidents")}
+					className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center space-x-2 cursor-pointer transition-colors ${
+						activeTab === "incidents"
+							? "bg-primary text-primary-foreground shadow-sm"
+							: "bg-secondary/40 text-muted-foreground hover:bg-secondary hover:text-foreground"
+					}`}
+				>
+					<FileText className="size-4" />
+					<span>Disaster Reports ({incidents.length})</span>
+				</button>
+
+				<button
+					type="button"
+					onClick={() => setActiveTab("resources")}
+					className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center space-x-2 cursor-pointer transition-colors ${
+						activeTab === "resources"
+							? "bg-primary text-primary-foreground shadow-sm"
+							: "bg-secondary/40 text-muted-foreground hover:bg-secondary hover:text-foreground"
+					}`}
+				>
+					<Package className="size-4" />
+					<span>Resources & Depots ({resources.length})</span>
+				</button>
+
+				<button
+					type="button"
+					onClick={() => setActiveTab("users")}
+					className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center space-x-2 cursor-pointer transition-colors ${
+						activeTab === "users"
+							? "bg-primary text-primary-foreground shadow-sm"
+							: "bg-secondary/40 text-muted-foreground hover:bg-secondary hover:text-foreground"
+					}`}
+				>
+					<Users className="size-4" />
+					<span>User Accounts ({usersList.length})</span>
+				</button>
+			</div>
+
+			{/* TAB 1: OVERVIEW & ANALYTICS */}
+			{activeTab === "overview" && (
+				<div className="space-y-6 animate-in fade-in-50">
+					{/* Comprehensive System Overview Summary Component */}
+					<SystemOverviewSummary
+						users={usersList}
+						incidents={incidents}
+						resources={resources}
+						depots={depots}
+					/>
+
+					{/* Quick Stats Grid */}
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+						<Card className="border border-border bg-card">
+							<CardHeader className="flex flex-row items-center justify-between pb-2">
+								<CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag">
+									Total Incidents
+								</CardTitle>
+								<Activity className="h-4 w-4 text-destructive" />
+							</CardHeader>
+							<CardContent>
+								<div className="text-2xl font-extrabold text-foreground">
+									{incidents.length}
+								</div>
+								<p className="text-[11px] text-muted-foreground mt-1">
+									{
+										incidents.filter(
+											(i) => i.status !== "resolved" && i.status !== "contained",
+										).length
+									}{" "}
+									active crisis feeds
+								</p>
+							</CardContent>
+						</Card>
+
+						<Card className="border border-border bg-card">
+							<CardHeader className="flex flex-row items-center justify-between pb-2">
+								<CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag">
+									Registered Users
+								</CardTitle>
+								<Users className="h-4 w-4 text-primary" />
+							</CardHeader>
+							<CardContent>
+								<div className="text-2xl font-extrabold text-foreground">
+									{usersList.length}
+								</div>
+								<p className="text-[11px] text-muted-foreground mt-1">
+									{usersList.filter((u) => u.isVerified).length} verified first
+									responders & citizens
+								</p>
+							</CardContent>
+						</Card>
+
+						<Card className="border border-border bg-card">
+							<CardHeader className="flex flex-row items-center justify-between pb-2">
+								<CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag">
+									Emergency Stockpiles
+								</CardTitle>
+								<Package className="h-4 w-4 text-amber-500" />
+							</CardHeader>
+							<CardContent>
+								<div className="text-2xl font-extrabold text-foreground">
+									{resources.length} item types
+								</div>
+								<p className="text-[11px] text-muted-foreground mt-1">
+									Distributed across {depots.length} regional depots
+								</p>
+							</CardContent>
+						</Card>
+
+						<Card className="border border-border bg-card">
+							<CardHeader className="flex flex-row items-center justify-between pb-2">
+								<CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider tactical-tag">
+									System Integrity
+								</CardTitle>
+								<ShieldCheck className="h-4 w-4 text-emerald-500" />
+							</CardHeader>
+							<CardContent>
+								<div className="text-2xl font-extrabold text-emerald-500">
+									Secure
+								</div>
+								<p className="text-[11px] text-muted-foreground mt-1">
+									Role-Based Access Control active
+								</p>
+							</CardContent>
+						</Card>
+					</div>
+
+					{/* Charts Section */}
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+						<Card className="border border-border bg-card">
+							<CardHeader>
+								<CardTitle className="text-sm font-bold">
+									Disaster Incident Trends (7-Day Simulation)
+								</CardTitle>
+								<CardDescription className="text-xs">
+									Volume of incoming citizen reports vs resolved crisis incidents.
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<ChartContainer
+									config={incidentTrendsConfig}
+									className="h-[260px] w-full"
+								>
+									<ComposedChart data={ANALYTICS_DATA.incidentTrends}>
+										<CartesianGrid
+											strokeDasharray="3 3"
+											stroke="var(--border)"
+										/>
+										<XAxis dataKey="day" stroke="var(--muted-foreground)" />
+										<ChartTooltip content={<ChartTooltipContent />} />
+										<Bar
+											dataKey="reports"
+											fill="var(--chart-1)"
+											radius={[4, 4, 0, 0]}
+										/>
+										<Line
+											type="monotone"
+											dataKey="resolved"
+											stroke="var(--chart-2)"
+											strokeWidth={2}
+										/>
+									</ComposedChart>
+								</ChartContainer>
+							</CardContent>
+						</Card>
+
+						<Card className="border border-border bg-card">
+							<CardHeader>
+								<CardTitle className="text-sm font-bold">
+									Active Incidents by Severity
+								</CardTitle>
+								<CardDescription className="text-xs">
+									Proportional breakdown of current crisis severity levels.
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<div className="space-y-3 pt-2">
+									{liveSeverityData.map((item) => (
+										<div key={item.name} className="space-y-1">
+											<div className="flex justify-between text-xs">
+												<span className="font-bold text-foreground">
+													{item.name}
+												</span>
+												<span className="font-extrabold text-foreground">
+													{item.count} incidents
+												</span>
+											</div>
+											<div className="w-full bg-secondary h-2.5 rounded-full overflow-hidden">
+												<div
+													className="h-full rounded-full transition-all duration-500"
+													style={{
+														width: `${incidents.length > 0 ? (item.count / incidents.length) * 100 : 0}%`,
+														backgroundColor: item.fill,
+													}}
+												/>
+											</div>
+										</div>
+									))}
+								</div>
+							</CardContent>
+						</Card>
+					</div>
+
+					{/* Analytics Charts Grid */}
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 				{/* Chart 1: Incident Trends Over Time (Area Chart) */}
 				<Card className="border border-border bg-card shadow-sm rounded-md">
@@ -447,188 +674,518 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 					</CardContent>
 				</Card>
 			</div>
+				</div>
+			)}
 
-			{/* Master Incident Command Operations Table */}
-			<Card className="border border-border bg-card shadow-sm overflow-hidden rounded-md">
-				<CardHeader className="p-4 border-b border-border">
-					<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-						<div>
-							<CardTitle className="text-base font-bold flex items-center gap-2 text-foreground">
-								<ShieldCheck className="h-5 w-5 text-primary" />
-								Master Incident Management & Verification Roster
-							</CardTitle>
-							<CardDescription className="text-xs text-muted-foreground">
-								Real-time incident auditing, verification badges, triage
-								escalation, and supply dispatch.
-							</CardDescription>
-						</div>
-					</div>
+			{/* TAB 2: DISASTER REPORTS MANAGEMENT */}
+			{activeTab === "incidents" && (
+				<div className="space-y-4 animate-in fade-in-50">
+					<Card className="border border-border bg-card">
+						<CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4">
+							<div>
+								<CardTitle className="text-base font-bold">
+									Disaster Reports Management
+								</CardTitle>
+								<CardDescription className="text-xs">
+									Review, verify, update status, or remove incident reports
+									submitted by users.
+								</CardDescription>
+							</div>
 
-					{/* Table Filters */}
-					<div className="pt-3 flex flex-wrap gap-2 text-xs">
-						<div className="relative flex-1 min-w-50">
-							<Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
-							<Input
-								placeholder="Filter by title or address..."
-								value={tableSearch}
-								onChange={(e) => setTableSearch(e.target.value)}
-								className="pl-8 text-xs h-8 bg-background border-border text-foreground rounded-sm"
-							/>
-						</div>
-						<select
-							value={tableSeverityFilter}
-							onChange={(e) => setTableSeverityFilter(e.target.value)}
-							className="h-8 rounded-sm border border-border bg-background px-2 text-xs font-medium text-foreground focus:outline-none focus:border-ring cursor-pointer"
-						>
-							<option value="all">All Severities</option>
-							<option value="critical">Critical Only</option>
-							<option value="high">High Severity</option>
-							<option value="moderate">Moderate</option>
-						</select>
-						<select
-							value={tableStatusFilter}
-							onChange={(e) => setTableStatusFilter(e.target.value)}
-							className="h-8 rounded-sm border border-border bg-background px-2 text-xs font-medium text-foreground focus:outline-none focus:border-ring cursor-pointer"
-						>
-							<option value="all">All Statuses</option>
-							<option value="reported">Reported</option>
-							<option value="verified">Verified</option>
-							<option value="dispatched">Dispatched</option>
-							<option value="in_progress">In Progress</option>
-							<option value="contained">Contained</option>
-							<option value="resolved">Resolved</option>
-						</select>
-					</div>
-				</CardHeader>
+							<div className="flex flex-wrap items-center gap-2">
+								<div className="relative">
+									<Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+									<Input
+										placeholder="Search reports or locations..."
+										value={incidentSearch}
+										onChange={(e) => setIncidentSearch(e.target.value)}
+										className="pl-8 h-9 text-xs w-[220px] bg-secondary/50 border-border"
+									/>
+								</div>
 
-				<CardContent className="p-0">
-					<div className="overflow-x-auto">
-						<table className="w-full text-xs text-left">
-							<thead className="bg-muted/60 text-muted-foreground capitalize font-bold text-[10px] tracking-wider border-b border-border tactical-tag">
-								<tr>
-									<th className="p-3">ID / Incident</th>
-									<th className="p-3">Severity & Type</th>
-									<th className="p-3">Reporter & Trust</th>
-									<th className="p-3">Casualties / Affected</th>
-									<th className="p-3">Status</th>
-									<th className="p-3 text-right">Commander Actions</th>
-								</tr>
-							</thead>
-							<tbody className="divide-y divide-border">
-								{filteredIncidents.map((incident) => {
-									const isVerified =
-										incident.reportedBy.isVerified ||
-										incident.status === "verified";
-									return (
-										<tr
-											key={incident.id}
-											className="hover:bg-muted/40 transition-colors"
-										>
-											<td className="p-3">
-												<div className="text-[10px] text-primary">
-													{incident.id}
-												</div>
-												<div className="font-bold text-foreground text-xs line-clamp-1 max-w-xs">
-													{incident.title}
-												</div>
-												<div className="text-[11px] text-muted-foreground truncate max-w-xs">
-													{incident.location.address}
-												</div>
-											</td>
+								<select
+									value={incidentSeverityFilter}
+									onChange={(e) => setIncidentSeverityFilter(e.target.value)}
+									className="h-9 rounded-md border border-border bg-secondary/50 px-2.5 text-xs text-foreground font-medium"
+								>
+									<option value="all">All Severities</option>
+									<option value="critical">Critical</option>
+									<option value="high">High</option>
+									<option value="moderate">Moderate</option>
+									<option value="low">Low</option>
+								</select>
 
-											<td className="p-3">
-												<Badge
-													variant={
-														incident.severity === "critical"
-															? "critical"
-															: incident.severity === "high"
-																? "high"
-																: "moderate"
-													}
-													className="text-[10px]"
+								<select
+									value={incidentStatusFilter}
+									onChange={(e) => setIncidentStatusFilter(e.target.value)}
+									className="h-9 rounded-md border border-border bg-secondary/50 px-2.5 text-xs text-foreground font-medium"
+								>
+									<option value="all">All Statuses</option>
+									<option value="reported">Reported</option>
+									<option value="investigating">Investigating</option>
+									<option value="verified">Verified</option>
+									<option value="dispatched">Dispatched</option>
+									<option value="in_progress">In Progress</option>
+									<option value="contained">Contained</option>
+									<option value="resolved">Resolved</option>
+								</select>
+							</div>
+						</CardHeader>
+
+						<CardContent className="p-0">
+							<div className="overflow-x-auto">
+								<table className="w-full text-xs text-left">
+									<thead className="bg-muted/60 text-muted-foreground capitalize font-bold text-[10px] tracking-wider border-b border-border tactical-tag">
+										<tr>
+											<th className="p-3">ID / Title</th>
+											<th className="p-3">Severity / Type</th>
+											<th className="p-3">Submitted By</th>
+											<th className="p-3">Impact</th>
+											<th className="p-3">Status</th>
+											<th className="p-3 text-right">Actions</th>
+										</tr>
+									</thead>
+									<tbody className="divide-y divide-border">
+										{filteredIncidents.map((incident) => {
+											const isVerified =
+												incident.reportedBy.isVerified ||
+												incident.status === "verified";
+											return (
+												<tr
+													key={incident.id}
+													className="hover:bg-muted/40 transition-colors"
 												>
-													{incident.severity.toUpperCase()}
-												</Badge>
-												<div className="text-[10px] text-muted-foreground capitalize tracking-wider mt-0.5">
-													{incident.type}
-												</div>
-											</td>
+													<td className="p-3">
+														<div className="text-[10px] text-primary font-mono">
+															{incident.id}
+														</div>
+														<div className="font-bold text-foreground text-xs line-clamp-1">
+															{incident.title}
+														</div>
+														<div className="text-[10px] text-muted-foreground truncate max-w-xs">
+															{incident.location.address}
+														</div>
+													</td>
 
-											<td className="p-3">
-												<div className="flex items-center space-x-1 font-semibold text-foreground">
-													<span>{incident.reportedBy.name}</span>
-													{isVerified && (
-														<UserCheck className="h-3.5 w-3.5 text-primary" />
-													)}
-												</div>
-												<div className="text-[10px] text-muted-foreground">
-													Trust: {incident.reportedBy.trustScore}% •{" "}
-													{incident.corroborations} Confirms
-												</div>
-											</td>
+													<td className="p-3">
+														<Badge
+															variant={
+																incident.severity === "critical"
+																	? "critical"
+																	: incident.severity === "high"
+																		? "high"
+																		: "moderate"
+															}
+															className="text-[10px]"
+														>
+															{incident.severity.toUpperCase()}
+														</Badge>
+														<div className="text-[10px] text-muted-foreground capitalize mt-0.5">
+															{incident.type}
+														</div>
+													</td>
 
-											<td className="p-3">
-												<div className="text-foreground font-semibold">
-													{incident.affectedCount.toLocaleString()} impacted
-												</div>
-												<div className="text-[11px] text-amber-600 dark:text-amber-400">
-													{incident.casualties.injured} Injured /{" "}
-													{incident.casualties.missing} Missing
-												</div>
-											</td>
+													<td className="p-3">
+														<div className="font-semibold text-foreground flex items-center space-x-1">
+															<span>{incident.reportedBy.name}</span>
+															{isVerified && (
+																<UserCheck className="size-3.5 text-primary" />
+															)}
+														</div>
+														<div className="text-[10px] text-muted-foreground">
+															Trust: {incident.reportedBy.trustScore}%
+														</div>
+													</td>
 
-											<td className="p-3">
-												<select
-													value={incident.status}
-													onChange={(e) =>
-														updateIncidentStatus(
-															incident.id,
-															e.target.value as IncidentStatus,
-														)
-													}
-													className="h-7 rounded-sm border border-border bg-background px-2 text-[11px] font-medium text-foreground cursor-pointer disabled:opacity-60 focus:outline-none focus:border-ring"
-												>
-													<option value="reported">Reported</option>
-													<option value="investigating">Investigating</option>
-													{!isVerified && (
-														<option value="verified">Verified</option>
-													)}
-													<option value="dispatched">Dispatched</option>
-													<option value="in_progress">In Progress</option>
-													<option value="contained">Contained</option>
-													<option value="resolved">Resolved</option>
-												</select>
-											</td>
+													<td className="p-3">
+														<div className="font-medium text-foreground">
+															{incident.affectedCount.toLocaleString()} impacted
+														</div>
+														<div className="text-[10px] text-amber-500">
+															{incident.casualties.injured} Injured /{" "}
+															{incident.casualties.fatalities} Fatalities
+														</div>
+													</td>
 
-											<td className="p-3 text-right">
-												<div className="flex items-center justify-end space-x-1.5">
-													{!isVerified && (
+													<td className="p-3">
+														<select
+															value={incident.status}
+															onChange={(e) =>
+																updateIncidentStatus(
+																	incident.id,
+																	e.target.value as IncidentStatus,
+																)
+															}
+															className="h-7 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground cursor-pointer"
+														>
+															<option value="reported">Reported</option>
+															<option value="investigating">Investigating</option>
+															<option value="verified">Verified</option>
+															<option value="dispatched">Dispatched</option>
+															<option value="in_progress">In Progress</option>
+															<option value="contained">Contained</option>
+															<option value="resolved">Resolved</option>
+														</select>
+													</td>
+
+													<td className="p-3 text-right">
+														<div className="flex items-center justify-end space-x-1.5">
+															{!isVerified && (
+																<Button
+																	size="sm"
+																	variant="outline"
+																	onClick={() => verifyIncident(incident.id)}
+																	className="h-7 text-[10px] text-primary border-primary/40 bg-primary/10 hover:bg-primary/20 font-bold"
+																>
+																	Verify
+																</Button>
+															)}
+															<Button
+																size="sm"
+																onClick={() => onOpenAllocateModal(incident)}
+																className="h-7 text-[10px] bg-primary hover:bg-primary/90 text-primary-foreground font-bold"
+															>
+																Dispatch
+															</Button>
+															<Button
+																size="sm"
+																variant="destructive"
+																onClick={() => {
+																	if (
+																		confirm(
+																			`Are you sure you want to delete incident report ${incident.id}?`,
+																		)
+																	) {
+																		deleteIncident(incident.id);
+																	}
+																}}
+																className="h-7 w-7 p-0"
+															>
+																<Trash2 className="size-3.5" />
+															</Button>
+														</div>
+													</td>
+												</tr>
+											);
+										})}
+									</tbody>
+								</table>
+							</div>
+						</CardContent>
+					</Card>
+				</div>
+			)}
+
+			{/* TAB 3: RESOURCE MANAGEMENT */}
+			{activeTab === "resources" && (
+				<div className="space-y-4 animate-in fade-in-50">
+					<Card className="border border-border bg-card">
+						<CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4">
+							<div>
+								<CardTitle className="text-base font-bold">
+									Emergency Resource Stockpiles & Depots
+								</CardTitle>
+								<CardDescription className="text-xs">
+									Manage emergency stockpiles, restock quantities, or remove items.
+								</CardDescription>
+							</div>
+
+							<div className="flex flex-wrap items-center gap-2">
+								<div className="relative">
+									<Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+									<Input
+										placeholder="Search resources or depots..."
+										value={resourceSearch}
+										onChange={(e) => setResourceSearch(e.target.value)}
+										className="pl-8 h-9 text-xs w-[220px] bg-secondary/50 border-border"
+									/>
+								</div>
+
+								<select
+									value={resourceCategoryFilter}
+									onChange={(e) => setResourceCategoryFilter(e.target.value)}
+									className="h-9 rounded-md border border-border bg-secondary/50 px-2.5 text-xs text-foreground font-medium"
+								>
+									<option value="all">All Categories</option>
+									<option value="medical">Medical & Trauma</option>
+									<option value="water_food">Water & Food</option>
+									<option value="shelter_bedding">Shelter & Bedding</option>
+									<option value="rescue_gear">Rescue Gear</option>
+									<option value="power_fuel">Power & Fuel</option>
+								</select>
+							</div>
+						</CardHeader>
+
+						<CardContent className="p-0">
+							<div className="overflow-x-auto">
+								<table className="w-full text-xs text-left">
+									<thead className="bg-muted/60 text-muted-foreground capitalize font-bold text-[10px] tracking-wider border-b border-border tactical-tag">
+										<tr>
+											<th className="p-3">Resource Item</th>
+											<th className="p-3">Category</th>
+											<th className="p-3">Depot Location</th>
+											<th className="p-3">Stock Quantities</th>
+											<th className="p-3">Status</th>
+											<th className="p-3 text-right">Actions</th>
+										</tr>
+									</thead>
+									<tbody className="divide-y divide-border">
+										{filteredResources.map((resource) => (
+											<tr
+												key={resource.id}
+												className="hover:bg-muted/40 transition-colors"
+											>
+												<td className="p-3">
+													<div className="font-bold text-foreground text-xs">
+														{resource.name}
+													</div>
+													<div className="text-[10px] text-muted-foreground">
+														Officer: {resource.contactOfficer}
+													</div>
+												</td>
+
+												<td className="p-3">
+													<Badge variant="secondary" className="capitalize text-[10px]">
+														{resource.category.replace("_", " ")}
+													</Badge>
+												</td>
+
+												<td className="p-3">
+													<div className="font-semibold text-foreground">
+														{resource.depotName}
+													</div>
+													<div className="text-[10px] text-muted-foreground truncate max-w-xs">
+														{resource.depotLocation.address}
+													</div>
+												</td>
+
+												<td className="p-3">
+													<div className="font-bold text-foreground">
+														{resource.availableQuantity.toLocaleString()} /{" "}
+														{resource.totalQuantity.toLocaleString()} {resource.unit}
+													</div>
+													<div className="text-[10px] text-muted-foreground">
+														Allocated: {resource.allocatedQuantity} {resource.unit}
+													</div>
+												</td>
+
+												<td className="p-3">
+													<Badge
+														variant={
+															resource.status === "optimal"
+																? "verified"
+																: resource.status === "low_stock"
+																	? "high"
+																	: "critical"
+														}
+														className="capitalize text-[10px]"
+													>
+														{resource.status.replace("_", " ")}
+													</Badge>
+												</td>
+
+												<td className="p-3 text-right">
+													<div className="flex items-center justify-end space-x-1.5">
 														<Button
 															size="sm"
 															variant="outline"
-															onClick={() => verifyIncident(incident.id)}
-															className="h-7 text-[10px] text-primary border-primary/40 bg-primary/10 hover:bg-primary/20 font-bold capitalize tracking-wider rounded-sm"
+															onClick={() => {
+																const qty = prompt(
+																	`Enter quantity to restock for ${resource.name}:`,
+																	"500",
+																);
+																if (qty && !Number.isNaN(Number(qty))) {
+																	addResourceStock(resource.id, Number(qty));
+																}
+															}}
+															className="h-7 text-[10px] font-bold"
 														>
-															Verify
+															Restock
 														</Button>
-													)}
-													<Button
-														size="sm"
-														onClick={() => onOpenAllocateModal(incident)}
-														className="h-7 text-[10px] bg-primary hover:bg-primary/90 text-primary-foreground font-bold capitalize tracking-wider rounded-sm"
-													>
-														Dispatch Supplies
-													</Button>
-												</div>
-											</td>
+														<Button
+															size="sm"
+															variant="destructive"
+															onClick={() => {
+																if (
+																	confirm(
+																		`Are you sure you want to delete resource item "${resource.name}"?`,
+																	)
+																) {
+																	deleteResource(resource.id);
+																}
+															}}
+															className="h-7 w-7 p-0"
+														>
+															<Trash2 className="size-3.5" />
+														</Button>
+													</div>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+						</CardContent>
+					</Card>
+				</div>
+			)}
+
+			{/* TAB 4: USER MANAGEMENT */}
+			{activeTab === "users" && (
+				<div className="space-y-4 animate-in fade-in-50">
+					<Card className="border border-border bg-card">
+						<CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4">
+							<div>
+								<CardTitle className="text-base font-bold">
+									User Account & Clearance Management
+								</CardTitle>
+								<CardDescription className="text-xs">
+									Manage registered users, assign roles (Admin, Responder, Verified
+									Citizen), verify accounts, or remove users.
+								</CardDescription>
+							</div>
+
+							<div className="flex flex-wrap items-center gap-2">
+								<div className="relative">
+									<Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+									<Input
+										placeholder="Search users by name or email..."
+										value={userSearch}
+										onChange={(e) => setUserSearch(e.target.value)}
+										className="pl-8 h-9 text-xs w-[220px] bg-secondary/50 border-border"
+									/>
+								</div>
+
+								<select
+									value={userRoleFilter}
+									onChange={(e) => setUserRoleFilter(e.target.value)}
+									className="h-9 rounded-md border border-border bg-secondary/50 px-2.5 text-xs text-foreground font-medium"
+								>
+									<option value="all">All Roles</option>
+									<option value="admin">Admin</option>
+									<option value="responder">Responder</option>
+									<option value="verified_citizen">Verified Citizen</option>
+									<option value="citizen">Citizen</option>
+								</select>
+							</div>
+						</CardHeader>
+
+						<CardContent className="p-0">
+							<div className="overflow-x-auto">
+								<table className="w-full text-xs text-left">
+									<thead className="bg-muted/60 text-muted-foreground capitalize font-bold text-[10px] tracking-wider border-b border-border tactical-tag">
+										<tr>
+											<th className="p-3">User / Email</th>
+											<th className="p-3">Badge & Organization</th>
+											<th className="p-3">Access Role</th>
+											<th className="p-3">Trust Score</th>
+											<th className="p-3">Verification</th>
+											<th className="p-3 text-right">Actions</th>
 										</tr>
-									);
-								})}
-							</tbody>
-						</table>
-					</div>
-				</CardContent>
-			</Card>
+									</thead>
+									<tbody className="divide-y divide-border">
+										{filteredUsers.map((user) => (
+											<tr
+												key={user.id}
+												className="hover:bg-muted/40 transition-colors"
+											>
+												<td className="p-3">
+													<div className="flex items-center space-x-2">
+														<img
+															src={user.avatar}
+															alt={user.name}
+															className="size-7 rounded-full object-cover border border-border"
+														/>
+														<div>
+															<div className="font-bold text-foreground text-xs">
+																{user.name}
+															</div>
+															<div className="text-[10px] text-muted-foreground font-mono">
+																{user.email}
+															</div>
+														</div>
+													</div>
+												</td>
+
+												<td className="p-3">
+													<div className="font-medium text-foreground">
+														{user.badgeTitle}
+													</div>
+													<div className="text-[10px] text-muted-foreground">
+														{user.organization || "Independent"}
+													</div>
+												</td>
+
+												<td className="p-3">
+													<select
+														value={user.role}
+														onChange={(e) =>
+															updateUserRole(
+																user.id,
+																e.target.value as UserRole,
+															)
+														}
+														className="h-7 rounded border border-border bg-background px-2 text-[11px] font-medium text-foreground cursor-pointer"
+													>
+														<option value="admin">Admin</option>
+														<option value="responder">Responder</option>
+														<option value="verified_citizen">
+															Verified Citizen
+														</option>
+														<option value="citizen">Citizen</option>
+													</select>
+												</td>
+
+												<td className="p-3">
+													<div className="font-bold text-foreground">
+														{user.trustScore}%
+													</div>
+												</td>
+
+												<td className="p-3">
+													<button
+														type="button"
+														onClick={() => toggleUserVerification(user.id)}
+														className={`px-2 py-1 rounded text-[10px] font-bold cursor-pointer transition-colors ${
+															user.isVerified
+																? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/30"
+																: "bg-secondary text-muted-foreground border border-border"
+														}`}
+													>
+														{user.isVerified ? "Verified" : "Unverified"}
+													</button>
+												</td>
+
+												<td className="p-3 text-right">
+													<div className="flex items-center justify-end space-x-1.5">
+														<Button
+															size="sm"
+															variant="destructive"
+															disabled={user.id === currentUser?.id}
+															onClick={() => {
+																if (
+																	confirm(
+																		`Are you sure you want to delete user account ${user.name}?`,
+																	)
+																) {
+																	deleteUser(user.id);
+																}
+															}}
+															className="h-7 w-7 p-0"
+														>
+															<Trash2 className="size-3.5" />
+														</Button>
+													</div>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+						</CardContent>
+					</Card>
+				</div>
+			)}
 		</div>
 	);
 };
